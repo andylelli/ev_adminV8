@@ -4,7 +4,7 @@
 4) framework7 create
 5) Copy src directory and overwrite
 
-VITE VUE PLUGIN
+VITE VUE PLUGIN 
 npm i @vitejs/plugin-vue
 
 FONT AWESOME
