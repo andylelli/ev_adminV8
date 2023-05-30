@@ -1,0 +1,52 @@
+{
+  "name": "evaria-admin",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Evaria Admin",
+  "repository": "",
+  "license": "UNLICENSED",
+  "scripts": {
+    "start": "npm run dev",
+    "dev": "cross-env NODE_ENV=development vite",
+    "build": "cross-env NODE_ENV=production vite build && npx workbox generateSW workbox-config.js",
+    "postinstall": "cpy --flat ./node_modules/framework7-icons/fonts/*.* ./src/fonts/ && cpy --flat ./node_modules/material-icons/iconfont/*.* ./src/fonts/"
+  },
+  "browserslist": [
+    "IOS >= 15",
+    "Safari >= 15",
+    "last 5 Chrome versions",
+    "last 5 Firefox versions"
+  ],
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.4.0",
+    "@fortawesome/pro-light-svg-icons": "^6.4.0",
+    "@fortawesome/pro-regular-svg-icons": "^6.4.0",
+    "@fortawesome/pro-solid-svg-icons": "^6.4.0",
+    "@fortawesome/pro-thin-svg-icons": "^6.4.0",
+    "@fortawesome/vue-fontawesome": "^3.0.3",
+    "colorthief": "^2.4.0",
+    "dexie": "^3.2.3",
+    "dom7": "^4.0.6",
+    "framework7": "^8.0.5",
+    "framework7-icons": "^5.0.5",
+    "framework7-vue": "^8.0.5",
+    "leaflet": "^1.9.4",
+    "leaflet-pulse-icon": "^0.1.0",
+    "material-icons": "^1.13.7",
+    "qrcode.vue": "^3.4.0",
+    "skeleton-elements": "^4.0.1",
+    "swiper": "^9.3.2",
+    "vue": "^3.3.4",
+    "vue3-qrcode-reader": "^0.0.1",
+    "vuex": "^4.0.2"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.2.3",
+    "@vue/compiler-sfc": "^3.3.4",
+    "cpy-cli": "^4.2.0",
+    "cross-env": "^7.0.3",
+    "postcss-preset-env": "^8.4.1",
+    "vite": "^4.3.9",
+    "workbox-cli": "^6.6.1"
+  }
+}

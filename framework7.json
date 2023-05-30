@@ -1,0 +1,19 @@
+{
+  "cwd": "C:\\evaria_adminV8",
+  "type": [
+    "pwa",
+    "web"
+  ],
+  "name": "Evaria Admin",
+  "framework": "vue",
+  "template": "blank",
+  "cssPreProcessor": false,
+  "bundler": "vite",
+  "theming": {
+    "customColor": false,
+    "color": "#007aff",
+    "darkMode": false,
+    "iconFonts": true
+  },
+  "customBuild": false
+}

@@ -1,0 +1,5 @@
+option batch abort
+option confirm off
+open sftp://master_pkswyaxpnw:sa978dhZ@138.68.168.170/
+put "C:\evaria_adminV8\www" /applications/zgwwgxjvps/public_html/admin
+exit

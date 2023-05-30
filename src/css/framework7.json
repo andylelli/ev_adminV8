@@ -1,0 +1,19 @@
+{
+  "cwd": "C:\\evariaV7",
+  "type": [
+    "pwa"
+  ],
+  "name": "evaria",
+  "framework": "vue",
+  "template": "single-view",
+  "bundler": "vite",
+  "cssPreProcessor": false,
+  "theming": {
+    "customColor": true,
+    "color": "#bbbbbb",
+    "darkTheme": false,
+    "iconFonts": true,
+    "fillBars": true
+  },
+  "customBuild": false
+}
