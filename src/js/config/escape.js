@@ -7,9 +7,10 @@ var escape = {
         "'": '&apos;',
         '<': '&lt;',
         '>': '&gt;',
-        '\\': '&bsol;' 
+        '\\': '&bsol;',
+        ',': '&com;', 
       };
-      return string.replaceAll(/([\&"'<>\\])/g, function (str, item) {
+      return string.replaceAll(/([\&"'<>\\,])/g, function (str, item) {
         return encode[item];
       });
   
@@ -22,10 +23,11 @@ var escape = {
           '&apos;': "'",
           '&lt;': '<',
           '&gt;': '>',
-          '&bsol;': '\\'        
+          '&bsol;': '\\',
+          '&com;': ',',
         };
         let str = string.replaceAll(/\\\\/g, '\\');
-        return str.replaceAll(/(&amp;|&quot;|&apos;|&lt;|&gt;|&bsol;)/g,
+        return str.replaceAll(/(&amp;|&quot;|&apos;|&lt;|&gt;|&bsol;|&com;)/g,
           function (item) {
             return decode[item];
           });

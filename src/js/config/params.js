@@ -3,7 +3,7 @@ var params = [
     {
         table: "lookup",
         db: ['lookup_id', 'lookup_value', 'lookup_eventid', 'lookup_unixtime'],
-    },    
+    },
     {
         table: "user",
         db: ['user_id', 'user_firstname', 'user_lastname', 'user_email', 'user_defaulteventid', 'user_unixtime'],
@@ -28,7 +28,7 @@ var params = [
         key: "eventid",
         displayName: "project",
         db: ['project_id', 'project_position', 'project_name', 'project_image', 'project_display', 'project_typeid', 'project_code', 'project_eventid', 'project_appicon', 'project_unixtime'],
-        decode: ['project_name'],        
+        decode: ['project_name'],
         fields: [
             {
                 name: "name",
@@ -46,7 +46,7 @@ var params = [
         icon: 'poll',
         linkSuffix: '/',
         childTables: ['pollitem', 'pollscore']
-    }, 
+    },
     {
         table: "scoreboard",
         displayName: "scoreboard",
@@ -99,7 +99,7 @@ var params = [
         icon: 'megaphone',
         linkSuffix: '/',
         childTables: ['newsitem']
-    }, 
+    },
     {
         table: "schedule",
         displayName: "schedule",
@@ -107,10 +107,10 @@ var params = [
         db: ['schedule_id', 'schedule_imageid', 'schedule_eventid', 'schedule_projectid', 'schedule_unixtime'],
         icon: 'calendar',
         linkSuffix: '/',
-    },          
+    },
     {
         table: "pollitem",
-        key: "pollid",  
+        key: "pollid",
         displayName: "poll item",
         newSheetName: "pollitem",
         db: ['pollitem_id', 'pollitem_position', 'pollitem_name', 'pollitem_image', 'pollitem_text', 'pollitem_pollid', 'pollitem_eventid', 'pollitem_unixtime'],
@@ -141,11 +141,22 @@ var params = [
     },
     {
         table: "directoryentry",
-        key: "directoryid",        
+        key: "directoryid",
         displayName: "directory entry",
         newSheetName: "directoryentry",
         db: ['directoryentry_id', 'directoryentry_position', 'directoryentry_name', 'directoryentry_image', 'directoryentry_lightcolour', 'directoryentry_darkcolour', 'directoryentry_mapid', 'directoryentry_lat', 'directoryentry_lng', 'directoryentry_shorttext', 'directoryentry_longtext', 'directoryentry_directoryid', 'directoryentry_parententryid', 'directoryentry_shopid', 'directoryentry_day', 'directoryentry_hour', 'directoryentry_minute', 'directoryentry_schedulehide', 'directoryentry_favourite', 'directoryentry_eventid', 'directoryentry_unixtime'],
-        decode: ['directoryentry_name', 'directoryentry_shorttext', 'directoryentry_longtext'], 
+        decode: ['directoryentry_name', 'directoryentry_shorttext', 'directoryentry_longtext'],
+        bulkInsert: {
+            directoryentry_name: ['string', 50],
+            directoryentry_mapid: ['number', 9],
+            directoryentry_shorttext: ['string', 200],
+            directoryentry_longtext: ['string', 1000],
+            directoryentry_parententryid: ['number', 9],
+            directoryentry_day: ['number', 12],
+            directoryentry_hour: ['number', 2],
+            directoryentry_minute: ['number', 2],
+            directoryentry_schedulehide: ['boolean', 1],
+        },
         fields: [
             {
                 name: "name",
@@ -170,7 +181,7 @@ var params = [
     },
     {
         table: "shopitem",
-        key: "shopid",        
+        key: "shopid",
         displayName: "shop item",
         newSheetName: "shopitem",
         db: ['shopitem_id', 'shopitem_position', 'shopitem_name', 'shopitem_price', 'shopitem_text', 'shopitem_image', 'shopitem_eventid', 'shopitem_shopid', 'shopitem_unixtime'],
@@ -205,7 +216,7 @@ var params = [
         displayName: "treasure hunt item",
         newSheetName: "huntitem",
         db: ['huntitem_id', 'huntitem_position', 'huntitem_name', 'huntitem_text', 'huntitem_image', 'huntitem_token', 'huntitem_scanned', 'huntitem_eventid', 'huntitem_huntid', 'huntitem_unixtime'],
-        decode: ['huntitem_name', 'huntitem_text'], 
+        decode: ['huntitem_name', 'huntitem_text'],
         fields: [
             {
                 name: "name",
@@ -230,7 +241,7 @@ var params = [
         displayName: "news item",
         newSheetName: "newsitem",
         db: ['newsitem_id', 'newsitem_title', 'newsitem_detail', 'newsitem_projectid', 'newsitem_directoryentryid', 'newsitem_time', 'newsitem_userid', 'newsitem_eventid', 'newsitem_newsid', 'newsitem_unixtime'],
-        decode: ['newsitem_title', 'newsitem_detail'], 
+        decode: ['newsitem_title', 'newsitem_detail'],
         fields: [
             {
                 name: "name",
@@ -250,13 +261,13 @@ var params = [
         sortReverse: true,
         sortTime: true,
         link: false
-    },    
+    },
     {
         table: "guest",
         displayName: "guest",
         newSheetName: "guest",
         db: ['guest_id', 'guest_firstname', 'guest_lastname', 'guest_email', 'guest_role', 'guest_token', 'guest_eventid', 'guest_unixtime'],
-        decode: ['guest_firstname', 'guest_lastname'], 
+        decode: ['guest_firstname', 'guest_lastname'],
         fields: [
             {
                 name: "firstname",
@@ -287,7 +298,7 @@ var params = [
     {
         table: "orderdetail",
         db: ["orderdetail_id", "orderdetail_shopitemid", "orderdetail_quantity", "orderdetail_orderid", "orderdetail_eventid", "orderdetail_unixtime"],
-    },    
+    },
 ];
 
 export default params;

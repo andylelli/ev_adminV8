@@ -152,7 +152,6 @@ export default {
 			var paramsTable = params.filter(function (result) {
 				return result.table == table;
 			});
-			console.log(paramsTable);
 			var linkSuffix = paramsTable[0].linkSuffix;
 			var link = "/" + table + "/" + projectid + linkSuffix;
 			f7.views.main.router.navigate(link);

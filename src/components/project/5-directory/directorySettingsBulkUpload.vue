@@ -4,22 +4,11 @@
 			<f7-list-item title="Upload items from file">
 				<template #media>
 					<f7-icon>
-						<font-awesome-icon
-							class="fa-fw custom-colour"
-							style="font-size: 20px"
-							:icon="['fal', 'upload']"
-						/> </f7-icon
-				></template>
-				<input
-					type="file"
-					name="file-bulk-upload"
-					id="file-bulk-upload"
-					accept=".csv"
-					class="input-file-bulk-upload c3-hide"
-				/>
-				<f7-button fill class="color-green" @click="uploadData()"
-					>UPLOAD</f7-button
-				>
+						<font-awesome-icon class="fa-fw custom-colour" style="font-size: 20px" :icon="['fal', 'upload']" />
+					</f7-icon></template>
+				<input type="file" name="file-bulk-upload" id="file-bulk-upload" accept=".csv"
+					class="input-file-bulk-upload c3-hide" />
+				<f7-button fill class="color-green" @click="uploadData()">UPLOAD</f7-button>
 			</f7-list-item>
 		</f7-list>
 	</div>
@@ -37,6 +26,10 @@ var $$ = Dom7;
 import newItem from "../../../mixins/newItem";
 import misc from "../../../mixins/misc";
 import fetch from "../../../mixins/fetch";
+import login from "../../../mixins/login";
+
+import params from "../../../js/config/params.js";
+import escape from "../../../js/config/escape.js";
 
 export default {
 	name: "directory-settings-bulk-upload",
@@ -45,12 +38,14 @@ export default {
 			userid: store.state.userid,
 			eventid: store.state.eventid,
 			delimiter: ",",
+			count: 0,
+			error: false
 		};
 	},
 	props: {
 		projectid: Number,
 	},
-	mixins: [newItem, misc, fetch],
+	mixins: [newItem, misc, fetch, login],
 	computed: {
 		getProject() {
 			var item = {
@@ -93,46 +88,144 @@ export default {
 				// use split to create an array of each csv value row
 				const rows = str.result
 					.replaceAll("\r", "")
+					.replaceAll('""', '@quot@')
+					.replaceAll('"', "")
+					.replaceAll('@quot@', '"')
+					.replaceAll("\r", "")
 					.slice(str.result.indexOf("\n"))
 					.split("\n");
 
 				// Map the rows to header values and create key value pair in array
+				var vue = this;
 				var data = rows.map(function (row) {
 					const values = row.split(delimiter);
 					const el = headers.reduce(function (object, header, index) {
 						object[header] = values[index];
 						return object;
 					}, {});
+
+					el.directoryentry_directoryid =
+						vue.getDirectory.directory_id;
+					el.directoryentry_eventid = vue.eventid;
+
 					return el;
 				});
 
-				data[0].directoryentry_lat = 0;
-				data[0].directoryentry_lng = 0;
-				data[0].directoryentry_shopid = 0;
-				data[0].directoryentry_favourite = 0;
-				data[0].directoryentry_directoryid =
-					this.getDirectory.directory_id;
-				data[0].directoryentry_eventid = this.eventid;
+				var len = data.length;
+				if (data[len - 1].directoryentry_name == "") {
+					data.pop();
+				}
 
-				this.sendToServer(data);
+				var response = this.validate(headers, data);
+				var message = response[0];
+				var data = response[1];
+
+				if (message.success != true) {
+					f7.dialog.alert(message.error);
+				}
+				else {
+					//console.log(data);
+					this.sendToServer(data);
+				}
 			};
 
 			str.onerror = () => {
 				console.log(str.error);
 			};
 		},
+		validate(headers, input) {
+			var table = "directoryentry";
+			var paramsTable = params.filter(function (result) {
+				return result.table == table;
+			});
+			var bulkInsert = paramsTable[0].bulkInsert;
+			var dataType;
+			var dataMaxLen, field, fieldLength, fieldType;
+			var field;
+			var message = {};
+			var row = 1;
+
+			message.success = true;
+			var output = input;
+
+			input.forEach(item => {
+
+				for (var i = 0; i < headers.length; i++) {
+					dataType = bulkInsert[headers[i]][0];
+					dataMaxLen = bulkInsert[headers[i]][1];
+
+					field = item[headers[i]];
+					fieldLength = field.length;
+					if (fieldLength > dataMaxLen) {
+						var msg = "Error in row " + row + ". Max length for " + headers[i] + " exceeded";
+						message.success = false;
+						message.error = msg;
+						i = headers.length;
+						return message;
+					}
+
+					if (dataType == "boolean" && parseInt(item[headers[i]]) < 2) {
+						var msg = "Error in row " + row + ". " + headers[i] + " should be boolean";
+						//Do nothing
+					}
+					else {
+						if (parseInt(item[headers[i]]) || parseInt(item[headers[i]]) == 0) {
+							fieldType = "number";
+						}
+						else {
+							fieldType = "string";
+						}
+						if (fieldType != dataType) {
+							var msg = "Error in row " + row + ". " + headers[i] + " should be " + dataType;
+							message.success = false;
+							message.error = msg;
+							i = headers.length;
+							return message;
+						}
+						else if (fieldType == "string") {
+							var j = row - 1;
+							var str = output[j][headers[i]];
+							str = str.replaceAll("@comma@", ",");
+							output[j][headers[i]] = escape.encodeXML(str);
+						}
+					}
+				}
+				row++
+			});
+
+			var response = [message, output];
+
+			return response;
+
+
+		},
 		async sendToServer(data) {
 			var url = store.state.url;
 			var url = url + "api/post/insert/bulk/directoryentry";
 
-			f7.preloader.show();
+			var total = data.length;
+
+			this.progress(total);
 
 			//post
 			//console.log(post);
 
 			// Send login post to server
+			var vue = this;
 			var method = "POST";
-			var response = await this.fetch(url, method, data);
+
+			//Send each item to webserver
+			for (let i = 0; i < data.length; i++) {
+				var arr = [];
+				arr.push(data[i]);
+				var response = await vue.fetch(url, method, arr);
+				if (response.status != "success") {
+					i = total;
+					vue.error = true;
+					return false;
+				}
+				vue.count++;
+			}
 
 			//Check if the network is too slow
 			if (this.networkError(response) == true) {
@@ -141,9 +234,52 @@ export default {
 
 			//response
 			//console.log(response);
+		},
+		progress(total) {
+			// Start timer to update progress dialog
+			var progress = 0;
+			var dialog = f7.dialog.progress("Loading", progress, "primary");
+			var vue = this;
+			var timer = setInterval(function () {
+				// Update progress percentage
+				progress = ((vue.count + 1) / total) * 100;
 
-			f7.preloader.hide();
-			f7.dialog.alert(response.message);
+				var terminate = false;
+				if (typeof dialog.setProgress == "function") {
+					dialog.setProgress(progress);
+					dialog.setText(parseInt(vue.count) + " of " + total);
+				} else {
+					terminate = true;
+				}
+
+				// If progress equals 100% then close dialogue and
+				if (vue.count >= total || terminate === true || vue.error === true) {
+					clearInterval(timer);
+					dialog.close();
+
+					if (vue.error == false) {
+						f7.dialog.alert("Upload complete");
+					} else if (vue.count > 0) {
+						f7.dialog.alert("Partial upload. Please check file for errors");
+					} else {
+						f7.dialog.alert("Error. Please check file for errors");
+					}
+
+					vue.count = 0;
+
+					localStorage.admin_counter = 0;
+
+					var tables = ['directoryentry'];
+					var fullSync = false;
+					var getDeletes = true;
+					vue.syncGetFromWebServer(
+						vue.eventid,
+						tables,
+						fullSync,
+						getDeletes
+					);
+				}
+			}, 100);
 		},
 	},
 	mounted() {
