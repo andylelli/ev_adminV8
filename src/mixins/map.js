@@ -441,6 +441,7 @@ export default {
                                             vue.markerPosition,
                                             16
                                         );
+                                        vue.firstLoop = false;
                                     }
                                 }
                             }

@@ -83,8 +83,8 @@ export default {
 	name: "directoryentry-location",
 	data() {
 		return {
-			//url: "https://api.maptiler.com/maps/streets/{z}/{x}/{y}@2x.png?key=y8c6QjX1I0EMkOzS7w4n",
-			url: "https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=y8c6QjX1I0EMkOzS7w4n",
+			url: "https://api.maptiler.com/maps/streets/{z}/{x}/{y}@2x.png?key=y8c6QjX1I0EMkOzS7w4n",
+			//url: "https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=y8c6QjX1I0EMkOzS7w4n",
 			//url: "/admin/static/home/{z}/{x}/{y}.png",
 			map: null,
 			page: "directoryentry",
