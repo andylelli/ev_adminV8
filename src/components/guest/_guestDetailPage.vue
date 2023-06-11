@@ -43,7 +43,6 @@ const device = getDevice();
 
 import login from "../../mixins/login";
 import misc from "../../mixins/misc";
-import fetch from "../../mixins/fetch";
 import deleteItem from "../../mixins/deleteItem";
 
 import navBackLink from "../misc/nav/navBackLink.vue";
@@ -78,7 +77,7 @@ export default {
 	props: {
 		f7route: Object,
 	},
-	mixins: [login, misc, fetch, deleteItem],
+	mixins: [login, misc, deleteItem],
 	computed: {
 		initiated() {
 			return store.state.initiated;

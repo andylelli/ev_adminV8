@@ -3,6 +3,9 @@ import params from "../js/config/params.js";
 import escape from "../js/config/escape.js";
 
 var getters = {
+    getWorking: (state) => (x) => {
+            return state.working;
+    },    
     getEventID: (state) => (x) => {
         if (state.eventid) {
             return state.eventid;

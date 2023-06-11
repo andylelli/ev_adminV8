@@ -62,7 +62,6 @@ import { f7, f7ready } from "framework7-vue";
 
 import newItem from "../../../mixins/newItem";
 import misc from "../../../mixins/misc";
-import fetch from "../../../mixins/fetch";
 
 export default {
   name: "shopcart",
@@ -76,7 +75,7 @@ export default {
 			validate: store.state.validate,      
     };
   },
-  mixins: [newItem, misc, fetch],  
+  mixins: [newItem, misc],  
   computed: {
     shopCart() {
       var shopid = this.shopId();

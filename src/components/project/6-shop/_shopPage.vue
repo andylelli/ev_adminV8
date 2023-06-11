@@ -53,7 +53,6 @@ import { f7, f7ready } from "framework7-vue";
 
 import login from "../../../mixins/login";
 import misc from "../../../mixins/misc";
-import fetch from "../../../mixins/fetch";
 
 import navBackLink from "../../misc/nav/navBackLink.vue";
 import navBars from "../../misc/nav/navBars.vue";
@@ -83,7 +82,7 @@ export default {
 		shopOrderHistory,
 		shopOrder,
 	},
-	mixins: [login, misc, fetch],
+	mixins: [login, misc],
 	computed: {
 		getProject() {
 			var item = {

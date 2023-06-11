@@ -50,7 +50,6 @@ import images from "../../mixins/images";
 import newItem from "../../mixins/newItem";
 import login from "../../mixins/login";
 import misc from "../../mixins/misc";
-import fetch from "../../mixins/fetch";
 
 export default {
 	name: "image-load",
@@ -63,7 +62,7 @@ export default {
 		};
 	},
 	props: ["id", "table"],
-	mixins: [images, newItem, login, misc, fetch],
+	mixins: [images, newItem, login, misc],
 	computed: {
 		getItem() {
 			var item = {

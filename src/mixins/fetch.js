@@ -1,9 +1,12 @@
 import store from "../vuex/store.js";
 
+
 export default {
     methods: {
 
         async fetch(url, method, jsonx, newEvent) {
+
+            store.dispatch("setWorking", true);
 
             var timeout = false;
 
@@ -77,6 +80,7 @@ export default {
                     if (response.status >= 200 && response.status <= 299) {
                         var json = await response.json();
                         //console.log(json);
+                        store.dispatch("setWorking", false);
                         return json;
                     }
                     else {
@@ -99,11 +103,15 @@ export default {
                 }
                 else {
                     console.log('TIMEOUT');
+                    var working = false;
+                    store.dispatch("setWorking", false);
                     return false;
                 }
             }
             else {
                 console.log('NOT CONNECTED');
+                var working = false;
+                store.dispatch("setWorking", false);
                 return false;
             }
         }

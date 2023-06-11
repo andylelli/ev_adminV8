@@ -550,7 +550,7 @@ export default {
 			var guestid = localStorage.uniqueId;
 			var token = store.state.token;
 
-			// Prepare fetch
+			// Prepare URL
 			var getURL =
 				url +
 				"api/get/pollscore/" +
@@ -562,7 +562,7 @@ export default {
 				"/" +
 				guestid;
 
-			// Submit fetch
+			// Pull data from server
 			var method = "GET";
 			var response = await this.fetch(getURL, method, false, page);
 

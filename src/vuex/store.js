@@ -18,6 +18,7 @@ export const store = createStore({
     timeout: 10000,
     os: null,
     autosync: "ok",
+    working: false,
 
     eventsList: [],
     eventName: null,

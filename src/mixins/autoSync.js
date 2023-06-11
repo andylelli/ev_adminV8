@@ -17,7 +17,9 @@ export default {
                 if (event) {
                     if (event.event_autosync === 1) {
                         if (store.state.initiated === true) {
-                            this.syncPutToWebServer(null, null, null);
+                            if (localStorage.network != 'offline') {
+                                this.syncPutToWebServer(null, null, null);
+                            }
                         }
                     }
                 }

@@ -102,7 +102,6 @@ import store from "../../vuex/store.js";
 import { f7, f7ready } from "framework7-vue";
 
 import misc from "../../mixins/misc";
-import fetch from "../../mixins/fetch";
 import newItem from "../../mixins/newItem";
 
 export default {
@@ -122,7 +121,7 @@ export default {
 			margin: 4,
 		};
 	},
-	mixins: [misc, fetch, newItem],
+	mixins: [misc, newItem],
 	components: {
 		QrcodeVue,
 	},

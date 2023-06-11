@@ -58,7 +58,6 @@ var $$ = Dom7;
 import misc from "../../mixins/misc";
 import newItem from "../../mixins/newItem";
 import login from "../../mixins/login";
-import fetch from "../../mixins/fetch";
 
 import generalButton from "../misc/generalButton.vue";
 
@@ -77,7 +76,7 @@ export default {
 		};
 	},
 	props: ["page", "table", "projectid"],
-	mixins: [misc, newItem, login, fetch],
+	mixins: [misc, newItem, login],
 	components: {
 		generalButton,
 	},	

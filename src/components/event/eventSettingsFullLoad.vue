@@ -44,7 +44,6 @@ import { f7, f7ready } from "framework7-vue";
 import autoSync from "../../mixins/autoSync";
 import login from "../../mixins/login";
 import misc from "../../mixins/misc";
-import fetch from "../../mixins/fetch";
 
 export default {
 	name: "event-settings-full-load",
@@ -54,7 +53,7 @@ export default {
 			eventid: store.state.eventid,
 		};
 	},
-	mixins: [autoSync, login, misc, fetch],
+	mixins: [autoSync, login, misc],
 	computed: {
 		getEvent() {
 			var item = {

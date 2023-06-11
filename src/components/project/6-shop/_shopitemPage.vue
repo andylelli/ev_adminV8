@@ -68,7 +68,6 @@ var $$ = Dom7;
 
 import login from "../../../mixins/login";
 import misc from "../../../mixins/misc";
-import fetch from "../../../mixins/fetch";
 import newItem from "../../../mixins/newItem";
 import deleteItem from "../../../mixins/deleteItem";
 
@@ -99,7 +98,7 @@ export default {
 		generalButton,		
 		sheetEdit,
 	},
-	mixins: [login, misc, fetch, newItem, deleteItem],
+	mixins: [login, misc, newItem, deleteItem],
 	computed: {
 		getProject() {
 			var item = {

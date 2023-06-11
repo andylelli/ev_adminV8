@@ -18,7 +18,6 @@ import store from "../../vuex/store.js";
 
 import login from "../../mixins/login";
 import misc from "../../mixins/misc";
-import fetch from "../../mixins/fetch";
 
 import navBackLink from "../misc/nav/navBackLink.vue";
 import navBars from "../misc/nav/navBars.vue";
@@ -35,7 +34,7 @@ export default {
 		};
 	},
 	components: { navBackLink, navBars, sheetNew, guestList, newGuest },
-	mixins: [login, misc, fetch],
+	mixins: [login, misc],
 	computed: {
 		initiated() {
 			return store.state.initiated;

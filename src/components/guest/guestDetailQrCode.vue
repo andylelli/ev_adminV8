@@ -16,7 +16,6 @@ var $$ = Dom7;
 
 import login from "../../mixins/login";
 import misc from "../../mixins/misc";
-import fetch from "../../mixins/fetch";
 
 export default {
 	name: "guest-detail-qr-code",
@@ -26,7 +25,7 @@ export default {
 			eventid: store.state.eventid,
 		};
 	},
-	mixins: [login, misc, fetch],
+	mixins: [login, misc],
 	props: {
 		guestid: Number,
 	},

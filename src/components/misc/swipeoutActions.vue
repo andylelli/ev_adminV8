@@ -32,7 +32,6 @@
 <script>
 import deleteItem from "../../mixins/deleteItem";
 import misc from "../../mixins/misc";
-import fetch from "../../mixins/fetch";
 
 export default {
 	name: "swipeout-actions",
@@ -40,7 +39,7 @@ export default {
 		return {};
 	},
 	props: ["item", "table"],
-	mixins: [deleteItem, misc, fetch],
+	mixins: [deleteItem, misc],
 	computed: {},
 	methods: {
 		deleteListItem(id, table, name) {

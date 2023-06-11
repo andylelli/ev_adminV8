@@ -172,7 +172,7 @@ export default {
         },
         async syncGetFromWebServer(eventid, tables, fullSync, getDeletes) {
 
-            // Get array of tables to fetch
+            // Get array of tables
             var table = store.getters.getTableNames("remote");
 
             // Initialise variables
@@ -226,7 +226,7 @@ export default {
 
                 //console.log(url);
 
-                // Execute data fetch from server
+                // Pull data from server
                 var method = 'GET';
                 var response = await this.fetch(url, method);
 
@@ -381,7 +381,7 @@ export default {
                         items.push(json);
                     }
 
-                    // Execute fetch
+                    // Push data to server
                     var method = 'POST';
                     var response = await this.fetch(url, method, items);
 

@@ -73,7 +73,6 @@ var $$ = Dom7;
 
 import login from "../../mixins/login";
 import misc from "../../mixins/misc";
-import fetch from "../../mixins/fetch";
 
 import sheetNew from "../sheet/sheetNew.vue";
 import actionsEvent from "../misc/actionsEvent.vue";
@@ -93,7 +92,7 @@ export default {
 			url: ""
 		};
 	},
-	mixins: [login, misc, fetch],
+	mixins: [login, misc],
 	components: {
 		sheetNew,
 		actionsEvent,

@@ -65,7 +65,6 @@ const device = getDevice();
 
 import deleteItem from "../../../mixins/deleteItem";
 import misc from "../../../mixins/misc";
-import fetch from "../../../mixins/fetch";
 
 import navBackLink from "../../misc/nav/navBackLink.vue";
 import navBars from "../../misc/nav/navBars.vue";
@@ -99,7 +98,7 @@ export default {
 		sheetEdit,
 		sheetProjectIcon,
 	},
-	mixins: [deleteItem, misc, fetch],
+	mixins: [deleteItem, misc],
 	computed: {
 		getProject() {
 			var item = {

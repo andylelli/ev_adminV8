@@ -67,7 +67,6 @@ var $$ = Dom7;
 
 import login from "../../mixins/login";
 import misc from "../../mixins/misc";
-import fetch from "../../mixins/fetch";
 import deleteItem from "../../mixins/deleteItem";
 
 export default {
@@ -81,7 +80,7 @@ export default {
 			iconDone: ["fal", "check"],
 		};
 	},
-	mixins: [login, misc, fetch, deleteItem],
+	mixins: [login, misc, deleteItem],
 	computed: {
 		getGuests() {
 			var find = store.state.guest.filter(function (result) {

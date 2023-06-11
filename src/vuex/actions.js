@@ -115,6 +115,9 @@ var actions = {
     setAutoSync({ state }, value) {
         state.autosync = value;
     },
+    setWorking({ state }, value) {
+        state.working = value;
+    },    
     setDevice({ state }) {
         var os;
         if (device.ios == true) {

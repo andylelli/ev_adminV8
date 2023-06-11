@@ -21,7 +21,6 @@ var $$ = Dom7;
 
 import login from "../../mixins/login";
 import misc from "../../mixins/misc";
-import fetch from "../../mixins/fetch";
 
 import projectList from "./projectList.vue";
 import newProject from "./newProject.vue";
@@ -47,7 +46,7 @@ export default {
 		newProject,
 		sheetNew,
 	},
-	mixins: [login, misc, fetch],
+	mixins: [login, misc],
 	inject: ["eventBus"],
 	props: {
 		f7route: Object,

@@ -47,7 +47,6 @@ var $$ = Dom7;
 
 import misc from "../../../mixins/misc";
 import login from "../../../mixins/login";
-import fetch from "../../../mixins/fetch";
 
 import segment from "../../misc/segment.vue";
 import generalButton from "../../misc/generalButton.vue";
@@ -67,7 +66,7 @@ export default {
 		generalButton,
 		segment,
 	},
-	mixins: [misc, login, fetch],
+	mixins: [misc, login],
 	computed: {
 		getScoreboard() {
 			var item = {

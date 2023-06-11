@@ -9,15 +9,12 @@
 <script>
 import store from "../../vuex/store.js";
 
-import fetch from "../../mixins/fetch";
-
 export default {
 	name: "qr-code",
 	data() {
 		return {};
 	},
 	props: ["table", "id", "link"],
-	mixins: [fetch],
 	computed: {
 		getQRCode() {
 			var item = {

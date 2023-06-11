@@ -43,7 +43,6 @@ const device = getDevice();
 
 import login from "../../mixins/login";
 import misc from "../../mixins/misc";
-import fetch from "../../mixins/fetch";
 import deleteItem from "../../mixins/deleteItem";
 
 import navBackLink from "../misc/nav/navBackLink.vue";
@@ -88,7 +87,7 @@ export default {
 		eventSettingsHidenames,
 		eventSettingsQrCode,
 	},
-	mixins: [login, deleteItem, misc, fetch],
+	mixins: [login, deleteItem, misc],
 	computed: {
 		getEvent() {
 			var item = {
