@@ -32,7 +32,6 @@ export default {
 
                 var header;
                 var image;
-                var arr = [];
                 var obj = {};
                 var props;
                 var url;

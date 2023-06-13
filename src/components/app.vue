@@ -33,6 +33,7 @@ var $$ = Dom7;
 import routes from "../js/routes.js";
 import autoSync from "../mixins/autoSync";
 import misc from "../mixins/misc";
+import fetch from "../mixins/fetch";
 
 export default {
 	data() {
@@ -54,7 +55,7 @@ export default {
 			viewportWidth: 0,
 		};
 	},
-	mixins: [autoSync, misc],
+	mixins: [autoSync, misc, fetch],
 	computed: {
 		showLeftView() {
 			if (store.state.initiated === true && this.viewportWidth > 768) {

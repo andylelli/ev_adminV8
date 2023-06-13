@@ -195,19 +195,20 @@ export default {
 			f7.dialog.confirm(message, async function () {
 				f7.preloader.show();
 
+				// Parameters
 				var url =
 					store.state.url +
 					"api/delete-all/scoreboardscore/scoreboard/" +
 					scoreboardid;
-
 				var method = "DELETE";
 				var response = await vue.fetch(url, method);
 
-				//Check if the network is too slow
+				// Check if the network is too slow
 				if (vue.networkError(response) == true) {
 					return false;
 				}
 
+				// Success
 				if (response[0].status == "success") {
 					if (response[0].count == 0) {
 						f7.preloader.hide();

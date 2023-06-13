@@ -32,29 +32,24 @@ export default {
 				f7.preloader.show();
 			}
 
-			var url = store.state.url;
-			var url = url + 'api/post/insert/' + t;
-
 			var newEvent;
 			if (table == 'event') {
 				newEvent = true;
 			}
 
-			//post
-			//console.log(post);
 
-			// Send login post to server
+			// Parameters
+			var url = store.state.url + 'api/post/insert/' + t;
 			var method = 'POST';
-			var response = await this.fetch(url, method, post, newEvent);
+			var data = post;
+			var success = null;
+			var failure = null;
+			var page = null;
 
-			//Check if the network is too slow
-			if (this.networkError(response) == true) {
-				return false;
-			}
+			// Post data
+			var response = await this.fetch(url, method, data, success, failure, page, newEvent);
 
-			//response
-			//console.log(response);
-
+			// Success
 			if (response.status == 'success') {
 
 				if (table == 'lookup') {
@@ -76,14 +71,6 @@ export default {
 		},
 
 		insertNew(post, response, table, displayName) {
-
-			//post
-			//console.log('POST');
-			//console.log(post);
-
-			//response
-			//console.log('RESPONSE');
-			//console.log(response);
 
 			new Date; var unixtime = Date.now() / 1000;
 
@@ -185,13 +172,6 @@ export default {
 					f7.dialog.alert('New ' + displayName + ' created.')
 				}
 			}
-
-			// Reorder list
-			//var vue = this;
-			//setTimeout(function () {
-			//	var els = $$(".sort-" + table + " ul").children();
-			//	vue.sortList(els, table);
-			//}, 250);
 		},
 
 		///////////

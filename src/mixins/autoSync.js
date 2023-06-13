@@ -111,17 +111,17 @@ export default {
 
                             if (arr.length > 0) {
 
-                                //send array of updates to web server
+                                //Parameters
                                 var url = store.state.url + 'api/post/update/' + tableArr[i];
                                 var method = 'POST';
-                                var response = await vue.fetch(url, method, arr);
+                                var data = arr;
+                                var success = null;
+                                var failure = null;
+                                var page = 'autosync';
+                                var response = await vue.fetch(url, method, data, success, failure, page);
 
+                                //
                                 if (response != false) {
-
-                                    //Check if the network is too slow
-                                    if (vue.networkError(response) == true) {
-                                        return false;
-                                    }
 
                                     if (response[0].status == 'success') {
 

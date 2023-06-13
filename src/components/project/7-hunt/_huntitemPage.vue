@@ -77,6 +77,7 @@ const device = getDevice();
 
 import misc from "../../../mixins/misc";
 import deleteItem from "../../../mixins/deleteItem";
+import fetch from "../../../mixins/fetch";
 
 import navBackLink from "../../misc/nav/navBackLink.vue";
 import navBars from "../../misc/nav/navBars.vue";
@@ -112,7 +113,7 @@ export default {
 	props: {
 		f7route: Object,
 	},
-	mixins: [misc, deleteItem],
+	mixins: [misc, deleteItem, fetch],
 	computed: {
 		getHuntitem() {
 			var item = {

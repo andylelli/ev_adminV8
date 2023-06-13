@@ -60,6 +60,7 @@ import { f7, f7ready } from "framework7-vue";
 import autoSync from "../../mixins/autoSync";
 import login from "../../mixins/login";
 import misc from "../../mixins/misc";
+import fetch from "../../mixins/fetch";
 
 export default {
 	name: "event-settings-sync",
@@ -69,7 +70,7 @@ export default {
 			eventid: store.state.eventid,
 		};
 	},
-	mixins: [autoSync, login, misc],
+	mixins: [autoSync, login, misc, fetch],
 	computed: {
 		getEvent() {
 			if (store.state.event.length > 0) {

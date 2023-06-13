@@ -5,56 +5,24 @@
 		</div>
 		<div style="max-width: 400px; margin: auto">
 			<f7-list class="login">
-				<f7-list-input
-					label="EMAIL"
-					type="text"
-					placeholder="Your email"
-					:value="email"
-					@input="email = $event.target.value"
-				></f7-list-input>
-				<f7-list-input
-					label="PASSWORD"
-					type="password"
-					placeholder="Your password"
-					:value="password"
-					@input="password = $event.target.value"
-				></f7-list-input>
+				<f7-list-input label="EMAIL" type="text" placeholder="Your email" :value="email"
+					@input="email = $event.target.value"></f7-list-input>
+				<f7-list-input label="PASSWORD" type="password" placeholder="Your password" :value="password"
+					@input="password = $event.target.value"></f7-list-input>
 			</f7-list>
 			<div class="login-button" style="margin-top: 50px">
-				<general-button
-					class="margin-top margin-bottom"
-					@generalButtonAction="login()"
-					label="ENTER"
-					width="200"
-					colour="black"
-					type="fill"
-				></general-button>
+				<general-button class="margin-top margin-bottom" @generalButtonAction="login()" label="ENTER" width="200"
+					colour="black" type="fill"></general-button>
 			</div>
 			<div class="register-button" style="margin-top: 50px">
-				<general-button
-					class="margin-top margin-bottom"
-					@generalButtonAction="openSheetRegister()"
-					label="REGISTER"
-					width="200"
-					colour="black"
-				></general-button>
+				<general-button class="margin-top margin-bottom" @generalButtonAction="openSheetRegister()" label="REGISTER"
+					width="200" colour="black"></general-button>
 			</div>
 			<div class="logged-in" style="margin-top: 150px">
-				<general-button
-					class="margin-top margin-bottom"
-					@generalButtonAction="openActionsEvent()"
-					label="SELECT EVENT"
-					width="200"
-					colour="black"
-					type="fill"
-				></general-button>
-				<general-button
-					class="margin-top margin-bottom"
-					@generalButtonAction="logout()"
-					label="LOG OUT"
-					width="200"
-					colour="black"
-				></general-button>
+				<general-button class="margin-top margin-bottom" @generalButtonAction="openActionsEvent()"
+					label="SELECT EVENT" width="200" colour="black" type="fill"></general-button>
+				<general-button class="margin-top margin-bottom" @generalButtonAction="logout()" label="LOG OUT" width="200"
+					colour="black"></general-button>
 			</div>
 		</div>
 		<actions-event></actions-event>
@@ -72,6 +40,7 @@ const device = getDevice();
 var $$ = Dom7;
 
 import login from "../../mixins/login";
+import fetch from "../../mixins/fetch";
 import misc from "../../mixins/misc";
 
 import sheetNew from "../sheet/sheetNew.vue";
@@ -92,7 +61,7 @@ export default {
 			url: ""
 		};
 	},
-	mixins: [login, misc],
+	mixins: [login, misc, fetch],
 	components: {
 		sheetNew,
 		actionsEvent,
@@ -107,28 +76,63 @@ export default {
 	},
 	methods: {
 		async login() {
-			// Attempt to logoin
-			f7.preloader.show();
-			var response = await this.userLogin();
-			f7.preloader.hide();
+			// Parameters
+			let url = store.state.url + 'api/post/login';
+			var data = { email: this.email, password: this.password, token: this.token };
+			var method = 'POST';
+
+			// Post data
+			await this.fetch(url, method, data, this.success, this.failure);
+		},
+		success(response) {
+
+			// Set local storage
+			localStorage.admin = true;
+			localStorage.admin_counter = 0;
+			localStorage.admin_email = response.user_email;
+			localStorage.admin_token = response.user_token;
+			localStorage.admin_userid = response.user_id;
+
+			// Set role
+			if (response.user_role == 3) {
+				localStorage.admin_role = "admin";
+			}
+
+			// Set User credentials in Store
+			store.dispatch("setUserCredentials");
+
+			// Retuen user details
+			console.log('User successfully logged in');
 
 			// If response was successful show list of events to open
 			if (response !== false) {
-				var array = [];
-				for (var i = 0; i < response.events.length; i++) {
-					var json = response.events[i];
-					json.event_userid = response.user.user_id;
-					array.push(json);
+
+				// Add user id to eventslist
+				for (var i = 0; i < response.eventslist.length; i++) {
+					response.eventslist[i].event_userid = response.user_id;
 				}
-				store.dispatch("setEventsList", array);
+
+				// Send events list to Store
+				store.dispatch("setEventsList", response.eventslist);
+
+				// Show / hide login elements
 				$$(".login").hide();
 				$$(".login-button").hide();
 				$$(".register-button").hide();
 				$$(".logged-in").show();
+
+				// Open Actions sheet
 				this.openActionsEvent();
 			} else {
+				// Show error alert
 				f7.dialog.alert("Login details incorrect");
 			}
+
+		},
+		failure(response) {
+			// Show error message
+			this.toast(response.message);
+			return false;
 		},
 		logout() {
 			f7.preloader.show();
@@ -142,7 +146,7 @@ export default {
 			f7.sheet.open("#sheet-register", true);
 		},
 	},
-	beforeMounted() {},
+	beforeMounted() { },
 	mounted() {
 		f7ready((f7) => {
 
@@ -169,13 +173,12 @@ export default {
 
 <style>
 .ios {
-  --f7-label-text-color: #2b2b2b !important;
+	--f7-label-text-color: #2b2b2b !important;
 }
-  :root {
+
+:root {
 	--f7-md-primary: #2b2b2b !important;
 	--f7-ios-primary: #2b2b2b !important;
-  }
-
-
+}
 </style>
 

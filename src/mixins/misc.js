@@ -75,16 +75,12 @@ export default {
 		},
 		async getQRCode(id, table) {
 
+			// Parameters
 			var url = store.state.url + 'api/get/qrcode/guest/' + id;
-
 			var method = 'GET'
 			var response = await this.fetch(url, method);
 
-			//Check if the network is too slow
-			if (this.networkError(response) === true) {
-				return false;
-			};
-
+			// Success
 			if (response[0].data.length > 0) {
 
 				new Date();
@@ -105,6 +101,10 @@ export default {
 				store.dispatch('insertItemDB', item);
 
 				console.log("1 insert made to qrcode");
+			} 
+			// Failure
+			else {
+				console.log('QR code failure - please set error action!');
 			}
 		},
 		async changeEvent(eventid) {
@@ -550,7 +550,7 @@ export default {
 			var guestid = localStorage.uniqueId;
 			var token = store.state.token;
 
-			// Prepare URL
+			// Parameters
 			var getURL =
 				url +
 				"api/get/pollscore/" +
@@ -561,18 +561,15 @@ export default {
 				token +
 				"/" +
 				guestid;
-
-			// Pull data from server
 			var method = "GET";
-			var response = await this.fetch(getURL, method, false, page);
-
-			//Check if the network is too slow
-			if (this.networkError(response, page) === true) {
-				return false;
-			};
+			var data = null;
+			var success = null;
+			var failure = null;
+			var response = await this.fetch(getURL, method, data, success, failure, page);
 
 			var eventName = f7.params.name;;
 
+			// Success
 			if (response.status == 'ended') {
 				f7.dialog.alert(response.message, eventName);
 				return false;
@@ -656,8 +653,6 @@ export default {
 			if (store.state.autosync == "ok") {
 				if (!response) {
 					f7.preloader.hide();
-					console.log('Slow network');
-
 					if (page == 'autosync') {
 						var vue = this;
 						var message =
@@ -668,9 +663,9 @@ export default {
 						});
 					}
 					else {
-
+						f7.dialog.alert("Slow network. Action didn't complete");
 					}
-					f7.dialog.alert("Slow network. Action didn't complete");
+
 					return true;
 				}
 				else { return false; }

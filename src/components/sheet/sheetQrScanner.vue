@@ -1,22 +1,13 @@
 <template>
-	<f7-sheet
-		id="qr-scanner"
-		style="height: 94%; --f7-sheet-bg-color: #fff"
-		swipe-to-close
-		backdrop
-		@sheet:open="openScanner()"
-		@sheet:closed="closeScanner()"
-	>
+	<f7-sheet id="qr-scanner" style="height: 94%; --f7-sheet-bg-color: #fff" swipe-to-close backdrop
+		@sheet:open="openScanner()" @sheet:closed="closeScanner()">
 		<f7-page-content>
 			<f7-navbar>
 				<f7-nav-title>QR Scanner</f7-nav-title>
 			</f7-navbar>
 			<f7-block>
 				<div align="center">
-					<qrcode-stream
-						v-if="isScannerActive"
-						@decode="onDecode"
-					></qrcode-stream>
+					<qrcode-stream v-if="isScannerActive" @decode="onDecode"></qrcode-stream>
 				</div>
 			</f7-block>
 		</f7-page-content>
@@ -45,6 +36,7 @@ export default {
 			page: null,
 			id: null,
 			scannerActive: false,
+			value: 1
 		};
 	},
 	mixins: [login, fetch, misc],
@@ -73,18 +65,24 @@ export default {
 			store.dispatch("clearQRScanner");
 		},
 		onDecode(decodedString) {
-			console.log("QR code found - " + decodedString);
-			if (this.page == "scoreboard") {
-				this.scoreboardScanned(decodedString);
+			if (decodedString) {
+				console.log("QR code found - " + decodedString);
+				if (this.page == "scoreboard") {
+					this.scoreboardScanned(decodedString);
+				}
 			}
 		},
 		async scoreboardScanned(qrcode) {
 			var urlParams = this.getParams(qrcode);
-			var value = 1;
 			var email = encodeURIComponent(urlParams.email);
 			var uniqueId = encodeURIComponent(urlParams.uniqueid);
 
 			if (email) {
+
+				f7.dialog.preloader("QR code found...");
+				f7.sheet.close("#qr-scanner");
+
+				// Parameters
 				var url =
 					store.state.url +
 					"api/get/scan/scoreboard" +
@@ -93,61 +91,59 @@ export default {
 					"/" +
 					this.id +
 					"/" +
-					value +
+					this.value +
 					"/" +
 					email +
 					"/" +
 					uniqueId +
-					"/" +					
+					"/" +
 					store.state.token;
-
-				var points;
-				if (value == 1) {
-					points = "point";
-				} else {
-					points = "points";
-				}
-
-				f7.dialog.preloader("QR code found...");
-				f7.sheet.close("#qr-scanner");
-
 				var method = "GET";
-				var response = await this.fetch(url, method);
+				var data = null;
 
-				//Check if the network is too slow
-				if (this.networkError(response) == true) {
-					return false;
-				}
-
-				if (response.status == "success") {
-					setTimeout(function () {
-						f7.dialog.close();
-						f7.dialog.alert(
-							value + " " + points + " added",
-							"Evara"
-						);
-					}, 2000);
-
-					var tables = [];
-					tables.push("scoreboardscore");
-
-					var fullSync = false;
-					var getDeletes = true;
-					this.syncGetFromWebServer(
-						this.eventid,
-						tables,
-						fullSync,
-						getDeletes
-					);
-				} else {
-					setTimeout(function () {
-						f7.dialog.alert(response.message, "Evaria");
-					}, 2000);
-				}
+				//Get data
+				await this.fetch(url, method, data, this.success, this.failure);
 			}
 		},
+		success() {
+			var points;
+			if (this.value == 1) {
+				points = "point";
+			} else {
+				points = "points";
+			}
+
+			var vue = this;
+			setTimeout(function () {
+				f7.dialog.close();
+				f7.dialog.alert(
+					vue.value + " " + points + " added",
+					"Evara"
+				);
+			}, 2000);
+
+			var tables = [];
+			tables.push("scoreboardscore");
+
+			var fullSync = false;
+			var getDeletes = true;
+			this.syncGetFromWebServer(
+				this.eventid,
+				tables,
+				fullSync,
+				getDeletes
+			);
+		},
+		failure() {
+			setTimeout(function () {
+				f7.dialog.alert(response.message, "Evaria");
+			}, 2000);
+
+		},
+
 	},
-	mounted() {},
+
+	mounted() { },
 };
 </script>
 

@@ -3,25 +3,14 @@
 		<div style="height: 140px">
 			<div :id="'reset-' + this.projectid" :style="resetMaxHeight">
 				<segment header="Reset">
-					<general-button
-						class="margin-bottom"
-						label="RESET COUNTS"
-						width="200"
-						colour="red"
-						type="fill"
-						@generalButtonAction="resetPoll()"
-					></general-button>
+					<general-button class="margin-bottom" label="RESET COUNTS" width="200" colour="red" type="fill"
+						@generalButtonAction="resetPoll()"></general-button>
 				</segment>
 			</div>
 			<div :id="'update-' + this.projectid" :style="updateMaxHeight">
 				<segment header="Update">
-					<general-button
-						class="margin-bottom"
-						label="UPDATE COUNTS"
-						width="200"
-						type="fill"
-						@generalButtonAction="getPollscores()"
-					></general-button>
+					<general-button class="margin-bottom" label="UPDATE COUNTS" width="200" type="fill"
+						@generalButtonAction="getPollscores()"></general-button>
 				</segment>
 			</div>
 		</div>
@@ -30,16 +19,9 @@
 			<f7-list-item :title="'Set poll as live?'" class="no-hairline">
 				<template #media>
 					<f7-icon>
-						<font-awesome-icon
-							class="fa-fw custom-colour"
-							style="font-size: 20px"
-							:icon="['fal', 'stop-circle']"
-						/> </f7-icon
-				></template>
-				<f7-toggle
-					:checked="this.isChecked()"					
-					@toggle:change="toggle($event)"
-				></f7-toggle>
+						<font-awesome-icon class="fa-fw custom-colour" style="font-size: 20px"
+							:icon="['fal', 'stop-circle']" /> </f7-icon></template>
+				<f7-toggle :checked="this.isChecked()" @toggle:change="toggle($event)"></f7-toggle>
 			</f7-list-item>
 		</f7-list>
 	</div>
@@ -186,9 +168,8 @@ export default {
 			f7.dialog.confirm(message, async function () {
 				f7.preloader.show();
 
-				var url =
-					store.state.url + "api/delete-all/pollscore/poll/" + pollid;
-
+				// Parameters
+				var url = store.state.url + "api/delete-all/pollscore/poll/" + pollid;
 				var method = "DELETE";
 				var response = await vue.fetch(url, method);
 
@@ -197,7 +178,7 @@ export default {
 					return false;
 				}
 
-				// Successful
+				// Success
 				if (response[0].status == "success") {
 					if (response[0].count == 0) {
 						f7.preloader.hide();
@@ -224,7 +205,7 @@ export default {
 						});
 						toast.open();
 					}
-				} 
+				}
 				// Failure
 				else {
 					var message = "Poll counts couldn't be reset.";
@@ -235,10 +216,9 @@ export default {
 		},
 	},
 	mounted() {
-		f7ready((f7) => {});
+		f7ready((f7) => { });
 	},
 };
 </script>
 
-<style>
-</style>
+<style></style>

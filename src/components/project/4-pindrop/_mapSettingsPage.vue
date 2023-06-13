@@ -42,8 +42,6 @@
 <script>
 import store from "../../../vuex/store.js";
 
-import { f7, f7ready } from "framework7-vue";
-
 import { Dom7 } from "framework7";
 var $$ = Dom7;
 
@@ -52,6 +50,7 @@ const device = getDevice();
 
 import deleteItem from "../../../mixins/deleteItem";
 import misc from "../../../mixins/misc";
+import fetch from "../../../mixins/fetch";
 
 import navBackLink from "../../misc/nav/navBackLink.vue";
 import navBars from "../../misc/nav/navBars.vue";
@@ -86,7 +85,7 @@ export default {
 		sheetEdit,
 		sheetProjectIcon,
 	},
-	mixins: [deleteItem, misc],
+	mixins: [deleteItem, misc, fetch],
 	computed: {
 		getProject() {
 			var item = {

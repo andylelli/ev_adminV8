@@ -4,26 +4,17 @@
 		<f7-navbar>
 			<nav-back-link></nav-back-link>
 			<f7-nav-title v-if="getProject">
-				<div v-html="getProject.project_name"></div
-			></f7-nav-title>
+				<div v-html="getProject.project_name"></div>
+			</f7-nav-title>
 			<nav-bars></nav-bars>
 		</f7-navbar>
 		<!-- General section-->
 		<segment header="General">
-			<general-settings
-				page="poll"
-				:projectid="projectid"
-			></general-settings>
+			<general-settings page="poll" :projectid="projectid"></general-settings>
 		</segment>
 		<!-- Main section-->
-		<list
-			v-if="getProject && getPoll"
-			:title="getProject.project_name"
-			table="pollitem"
-			:icon="['fal', 'poll']"
-			:id="getPoll.poll_id"
-			sortable="true"
-		></list>
+		<list v-if="getProject && getPoll" :title="getProject.project_name" table="pollitem" :icon="['fal', 'poll']"
+			:id="getPoll.poll_id" sortable="true"></list>
 		<new-item table="pollitem" :name="getProject.project_name"></new-item>
 		<poll-actions :projectid="this.projectid"></poll-actions>
 		<!-- Sheet Modals-->
@@ -85,7 +76,10 @@ export default {
 				id: this.projectid,
 				type: "single",
 			};
-			return store.getters.getData(item);
+			var data = store.getters.getData(item);
+			if (data) {
+				return data;
+			} else return false;
 		},
 		getPoll() {
 			var item = {
@@ -94,7 +88,10 @@ export default {
 				id: this.projectid,
 				type: "single",
 			};
-			return store.getters.getData(item);
+			var data = store.getters.getData(item);
+			if (data) {
+				return data;
+			} else return false;
 		},
 	},
 	methods: {

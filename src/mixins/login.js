@@ -17,62 +17,6 @@ var $$ = Dom7;
 
 export default {
     methods: {
-        async userLogin() {
-
-            // Prepare login request
-            let url = store.state.url + 'api/post/login';
-            var json = { email: this.email, password: this.password, token: this.token };
-
-            // Send login post to server
-            var method = 'POST';
-            var response = await this.fetch(url, method, json);
-
-            //Check if the network is too slow
-            if (this.networkError(response) === true) {
-                return false;
-            };
-
-            //If login is successful and events exist
-            if (response.status == 'success') {
-
-                // Set local storage
-                localStorage.admin = true;
-                localStorage.admin_counter = 0;
-                localStorage.admin_email = response.user_email;
-                localStorage.admin_token = response.user_token;
-                localStorage.admin_userid = response.user_id;
-
-                if (response.user_role == 3) {
-                    localStorage.admin_role = "admin";
-                }
-
-                // Set User credentials in Store
-                await store.dispatch("setUserCredentials");
-
-                // Create success response
-                var success = {};
-                var user = {
-                    user_id: response.user_id,
-                    user_firstname: response.user_firstname,
-                    user_lastname: response.user_lastname,
-                    user_email: response.user_email,
-                    user_role: response.user_role,
-                    user_defaulteventid: response.user_defaulteventid
-                };
-                var events = response.eventslist;
-                success.user = user;
-                success.events = events;
-
-                // Retuen user details
-                console.log('User successfully logged in');
-
-                return success;
-            }
-            else {
-                this.toast(response.message);
-                return false;
-            }
-        },
         initiateAppFromRemoteDB() {
 
             //Log where app is being initialised from
@@ -209,11 +153,6 @@ export default {
 
             //GET INSERTS AND UPDATES FROM WEBSERVER
 
-            // Initialise variables for the fetch
-            var url = [];
-            var response;
-            var state = store.state;
-
             // Loop through table list and execute a GET fecth
             for (var i = 0; i < tableArr.length; i++) {
 
@@ -221,25 +160,13 @@ export default {
                 var insert = 0;
                 var update = 0;
 
-                // Set URL
+                // Parameters
+                var method = 'GET';
                 var url = store.state.url + 'api/get/update/' + tableArr[i] + '/' + eventid + '/' + sync_time[i];
 
-                //console.log(url);
-
-                // Pull data from server
-                var method = 'GET';
                 var response = await this.fetch(url, method);
 
-                //console.log(response);
-
-                //Check if the network is too slow
-                if (this.networkError(response) === true) {
-                    return false;
-                };
-
-                if (response[0].status == 'success') {
-
-                    //console.log(response[0].data);
+                if (response[0].status == "success") {
 
                     // Set timestamp variable
                     new Date;
@@ -283,7 +210,7 @@ export default {
                         } else {
 
                             // Check if this is going to be an insert or an update
-                            var find = state.lookup.filter(function (result) {
+                            var find = store.state.lookup.filter(function (result) {
                                 return (result.lookup_id === response[0].data[j].lookup_id && result.lookup_eventid === response[0].data[j].lookup_eventid);
                             });
 
@@ -330,14 +257,12 @@ export default {
                         if (tableArr[i] == 'lookup') {
                             this.getCustomColours();
                         }
-
                     };
                 }
                 else {
                     f7.dialog.close();
                     f7.dialog.alert(response[0].message);
                 }
-
             };
 
             if (getDeletes == true) {
@@ -348,7 +273,6 @@ export default {
 
         },
         async getDeletes(tableArr, eventid) {
-            ;
 
             //GET DELETES FROM WEBSERVER
 
@@ -364,13 +288,12 @@ export default {
                 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 if (tableArr[i] != 'user' && tableArr[i] != 'event' && tableArr[i] != 'lookup' && tableArr[i] != 'qrcode' && tableArr[i] != 'guest' && tableArr[i] != 'shop' && tableArr[i] != 'shopitem' && tableArr[i] != 'order' && tableArr[i] != 'orderdetail') {
 
-                    // Set URL
-                    var url = store.state.url + 'api/post/delete/' + tableArr[i];
-
                     // Create an array of item ids from local App memory
                     var find = state[tableArr[i]].filter(function (result) {
                         return result[tableArr[i] + '_eventid'] === eventid;
                     });
+
+                    // Data
                     var items = [];
                     for (j = 0; j < find.length; j++) {
                         var t_id = tableArr[i] + '_id';
@@ -381,13 +304,10 @@ export default {
                         items.push(json);
                     }
 
-                    // Push data to server
+                    // Parameters
+                    var url = store.state.url + 'api/post/delete/' + tableArr[i];
                     var method = 'POST';
                     var response = await this.fetch(url, method, items);
-
-                    // Set timestamp
-                    new Date;
-                    var unixtime = Date.now() / 1000;
 
                     // Log number of items need to be deleted according to the response
                     console.log((response.length - 1) + ' delete(s) to ' + tableArr[i]);

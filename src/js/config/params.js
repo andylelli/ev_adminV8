@@ -94,7 +94,7 @@ var params = [
     {
         table: "news",
         displayName: "news",
-        newSheetName: "news",
+        newSheetName: "project",
         db: ['news_id', 'news_imageid', 'news_eventid', 'news_projectid', 'news_unixtime'],
         icon: 'megaphone',
         linkSuffix: '/',
@@ -215,7 +215,7 @@ var params = [
         key: "huntid",
         displayName: "treasure hunt item",
         newSheetName: "huntitem",
-        db: ['huntitem_id', 'huntitem_position', 'huntitem_name', 'huntitem_text', 'huntitem_image', 'huntitem_token', 'huntitem_scanned', 'huntitem_eventid', 'huntitem_huntid', 'huntitem_unixtime'],
+        db: ['huntitem_id', 'huntitem_position', 'huntitem_name', 'huntitem_image', 'huntitem_text', 'huntitem_qrcode_image', 'huntitem_qrcode_value', 'huntitem_token', 'huntitem_scanned', 'huntitem_eventid', 'huntitem_huntid', 'huntitem_unixtime'],
         decode: ['huntitem_name', 'huntitem_text'],
         fields: [
             {

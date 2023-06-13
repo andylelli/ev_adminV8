@@ -10,6 +10,7 @@
 		</f7-navbar>
 		<!-- Main section-->
 		<div v-if="getProject">
+			<!-- Name -->
 			<segment header="Name">
 				<field-edit-text
 					type="single"
@@ -19,20 +20,24 @@
 					title="Name"
 				></field-edit-text>
 			</segment>
+			<!-- Icon -->
 			<segment header="Icon">
 				<project-icon :id="this.getProject.project_id"></project-icon>
 			</segment>
+			<!-- Image -->
 			<segment :header="this.getProject.project_name + ' Image'">
 				<image-load
 					:id="this.getProject.project_id"
 					table="project"
 				></image-load>
 			</segment>
+			<!-- Users -->
 			<segment header="Users">
 				<scoreboard-allusers
 					:projectid="projectid"
 				></scoreboard-allusers>
 			</segment>
+			<!-- Delete -->
 			<segment v-if="this.desktop == true" >
 				<general-button
 					class="margin-bottom"
@@ -62,6 +67,7 @@ const device = getDevice();
 
 import deleteItem from "../../../mixins/deleteItem";
 import misc from "../../../mixins/misc";
+import fetch from "../../../mixins/fetch";
 
 import navBackLink from "../../misc/nav/navBackLink.vue";
 import navBars from "../../misc/nav/navBars.vue";
@@ -99,7 +105,7 @@ export default {
 		sheetProjectIcon,
 		scoreboardAllusers,
 	},
-	mixins: [deleteItem, misc],
+	mixins: [deleteItem, misc, fetch],
 	computed: {
 		getProject() {
 			var item = {

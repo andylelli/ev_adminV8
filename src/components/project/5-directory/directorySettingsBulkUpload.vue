@@ -200,8 +200,6 @@ export default {
 
 		},
 		async sendToServer(data) {
-			var url = store.state.url;
-			var url = url + "api/post/insert/bulk/directoryentry";
 
 			var total = data.length;
 
@@ -212,24 +210,31 @@ export default {
 
 			// Send login post to server
 			var vue = this;
-			var method = "POST";
 
 			//Send each item to webserver
 			for (let i = 0; i < data.length; i++) {
+
+				// Data
 				var arr = [];
 				arr.push(data[i]);
+
+				// Parameters
+				var url = store.state.url + "api/post/insert/bulk/directoryentry";
+				var method = "POST";
 				var response = await vue.fetch(url, method, arr);
+
+				//Check if the network is too slow
+				if (this.networkError(response) == true) {
+					return false;
+				}
+
+				// Success
 				if (response.status != "success") {
 					i = total;
 					vue.error = true;
 					return false;
 				}
 				vue.count++;
-			}
-
-			//Check if the network is too slow
-			if (this.networkError(response) == true) {
-				return false;
 			}
 
 			//response

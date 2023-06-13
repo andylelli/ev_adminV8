@@ -3,67 +3,47 @@
 		<!-- Nav bar-->
 		<f7-navbar>
 			<nav-back-link :page="'news'" :id="this.project_id"></nav-back-link>
-			<f7-nav-title
-				><div v-if="getEvent" v-html="this.getProject.project_name"></div
-			></f7-nav-title>
+			<f7-nav-title>
+				<div v-if="getEvent" v-html="this.getProject.project_name"></div>
+			</f7-nav-title>
 			<nav-bars></nav-bars>
 		</f7-navbar>
 		<!-- Main section-->
 		<div>
 			<!-- Title -->
 			<f7-block-header>TITLE</f7-block-header>
-			<f7-text-editor
-				style="--f7-text-editor-height: 40px"
-				placeholder="Title..."
-				mode="popover"
-				:buttons="[['bold', 'italic', 'underline']]"
-				:value="setValue('title')"
-				@texteditor:change="change($event, 'title')"
-			></f7-text-editor>
+			<f7-text-editor style="--f7-text-editor-height: 40px" placeholder="Title..." mode="popover"
+				:buttons="[['bold', 'italic', 'underline']]" :value="setValue('title')"
+				@texteditor:change="change($event, 'title')"></f7-text-editor>
 
 			<!-- Category -->
 			<f7-block-header>CATEGORY</f7-block-header>
 			<f7-list inline-labels class="no-margin-top">
-				<f7-list-input
-					inline-labels
-					type="select"
-					placeholder="Choose..."
-					class="post-target"
-					:value="value.category"
-					@change="change($event.target.value, 'category')"
-				>
+				<f7-list-input inline-labels type="select" placeholder="Choose..." class="post-target"
+					:value="value.category" @change="change($event.target.value, 'category')">
 					<option value="0">Choose</option>
-					<option
-						v-for="item in this.getDirectoryentries"
-						:key="item.directoryentry_id"
-						:value="item.directoryentry_id"
-						v-html="item.directoryentry_name"
-					></option>
+					<option v-for="item in this.getDirectoryentries" :key="item.directoryentry_id"
+						:value="item.directoryentry_id" v-html="item.directoryentry_name"></option>
 				</f7-list-input>
 			</f7-list>
 
 			<!-- Message -->
 			<f7-block-header>MESSAGE</f7-block-header>
-			<f7-text-editor
-				class="margin-bottom"
-				style="--f7-text-editor-height: 150px"
-				placeholder="Message..."
-				mode="popover"
-				:buttons="[['bold', 'italic', 'underline']]"
-				:value="setValue('detail')"
-				@texteditor:change="change($event, 'message')"
-			></f7-text-editor>
+			<f7-text-editor class="margin-bottom" style="--f7-text-editor-height: 150px" placeholder="Message..."
+				mode="popover" :buttons="[['bold', 'italic', 'underline']]" :value="setValue('detail')"
+				@texteditor:change="change($event, 'message')"></f7-text-editor>
 		</div>
 
 		<!-- Submit -->
 		<div v-show="this.allowSubmit === true" style="margin-top: 50px">
-			<general-button
-				@generalButtonAction="submit()"
-				:label="buttonAction()"
-				width="200"
-				type="fill"
-			></general-button>
+			<general-button @generalButtonAction="submit()" :label="buttonAction()" width="200"
+				type="fill"></general-button>
 		</div>
+		<!-- Delete -->
+		<segment v-if="this.desktop == true && this.action == 'UPDATE'">
+			<general-button class="margin-bottom" @generalButtonAction="deleteItem()" label="DELETE" width="200"
+				colour="red" type="fill"></general-button>
+		</segment>
 	</f7-page>
 </template>
 
@@ -97,6 +77,7 @@ export default {
 			projectid: parseInt(this.f7route.params.projectId),
 			newsitemid: parseInt(this.f7route.params.newsitemId),
 			table: "newsitem",
+			previousPage: "news",
 			buttonActive: false,
 			value: {
 				title: null,
@@ -199,10 +180,9 @@ export default {
 		},
 		setValue(field) {
 			if (this.getNewsitem) {
-				console.log(field);
 				return this.getNewsitem["newsitem_" + field];
 			}
-		},		
+		},
 		change(value, type) {
 			if (type == "category") {
 				value = parseInt(value);
@@ -270,57 +250,55 @@ export default {
 			}
 		},
 		async updateNewsitem(json) {
-			var url = store.state.url;
-			var url = url + "api/post/update/newsitem";
-
-			var post = [];
-			post.push(json);
 
 			f7.preloader.show();
 
-			// Send login post to server
+			// Data
+			var data = [];
+			data.push(json);
+
+			// Parameters
+			var url = store.state.url + "api/post/update/newsitem";
 			var method = "POST";
-			var response = await this.fetch(url, method, post);
 
-			//Check if the network is too slow
-			if (this.networkError(response) == true) {
-				return false;
-			}
+			// Post Data
+			await this.fetch(url, method, data, this.success, this.failure);
+		},
+		success(json) {
+			new Date();
+			var unixtime = Date.now() / 1000;
 
-			//console.log(response);
+			var item = {};
+			item.table = this.table;
+			item.json = json[0];
+			item.json.newsitem_unixtime = unixtime;
 
-			if (response[0].status == "success") {
-				new Date();
-				var unixtime = Date.now() / 1000;
+			store.dispatch("updateItemApp", item);
+			store.dispatch("updateItemDB", item);
 
-				var item = {};
-				item.table = this.table;
-				item.json = post[0];
-				item.json.newsitem_unixtime = unixtime;
+			f7.preloader.hide();
 
-				store.dispatch("updateItemApp", item);
-				store.dispatch("updateItemDB", item);
+			$$(".page-previous").remove();
 
-				f7.preloader.hide();
+			var toast = f7.toast.create({
+				text: "Post updated!",
+				position: "center",
+				closeTimeout: 1500,
+			});
+			toast.open();
 
-				$$(".page-previous").remove();
+			var vue = this;
+			var view = f7.views.current;
 
-				var toast = f7.toast.create({
-					text: "Post updated!",
-					position: "center",
-					closeTimeout: 1500,
-				});
-				toast.open();
+			var url = "/news/" + vue.projectid + "/";
+			view.router.back(url, { ignoreCache: true });
 
-				var vue = this;
-				var view = f7.views.current;
+		},
+		failure() {
+			console.log("FAILURE");
+			f7.preloader.hide();
+			f7.dialog.alert(response[0].message);
 
-				var url = "/news/" + vue.projectid + "/";
-				view.router.back(url, { ignoreCache: true });
-			} else {
-				f7.preloader.hide();
-				f7.dialog.alert(response[0].message);
-			}
 		},
 	},
 	mounted() {
@@ -332,12 +310,11 @@ export default {
 				vue.value.message = this.getNewsitem.newsitem_detail;
 				vue.changed.title = false;
 				vue.changed.category = false;
-				vue.changed.message = false;				
+				vue.changed.message = false;
 			}
 		});
 	},
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

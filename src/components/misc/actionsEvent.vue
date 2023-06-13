@@ -2,12 +2,8 @@
 	<f7-actions id="actions-event" :opened="isActionsOpen">
 		<f7-actions-group>
 			<f7-actions-label>Select event</f7-actions-label>
-			<f7-actions-button
-				color="black"
-				v-for="event in this.getEventslist"
-				:key="event.event_id"
-				@click="downloadEvent(event.event_id)"
-			>
+			<f7-actions-button color="black" v-for="event in this.getEventslist" :key="event.event_id"
+				@click="downloadEvent(event.event_id)">
 				<div v-html="decode(event.event_name)"></div>
 			</f7-actions-button>
 		</f7-actions-group>
@@ -56,7 +52,7 @@ export default {
 	methods: {
 		newEvent() {
 			f7.sheet.open("#new-event");
-		},		
+		},
 		decode(str) {
 			return escape.decodeXML(str);
 		},
@@ -69,64 +65,59 @@ export default {
 			// Set admin user credentials
 			await store.dispatch("setUserCredentials");
 
-			// Prepare to fetch event data
-			var urlEvent =
-				store.state.url + "api/get/update/event/" + eventid + "/0";
+			// Parameters
+			var url = store.state.url + "api/get/update/event/" + eventid + "/0";
 			var method = "GET";
+			var data = null;
 
-			// Fetch event data from server
-			var response = await this.fetch(urlEvent, method);
-
-			// Check if the network is too slow
-			if (this.networkError(response) == true) {
-				return false;
-			}
-
-			// Event data Fetch success
-			if (response[0].status == "success") {
-				f7.views.main.router.clearPreviousHistory();
-
-				// Prepare to download from remote DB
-				this.initiateAppFromRemoteDB();
-			
-				// Start progress bar
-				this.progress(eventid);
-
-				// Get data from server
-				var tables = false;
-				var fullSync = true;
-				var getDeletes = false;
-				this.syncGetFromWebServer(eventid, tables, fullSync, getDeletes);
-
-				// Clear history from app
-				f7.views.main.router.clearPreviousHistory();
-
-				// Set app initialisation to true				
-				store.dispatch("setInitiated");
-
-				// Close actions list
-				f7.sheet.close("#actions-event", true);
-			}
-			// Event data Fetch error
-			else {
-				// Event no longer exists so remove fromour list
-				var eventsList = store.getters.getEventslist();
-				var index = eventsList.indexOf(eventid);
-				eventsList.splice(index, 1);
-				store.dispatch("setEventsList", eventsList);
-
-				// Tell user
-				var message = "This event no longer exists.";
-				f7.dialog.alert(message);
-			}
+			// Get Data
+			await this.fetch(url, method, data, this.success, this.failure);
 		},
-	},
-	beforeMounted() {
-		var vue = this;
-		this.store.dispatch("actionsEvent", (page) => {
-			vue.page = page;
-			f7.sheet.open("#actions-event", true);
-		});
+		success(response) {
+			// Clear page history
+			f7.views.main.router.clearPreviousHistory();
+
+			// Prepare to download from remote DB
+			this.initiateAppFromRemoteDB();
+
+			// Start progress bar
+			this.progress(eventid);
+
+			// Get data from server
+			var eventid = response[0].data[0].event_id;
+			var tables = false;
+			var fullSync = true;
+			var getDeletes = false;
+			this.syncGetFromWebServer(eventid, tables, fullSync, getDeletes);
+
+			// Clear history from app
+			f7.views.main.router.clearPreviousHistory();
+
+			// Set app initialisation to true				
+			store.dispatch("setInitiated");
+
+			// Close actions list
+			f7.sheet.close("#actions-event", true);
+		},
+		error() {
+			// Event no longer exists so remove from events list
+			var eventsList = store.getters.getEventslist();
+			var index = eventsList.indexOf(eventid);
+			eventsList.splice(index, 1);
+			store.dispatch("setEventsList", eventsList);
+
+			// Tell user
+			var message = "This event no longer exists.";
+			f7.dialog.alert(message);
+		},
+		beforeMounted() {
+			// Set event to open actions list when called
+			var vue = this;
+			this.store.dispatch("actionsEvent", (page) => {
+				vue.page = page;
+				f7.sheet.open("#actions-event", true);
+			});
+		},
 	},
 	mounted() {
 		var vue = this;
@@ -142,5 +133,4 @@ export default {
 };
 </script>
 
-<style scope>
-</style>
+<style scope></style>

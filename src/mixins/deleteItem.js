@@ -39,15 +39,17 @@ export default {
 		},
 		async deleteItemPost(url, id, table, t, name) {
 
+			// Parameters
 			var method = 'DELETE';
 			var response = await this.fetch(url, method);
 
-			//Check if the network is too slow
+			// Check if the network is too slow
 			if (this.networkError(response) == true) {
 				this.spinnerToError(id, table);
 				return false;
 			}
 
+			// Success
 			if (response[0].status == 'success') {
 
 				this.spinnerToTick(id, table);
@@ -93,31 +95,24 @@ export default {
 
 				if (table == 'event') {
 
+					// Parameters
 					var url = store.state.url + 'api/delete/' + table + '/' + id;
-
 					var method = 'DELETE';
 					var response = await vue.fetch(url, method);
 
-					//Check if the network is too slow
-					if (vue.networkError(response) == true) {
-						return false;
-					}
-
+					// Success
 					if (response[0].status == 'success') {
 						vue.deleteEvent(id);
 					}
 				}
 				else if (table == 'project') {
-					var url = store.state.url + 'api/delete/' + table + '/' + id;
 
+					// Parameters
+					var url = store.state.url + 'api/delete/' + table + '/' + id;
 					var method = 'DELETE';
 					var response = await vue.fetch(url, method);
 
-					//Check if the network is too slow
-					if (vue.networkError(response) == true) {
-						return false;
-					}
-
+					// Success
 					if (response[0].status == 'success') {
 						var find = store.state.project.filter(function (result) {
 							return result.project_id === id;
@@ -129,16 +124,13 @@ export default {
 					}
 				}
 				else {
-					var url = store.state.url + 'api/delete/' + table + '/' + id;
 
+					// Parameters
+					var url = store.state.url + 'api/delete/' + table + '/' + id;
 					var method = 'DELETE';
 					var response = await vue.fetch(url, method);
 
-					//Check if the network is too slow
-					if (vue.networkError(response) == true) {
-						return false;
-					}
-
+					// Success
 					if (response[0].status == 'success') {
 						var t = table;
 						vue.deleteExecute(t, id);
@@ -160,7 +152,7 @@ export default {
 			eventsList.splice(index, 1);
 			store.dispatch('setEventsList', eventsList);
 			var eventsList = store.getters.getEventslist();
-			var vue = this;
+
 			setTimeout(function () {
 				$$(".page-previous").remove();
 				$$(".navbar-hidden").remove();
@@ -202,8 +194,6 @@ export default {
 				vue.errorToDelete(id, table);
 			}
 			setTimeout(change, 1000)
-
-
 		},
 		errorToDelete(id, table) {
 			var vue = this;
@@ -371,13 +361,11 @@ export default {
 						}, 250);
 					}
 				}
-
 				if (this.previousPage) {
-
 					f7.preloader.hide();
 					var vue = this;
 					setTimeout(function () {
-						var path = "/" + vue.previousPage + "/" + vue.previousId + "/";
+						var path = "/" + vue.previousPage + "/" + vue.projectid + "/";
 						
 						//IF NEWS
 						if (vue.previousPage == 'news') {

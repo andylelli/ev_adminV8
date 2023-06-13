@@ -216,7 +216,6 @@ var actions = {
         //insert app
         state.lookup.push(lookup);
 
-        console.log('Lookup inserted into APP.');
     },
     insertMarkerApp: ({ state }, item) => {
 
@@ -250,7 +249,6 @@ var actions = {
             }
             j++;
         });
-        console.log(table + ' updated in APP.');
     },
     updateEditLongTextApp({ state }, item) {
         var table = item.table;
@@ -316,7 +314,6 @@ var actions = {
             }
             i++;
         });
-        console.log('Hunt item scanned updated in APP.');
     },
     updateMarkerApp: ({ state }, item) => {
 
@@ -500,8 +497,6 @@ var actions = {
                 lookup_unixtime: item.json.lookup_unixtime,
             });
         });
-
-        console.log('Lookup inserted into DB.');
     },
     //UPDATE
     updateItemDB: ({ state }, item) => {
@@ -515,7 +510,6 @@ var actions = {
                 .equals(item.json[item.table + '_id'])
                 .modify(item.json);
         });
-        console.log(item.table + ' updated in DB.');
     },
     updateImageDB: ({ state }, item) => {
 
@@ -557,8 +551,6 @@ var actions = {
                 .equals(item.json.huntitem_id)
                 .modify(item.json);
         });
-
-        console.log('Hunt item updated in DB.');
     },
     updateMarkerDB: ({ state }, item) => {
 

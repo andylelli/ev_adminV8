@@ -3,7 +3,7 @@
 			<!-- Nav bar -->
 			<f7-navbar>
 				<nav-back-link></nav-back-link>
-				<f7-nav-title>{{
+				<f7-nav-title v-if="getGuest">{{
 					getGuest.guest_firstname + " " + getGuest.guest_lastname
 				}}</f7-nav-title>
 				<nav-bars></nav-bars>
@@ -43,6 +43,7 @@ const device = getDevice();
 
 import login from "../../mixins/login";
 import misc from "../../mixins/misc";
+import fetch from "../../mixins/fetch";
 import deleteItem from "../../mixins/deleteItem";
 
 import navBackLink from "../misc/nav/navBackLink.vue";
@@ -77,7 +78,7 @@ export default {
 	props: {
 		f7route: Object,
 	},
-	mixins: [login, misc, deleteItem],
+	mixins: [login, misc, fetch, deleteItem],
 	computed: {
 		initiated() {
 			return store.state.initiated;
