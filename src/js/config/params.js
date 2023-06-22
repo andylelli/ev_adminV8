@@ -289,7 +289,6 @@ var params = [
     {
         table: "qrcode",
         db: ["qrcode_id", "qrcode_value", "qrcode_image", "qrcode_eventid", "qrcode_guestid", "qrcode_unixtime"],
-        localOnly: true
     },
     {
         table: "order",

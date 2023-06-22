@@ -27,7 +27,7 @@
 				</div>
 			</li>
 			<li
-				v-if="this.getDirectory.directory_hidetype == 1"
+				v-if="this.getDirectory.directory_hidetype == 1 && this.getDirectory.directory_hidenames == 1"
 				class="item-content"
 			>
 				<div class="item-media">

@@ -3,78 +3,48 @@
 		<!-- Nav bar-->
 		<f7-navbar>
 			<nav-back-link></nav-back-link>
-			<f7-nav-title
-				><div v-html="getDirectoryentry.directoryentry_name"></div
-			></f7-nav-title>
+			<f7-nav-title>
+				<div v-html="getDirectoryentry.directoryentry_name"></div>
+			</f7-nav-title>
 			<nav-bars></nav-bars>
 		</f7-navbar>
 		<!-- Main section-->
-		<!---- Name ---->
-		<segment header="Name">
-			<field-edit-text
-				type="single"
-				:id="this.getDirectoryentry.directoryentry_id"
-				table="directoryentry"
-				fieldname="name"
-			></field-edit-text>
-		</segment>
-		<!---- Image ---->
-		<segment
-			v-if="this.getDirectory.directory_imageid === 1"
-			header="Image"
-		>
-			<image-load
-				:id="this.getDirectoryentry.directoryentry_id"
-				table="directoryentry"
-			></image-load>
-		</segment>
-		<!---- Description ---->
-		<segment header="Description">
-			<field-edit-long-text
-				type="first"
-				:id="this.getDirectoryentry.directoryentry_id"
-				table="directoryentry"
-				fieldname="shorttext"
-			></field-edit-long-text>
-			<field-edit-long-text
-				type="last"
-				:id="this.getDirectoryentry.directoryentry_id"
-				table="directoryentry"
-				fieldname="longtext"
-			></field-edit-long-text>
-		</segment>
-		<!---- Parent item ---->
-		<segment v-if="this.getParentProject" header="Parent">
-			<directoryentry-parententry
-				:directoryentryid="id"
-			></directoryentry-parententry>
-		</segment>
-		<!---- Schedule ---->
-		<segment v-if="this.isCheckedSchedule() === true" header="Schedule">
-			<directoryentry-schedule
-				:directoryentryid="id"
-			></directoryentry-schedule>
-		</segment>
-		<!---- Location ---->
-		<segment v-if="mapCheck() > 0" header="Location">
-			<directoryentry-location  :projectid="getProject.project_id" :directoryentryid="id"></directoryentry-location>
-		</segment>		
-		<!-- Delete -->
-		<segment v-if="this.desktop == true" >
-			<general-button
-				class="margin-bottom"
-				@generalButtonAction="deleteItem()"
-				label="DELETE"
-				width="200"
-				colour="red"
-				type="fill"
-			></general-button>
-		</segment>
-		<!-- Sheet Modals-->
-		<sheet-edit
-			table="directoryentry"
-			:alias="this.getProject.project_name"
-		></sheet-edit>
+			<!---- Name ---->
+			<segment header="Name">
+				<field-edit-text type="single" :id="this.getDirectoryentry.directoryentry_id" table="directoryentry"
+					fieldname="name"></field-edit-text>
+			</segment>
+			<!---- Image ---->
+			<segment v-if="this.getDirectory.directory_imageid === 1" header="Image">
+				<image-load :id="this.getDirectoryentry.directoryentry_id" table="directoryentry"></image-load>
+			</segment>
+			<!---- Description ---->
+			<segment header="Description">
+				<field-edit-long-text type="first" :id="this.getDirectoryentry.directoryentry_id" table="directoryentry"
+					fieldname="shorttext"></field-edit-long-text>
+				<field-edit-long-text type="last" :id="this.getDirectoryentry.directoryentry_id" table="directoryentry"
+					fieldname="longtext"></field-edit-long-text>
+			</segment>
+			<!---- Parent item ---->
+			<segment v-if="this.getParentProject" header="Parent">
+				<directoryentry-parententry :directoryentryid="id"></directoryentry-parententry>
+			</segment>
+			<!---- Schedule ---->
+			<segment v-if="this.isCheckedSchedule() === true" header="Schedule">
+				<directoryentry-schedule :directoryentryid="id"></directoryentry-schedule>
+			</segment>
+			<!---- Location ---->
+			<segment v-if="mapCheck() > 0" header="Location">
+				<directoryentry-location :projectid="getProject.project_id"
+					:directoryentryid="id"></directoryentry-location>
+			</segment>
+			<!-- Delete -->
+			<segment v-if="this.desktop == true">
+				<general-button class="margin-bottom" @generalButtonAction="deleteItem()" label="DELETE" width="200"
+					colour="red" type="fill"></general-button>
+			</segment>
+			<!-- Sheet Modals-->
+			<sheet-edit table="directoryentry" :alias="this.getProject.project_name"></sheet-edit>
 	</f7-page>
 </template>
 
@@ -125,7 +95,7 @@ export default {
 		sheetEdit,
 		directoryentryParententry,
 		directoryentrySchedule,
-		directoryentryLocation,		
+		directoryentryLocation,
 	},
 	mixins: [deleteItem, misc],
 	computed: {
@@ -261,5 +231,4 @@ export default {
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

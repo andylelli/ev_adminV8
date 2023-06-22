@@ -82,9 +82,9 @@ export default {
   inject: ["eventBus"],
   computed: {
     isSortable() {
-      if(this.sortable == "true") {
+      if (this.sortable == "true") {
         return true;
-      };
+      }
     },
     items() {
       var item = {
@@ -145,30 +145,7 @@ export default {
   },
   methods: {
     setBadge(item) {
-      if (this.table == "directoryentry") {
-        var data = {
-          table: "directory",
-          key: "id",
-          id: this.id,
-          type: "single",
-        };
-        var directory = store.getters.getData(data);
-
-        var directoryHidenames = directory.directory_hidenames;
-        var directoryHidetype = directory.directory_hidetype;
-
-        if (directoryHidenames == 1 && directoryHidetype == 0) {
-          return " ";
-        } else if (
-          directoryHidenames == 1 &&
-          directoryHidetype == 1 &&
-          item.schedulehide == 1
-        ) {
-          return " ";
-        } else {
-          return "";
-        }
-      } else if (this.table == "pollitem") {
+      if (this.table == "pollitem") {
         var data = {
           table: "pollscore",
           key: "pollid",
@@ -223,6 +200,38 @@ export default {
         return text;
       }
     },
+    setEyeSlash() {
+      if (this.table == "directoryentry") {
+        var data = {
+          table: "directory",
+          key: "id",
+          id: this.id,
+          type: "single",
+        };
+        var directory = store.getters.getData(data);
+        var directoryHidenames = directory.directory_hidenames;
+        var directoryHidetype = directory.directory_hidetype;
+
+        if (directoryHidenames == 1 && directoryHidetype == 1) {
+          this.items.forEach((item) => {
+            if (item.schedulehide == 1) {
+              var replaceID = "sort-" + this.table + "-" + item.id;
+              var el = $$("#" + replaceID);
+              var itemAfter = el.find(".item-inner");
+              itemAfter.html(
+                '<div class="item-title">' +
+                  item.name +
+                  '</div><div class="item-after"><span><svg class="svg-inline--fa fa-eye-slash fa-fw custom-colour" aria-hidden="true" focusable="false" data-prefix="fal" data-icon="eye-slash" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" style="font-size: 20px;"><path class="" fill="currentColor" d="M25.9 3.4C19-2 8.9-.8 3.4 6.1S-.8 23.1 6.1 28.6l608 480c6.9 5.5 17 4.3 22.5-2.6s4.3-17-2.6-22.5L25.9 3.4zM605.5 268.3c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-51.2 0-96 14.8-133.9 36.8l27.3 21.5C244.6 74.2 280.2 64 320 64c70.4 0 127.7 32 170.8 72c43.1 40 71.9 88 85.2 120c-9.2 22.1-25.9 52-49.5 81.5l25.1 19.8c25.6-32 43.7-64.4 53.9-89zM88.4 154.7c-25.6 32-43.7 64.4-53.9 89c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c51.2 0 96-14.8 133.9-36.8l-27.3-21.5C395.4 437.8 359.8 448 320 448c-70.4 0-127.7-32-170.8-72C106.1 336 77.3 288 64 256c9.2-22.1 25.9-52 49.5-81.5L88.4 154.7zM320 384c16.7 0 32.7-3.2 47.4-9.1l-30.9-24.4c-5.4 .9-10.9 1.4-16.5 1.4c-51 0-92.8-39.8-95.8-90.1l-30.9-24.4c-.9 6-1.3 12.2-1.3 18.5c0 70.7 57.3 128 128 128zM448 256c0-70.7-57.3-128-128-128c-16.7 0-32.7 3.2-47.4 9.1l30.9 24.4c5.4-.9 10.9-1.4 16.5-1.4c51 0 92.8 39.8 95.8 90.1l30.9 24.4c.9-6 1.3-12.2 1.3-18.5z"></path></svg></span></div>'
+              );
+            } else {
+              var replaceID = "sort-" + this.table + "-" + item.id;
+              var el = $$("#" + replaceID + " .item-inner div.item-after");
+              el.remove();
+            }
+          });
+        }
+      }
+    },
     closeSortable() {
       f7.sortable.disable(".sort-" + this.table);
     },
@@ -245,7 +254,7 @@ export default {
     }
     if (find[0].sortReverse) {
       this.sortReverse = find[0].sortReverse;
-    }    
+    }
   },
   mounted() {
     var vue = this;
@@ -255,8 +264,24 @@ export default {
       $$(".badge").css("padding-bottom", "2px");
       $$(".badge").css("padding-left", "4px");
 
+      var data = {
+        table: "directory",
+        key: "id",
+        id: this.id,
+        type: "single",
+      };
+      var directory = store.getters.getData(data);
+      if (directory) {
+        if (directory.directory_hidenames == 1) {
+          this.setEyeSlash();
+        }
+      }
+
       vue.eventBus.on("close-sortable", (x) => {
         vue.closeSortable();
+      });
+      vue.eventBus.on("set-eye-slash", (x) => {
+        vue.setEyeSlash();
       });
     });
   },

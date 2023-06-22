@@ -68,6 +68,7 @@ var $$ = Dom7;
 import images from "../../mixins/images";
 import newItem from "../../mixins/newItem";
 import misc from "../../mixins/misc";
+import fetch from "../../mixins/fetch";
 
 export default {
 	name: "event-settings-image",
@@ -80,7 +81,7 @@ export default {
 			name: "",
 		};
 	},
-	mixins: [images, newItem, misc],
+	mixins: [images, newItem, misc, fetch],
 	computed: {
 		getEvent() {
 			var item = {

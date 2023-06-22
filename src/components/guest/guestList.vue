@@ -84,7 +84,7 @@ export default {
 	computed: {
 		getGuests() {
 			var find = store.state.guest.filter(function (result) {
-				return result.guest_role === 2;
+				return result;
 			});
 			if (find.length > 0) {
 				return find;

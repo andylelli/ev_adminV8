@@ -42,6 +42,7 @@ import { getDevice} from "framework7";
 const device = getDevice();
 
 import login from "../../mixins/login";
+import fetch from "../../mixins/fetch";
 import misc from "../../mixins/misc";
 import deleteItem from "../../mixins/deleteItem";
 
@@ -87,7 +88,7 @@ export default {
 		eventSettingsHidenames,
 		eventSettingsQrCode,
 	},
-	mixins: [login, deleteItem, misc],
+	mixins: [login, deleteItem, misc, fetch],
 	computed: {
 		getEvent() {
 			var item = {

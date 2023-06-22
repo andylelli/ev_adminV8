@@ -86,6 +86,7 @@ import { f7, f7ready } from "framework7-vue";
 
 import misc from "../../mixins/misc";
 import login from "../../mixins/login";
+import fetch from "../../mixins/fetch";
 
 import params from "../../js/config/params.js";
 
@@ -94,7 +95,7 @@ export default {
 	data() {
 		return {};
 	},
-	mixins: [misc, login],
+	mixins: [misc, login, fetch],
 	computed: {
 		showQrscanner() {
 			return this.isScannerActive;

@@ -228,6 +228,21 @@ var actions = {
     ////////////////
     //UPDATE
     //////////////
+    unhideNamesApp: ({ state }, id) => {
+
+        var unixtime = Date.now() / 1000;
+        var j=0;
+
+        state.directoryentry.forEach(function () {
+
+            if (state.directoryentry[j].directoryentry_directoryid == id) {
+
+                state.directoryentry[j].directoryentry_schedulehide = 0;
+                state.directoryentry[j].directoryentry_unixtime = unixtime;
+            }
+            j++;
+        });
+    },    
     updateItemApp: ({ state }, item) => {
 
         var table = item.table;
@@ -499,6 +514,24 @@ var actions = {
         });
     },
     //UPDATE
+    unhideNamesDB: ({ state }, id) => {
+
+        var unixtime = Date.now() / 1000;
+
+        db.open().then(function () {
+
+            var item = {
+                directoryentry_schedulehide: 0,
+                directoryentry_unixtime: unixtime
+            }
+
+            db.table('directoryentry')
+                .where('directoryentry_directoryid')
+                .equals(id)
+                .modify(item);
+        });
+
+    }, 
     updateItemDB: ({ state }, item) => {
 
         var tableid = item.table + "_id";

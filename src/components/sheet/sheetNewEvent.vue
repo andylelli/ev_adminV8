@@ -53,6 +53,7 @@ import { f7, f7ready } from "framework7-vue";
 import misc from "../../mixins/misc";
 import newItem from "../../mixins/newItem";
 import login from "../../mixins/login";
+import fetch from "../../mixins/fetch";
 
 import generalButton from "../misc/generalButton.vue";
 
@@ -69,7 +70,7 @@ export default {
 			allowChange: false,
 		};
 	},
-	mixins: [misc, newItem, login],
+	mixins: [misc, newItem, login, fetch],
 	components: {
 		generalButton,
 	},
