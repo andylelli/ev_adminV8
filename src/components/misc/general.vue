@@ -13,6 +13,7 @@
 					</f7-icon>
 				</template>
 			</f7-list-item>
+			<!-- 
 			<f7-list-item link="/guest/" title="Guests">
 				<template #media>
 					<f7-icon>
@@ -24,6 +25,7 @@
 					</f7-icon>
 				</template>
 			</f7-list-item>
+			-->
 		</f7-list>
 	</div>
 </template>
