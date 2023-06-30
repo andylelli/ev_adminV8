@@ -213,6 +213,24 @@ var actions = {
         lookup.lookup_eventid = item.json.lookup_eventid;
         lookup.lookup_unixtime = item.json.lookup_unixtime;
 
+        var find = state.lookup.filter(function (result) {
+            return result.lookup_id === lookup.lookup_id;
+        }); 
+
+        console.log(lookup);
+        console.log(lookup);
+        
+        if(find.length > 0) {
+            var i = 0;
+            state.lookup.forEach(function () {
+    
+                if (state.lookup[i].lookup_id == lookup.lookup_id) {
+                    state.lookup.splice(i, 1);
+                }
+                i++;
+            });            
+        }
+
         //insert app
         state.lookup.push(lookup);
 

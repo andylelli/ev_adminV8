@@ -3,6 +3,7 @@ import _LoginPage from '../components/login/_loginPage.vue';
 import _LeftPanelPage from '../components/left/_leftPanelPage.vue';
 import _LeftViewPage from '../components/left/_leftViewPage.vue';
 import _EventSettingsPage from '../components/event/_eventSettingsPage.vue';
+import _EventSettingsBackupRestorePage from '../components/event/_eventSettingsBackupRestorePage.vue';
 import _GuestPage from '../components/guest/_guestPage.vue';
 import _GuestDetailPage from '../components/guest/_guestDetailPage.vue';
 import _MainPage from '../components/project/_mainPage.vue';
@@ -34,7 +35,6 @@ import _EditLongTextPage from '../components/editLongText/_editLongTextPage.vue'
 import _EmptyPage from '../components/misc/_emptyPage.vue';
 import _NotFoundPage from '../components/misc/_404.vue';
 
-import store from "../vuex/store.js";
 import localLoad from "../js/localLoad.js";
 
 var routes = [
@@ -76,6 +76,10 @@ var routes = [
   {
     path: '/event-settings/',
     component: _EventSettingsPage,
+  },
+  {
+    path: '/event-settings-backup-restore/',
+    component: _EventSettingsBackupRestorePage,
   },
   {
     path: '/main/:eventId/',

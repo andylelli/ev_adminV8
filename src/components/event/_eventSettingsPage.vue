@@ -18,12 +18,32 @@
             <settings-auto-update></settings-auto-update>
             <event-settings-sync></event-settings-sync>
             <event-settings-full-load></event-settings-full-load>
-            <event-settings-backup></event-settings-backup>
-            <event-settings-hidenames></event-settings-hidenames>
-            <general-button class="margin-bottom" @generalButtonAction="deleteItem()" label="DELETE" width="200" colour="red" type="fill"></general-button>
-            <sheet-edit table="event"></sheet-edit>
+            <f7-block-header>BACKUP RESTORE</f7-block-header>
+            <f7-list>
+                <f7-list-item title="Backup / Restore" link @click="openBackupRestore()">
+                    <template #media>
+                        <f7-icon>
+                        <font-awesome-icon
+                            class="fa-fw custom-colour"
+                            style="font-size: 20px"
+                            :icon="['fal', 'upload']"
+                        />
+                        </f7-icon> 
+                    </template>
+                </f7-list-item>
+          </f7-list>
+          <event-settings-hidenames></event-settings-hidenames>
+          <general-button
+            class="margin-bottom"
+            @generalButtonAction="deleteItem()"
+            label="DELETE"
+            width="200"
+            colour="red"
+            type="fill"
+          ></general-button>
+          <sheet-edit table="event"></sheet-edit>
         </div>
-    </f7-page>
+      </f7-page>
 </template>
 
 <script>
@@ -55,7 +75,6 @@ import eventSettingsDarkTheme from "./eventSettingsDarkTheme.vue";
 import settingsAutoUpdate from "./settingsAutoUpdate.vue";
 import eventSettingsSync from "./eventSettingsSync.vue";
 import eventSettingsFullLoad from "./eventSettingsFullLoad.vue";
-import eventSettingsBackup from "./eventSettingsBackup.vue";
 import eventSettingsHidenames from "./eventSettingsHidenames.vue";
 import eventSettingsQrCode from "./eventSettingsQrCode.vue";
 
@@ -82,7 +101,6 @@ export default {
         settingsAutoUpdate,
         eventSettingsSync,
         eventSettingsFullLoad,
-        eventSettingsBackup,
         eventSettingsHidenames,
         eventSettingsQrCode,
     },
@@ -99,6 +117,9 @@ export default {
         },
     },
     methods: {
+        openBackupRestore() {
+            f7.views.main.router.navigate("/event-settings-backup-restore/");
+        },
         deleteItem() {
             this.deleteItemButton(
                 this.getEvent.event_id,
