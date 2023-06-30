@@ -123,12 +123,16 @@ export default {
       if (file) {
         url =
           store.state.url +
-          "api/get/event/insert/backup/0" +
+          "api/get/event/insert/backup/" +
           this.eventid +
           "/" +
           file;
       } else {
-        url = store.state.url + "api/get/event/insert/backup/" + this.eventid;
+        url =
+          store.state.url +
+          "api/get/event/insert/backup/" +
+          this.eventid +
+          "/0";
       }
 
       //Set other parameters;
