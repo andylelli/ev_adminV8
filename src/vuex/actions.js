@@ -216,10 +216,7 @@ var actions = {
         var find = state.lookup.filter(function (result) {
             return result.lookup_id === lookup.lookup_id;
         }); 
-
-        console.log(lookup);
-        console.log(lookup);
-        
+       
         if(find.length > 0) {
             var i = 0;
             state.lookup.forEach(function () {

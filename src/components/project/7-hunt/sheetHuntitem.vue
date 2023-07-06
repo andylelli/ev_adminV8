@@ -68,10 +68,12 @@ export default {
 			backdrop: true,
 		});
 
+		//Event - Sheet huntitem
 		this.eventBus.on("sheet-huntitem", (id) => {
 			this.id = id;
 			f7.sheet.open(".c3-sheet-huntitem", true);
 		});
+		this.eventBus.eventsListeners['sheet-huntitem'].splice(1);
 	},
 };
 </script>

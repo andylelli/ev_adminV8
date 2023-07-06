@@ -157,9 +157,11 @@ export default {
 		f7ready((f7) => {
 			$$(".item-link").addClass("ripple-color-primary");
 
+			// Event - Close sortable
 			vue.eventBus.on("close-sortable", (x) => {
 				this.closeSortable();
 			});
+			this.eventBus.eventsListeners['close-sortable'].splice(1);
 		});
 	},
 };

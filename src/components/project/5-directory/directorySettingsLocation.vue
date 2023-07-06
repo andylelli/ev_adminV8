@@ -221,7 +221,7 @@ export default {
 			}
 		},
 		openDirectoryColourSheet() {
-			this.eventBus.emit("directoryColour");
+			this.eventBus.emit("directory-colour");
 		},
 	},
 	mounted() {},

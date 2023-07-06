@@ -12,7 +12,7 @@
             />
           </f7-icon>
         </template>
-        <f7-button fill class="color-green" @click="restore()"
+        <f7-button fill :class="buttonIsActive()" @click="restore()"
           >RESTORE</f7-button
         >
       </f7-list-item>
@@ -20,9 +20,9 @@
     <f7-block-header>AVAILABLE BACK UPS</f7-block-header>
     <f7-list>
       <f7-list-item
-        v-for="(filename, i) in this.getBackupFiles"
+        v-for="(file, i) in this.getBackupFiles"
         :key="i"
-        :title="filename"
+        :title="file.name"
       >
         <template #media>
           <f7-icon>
@@ -45,6 +45,7 @@ import { f7, f7ready } from "framework7-vue";
 
 import misc from "../../mixins/misc";
 import fetch from "../../mixins/fetch";
+import login from "../../mixins/login";
 
 export default {
   name: "event-settings-restore",
@@ -53,60 +54,91 @@ export default {
       userid: store.state.userid,
       eventid: store.state.eventid,
       lookup: store.state.lookup,
+      backupFiles: "",
     };
   },
-  mixins: [misc, fetch],
+  mixins: [misc, fetch, login],
+  inject: ["eventBus"],
   components: {},
   computed: {
     getBackupFiles() {
-      //Get directory id
-      var find = this.lookup.filter(function (result) {
-        return result.lookup_id == "backup-files";
-      });
-      var arr = [];
-      if(find.length > 0) {
-      arr = find[0].lookup_value.split("|");
-      }
+      var str = store.getters.getLookup("backup-files");
+      if (str.length > 0) {
+        const arr = this.backupDateFormat(str);
         return arr;
+      } else {
+        return [];
+      }
     },
   },
   methods: {
-    backup() {
-      // Parameters
-      let url = store.state.url + "api/get/event/insert/backup/" + this.eventid;
-      var method = "GET";
-      var data = null;
+    restore() {
+      if (this.getBackupFiles.length > 0) {
+        var existingFiles = {
+          files: this.getBackupFiles,
+        };
+        this.eventBus.emit("open-sheet-restore");
+      }
+    },
+    async submit(file) {
+      this.backupFiles = store.getters.getLookup("backup-files");
+
+      //Set URL
+      var url = store.state.url + "api/post/event/restore/backup";
+      //Set other parameters;
+      let method = "POST";
+      let data = { file: file };
 
       // Post data
-      this.fetch(url, method, data, this.success, this.failure);
+      await this.fetch(url, method, data, this.success, this.failure);
     },
-    success(json) {
-      new Date();
-      var unixtime = Date.now() / 1000;
+    buttonIsActive() {
+      if (this.getBackupFiles.length > 0) {
+        return "color-green";
+      } else {
+        return "color-grey";
+      }
+    },
+    async success(json) {
+      //f7.preloader.show();
 
-      var item = {
-        json: {
-          lookup_id: "backup-files",
-          lookup_value: json.backupFiles,
-          lookup_eventid: this.eventid,
-          lookup_unixtime: unixtime,
-        },
-      };
+      localStorage.admin_counter = 0;
 
-      store.dispatch("insertLookupApp", item);
-      store.dispatch("insertLookupDB", item);
+      var tables = false;
+      var fullSync = true;
+      var getDeletes = true;
 
-      console.log(json.message);
+      this.progress(this.eventid);
+
+      await this.syncGetFromWebServer(
+        this.eventid,
+        tables,
+        fullSync,
+        getDeletes
+      );
+
+      f7.dialog.alert("Restoration of backup has completed successfully");
     },
     failure(json) {
       console.log(json.message);
     },
   },
+  beforeDestroy() {
+    this.eventBus.$off("restore-file");
+  },
   mounted() {
     var vue = this;
+
+      // Event - Restore file
+      vue.eventBus.on("restore-file", (file) => {
+        vue.submit(file);
+      });
+      this.eventBus.eventsListeners['restore-file'].splice(1);    
+
     f7ready((f7) => {
       vue.delimitedString = store.getters.getLookup("schedule-qr-codes");
     });
+    this.getBackupFiles;
   },
 };
 </script>

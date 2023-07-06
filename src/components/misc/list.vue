@@ -277,12 +277,17 @@ export default {
         }
       }
 
+      // Event - Close sortable
       vue.eventBus.on("close-sortable", (x) => {
         vue.closeSortable();
       });
+      this.eventBus.eventsListeners['close-sortable'].splice(1);
+
+      // Event - Set eye slash
       vue.eventBus.on("set-eye-slash", (x) => {
         vue.setEyeSlash();
       });
+      this.eventBus.eventsListeners['set-eye-slash'].splice(1);
     });
   },
 };

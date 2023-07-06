@@ -165,6 +165,7 @@ export default {
 				backdrop: true,
 			});
 
+			// Event - New
 			this.eventBus.on("new-" + this.table, (json) => {
 				var vue = this;
 
@@ -209,6 +210,7 @@ export default {
 				$$(".item-input-error-message").html("");
 				f7.sheet.open("#" + this.sheetId, true);
 			});
+			this.eventBus.eventsListeners['new-' + this.table].splice(1);
 		});
 	},
 };

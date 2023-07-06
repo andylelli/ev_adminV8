@@ -40,70 +40,8 @@ export default {
     getBackupFiles() {
       var str = store.getters.getLookup("backup-files");
       if (str.length > 0) {
-        var files = str.split("|");
-        var backups = [];
-
-        for (let i = 0; i < files.length; i++) {
-          var json = {
-            id: files[i],
-          };
-
-          const file = files[i].split("_");
-          const year = file[0].substring(0, 4);
-          const MM = file[0].substring(4, 6);
-          const DD = file[0].substring(6, 8);
-
-          const dateObj = new Date(year + "-" + MM + "-" + DD);
-
-          const months = [
-            "January",
-            "February",
-            "March",
-            "April",
-            "May",
-            "June",
-            "July",
-            "August",
-            "September",
-            "October",
-            "November",
-            "December",
-          ];
-
-          const nth = function (d) {
-            if (d > 3 && d < 21) return "th";
-            switch (d % 10) {
-              case 1:
-                return "st";
-              case 2:
-                return "nd";
-              case 3:
-                return "rd";
-              default:
-                return "th";
-            }
-          };
-
-          const monthIndex = dateObj.getMonth();
-          const month = months[monthIndex];
-
-          const day = dateObj.getDate();
-
-          const strDate = day + nth(day) + " " + month + " " + year;
-
-          const hh = file[1].substring(0, 2);
-          const mm = file[1].substring(2, 4);
-          const ss = file[1].substring(4, 6);
-
-          const strTime = hh + ":" + mm + ":" + ss;
-
-          const name = strDate + " " + strTime;
-
-          json.name = name;
-
-          backups.push(json);
-        }
-        return backups;
+        const arr = this.backupDateFormat(str);
+        return arr;
       } else {
         return [];
       }
@@ -172,9 +110,12 @@ export default {
   },
   mounted() {
     var vue = this;
-    this.eventBus.on("submit-backup", (file) => {
+
+    // Event - Delete file
+    this.eventBus.on("delete-file", (file) => {
       vue.submit(file);
     });
+    this.eventBus.eventsListeners['delete-file'].splice(1);
   },
 };
 </script>

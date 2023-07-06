@@ -15,6 +15,7 @@
             :key="i"
             :id="file.id"
             :title="file.name"
+            @click="remove(file.id)"
           >
           </f7-list-button>
         </f7-list>
@@ -42,14 +43,22 @@ export default {
   },
   inject: ["eventBus"],
   computed: {},
-  methods: {},
+  methods: {
+    remove(id) {
+      f7.sheet.close("#sheet-backup", true);
+      this.eventBus.emit("delete-file", id);
+    }
+  },
   beforeMounted() {},
   mounted() {
     var vue = this;
+
+    // Event - Open sheet backup
 		this.eventBus.on("open-sheet-backup", (json) => {
 			vue.files = json.files;
 			f7.sheet.open("#sheet-backup", true);
-		});    
+		}); 
+    this.eventBus.eventsListeners['open-sheet-backup'].splice(1);   
   },
 };
 </script>

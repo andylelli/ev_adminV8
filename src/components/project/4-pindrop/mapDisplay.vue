@@ -192,6 +192,7 @@ export default {
 					vue.openMultiplePopups(id, vue.markers[i]);
 				}
 			});
+			this.eventBus.eventsListeners['open-popups'].splice(1);
 
 			// Event - Close popups
 			vue.eventBus.on("close-popups", function () {
@@ -199,6 +200,7 @@ export default {
 					vue.closePopup(vue.markers[i]);
 				}
 			});
+			this.eventBus.eventsListeners['close-popups'].splice(1);
 
 			// Event - Open custom popups
 			vue.eventBus.on("open-custom-popups", function () {
@@ -206,6 +208,7 @@ export default {
 					vue.openCustomMarkers(vue.markers[i]);
 				}
 			});
+			this.eventBus.eventsListeners['open-custom-popups'].splice(1);
 		});
 	},
 };

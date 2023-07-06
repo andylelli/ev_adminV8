@@ -187,9 +187,11 @@ export default {
 			backdrop: true,
 		});
 
-		this.eventBus.on("directoryColour", (x) => {
+		// Event - Directory colour
+		this.eventBus.on("directory-colour", (x) => {
 			f7.sheet.open(".c3-directory-colour", true);
 		});
+		this.eventBus.eventsListeners['directory-colour'].splice(1);
 	},
 };
 </script>

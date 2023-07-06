@@ -160,6 +160,7 @@ export default {
 
 		var vue = this;
 
+		// Event - Edit
 		this.eventBus.on("edit-" + this.table, (json) => {
 			this.id = json.id;
 			this.fieldname = json.fieldname;
@@ -170,6 +171,7 @@ export default {
 			$$(".item-input-error-message").html("");
 			f7.sheet.open("#" + vue.sheetId, true);
 		});
+		this.eventBus.eventsListeners['edit-' + this.table].splice(1);
 	},
 };
 </script>

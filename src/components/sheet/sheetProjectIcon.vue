@@ -277,9 +277,11 @@ export default {
 			backdrop: true,
 		});
 
+		// Event - Project icon
 		this.eventBus.on("project-icon", (x) => {
 			f7.sheet.open(".c3-project-icon", true);
 		});
+		this.eventBus.eventsListeners['project-icon'].splice(1);
 	},
 };
 </script>
