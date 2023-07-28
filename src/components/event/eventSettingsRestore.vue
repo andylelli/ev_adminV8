@@ -1,40 +1,49 @@
 <template>
   <div>
-    <f7-block-header>RESTORE</f7-block-header>
-    <f7-list>
-      <f7-list-item title="Restore event data">
-        <template #media>
-          <f7-icon>
-            <font-awesome-icon
-              class="fa-fw custom-colour"
-              style="font-size: 20px"
-              :icon="['fal', 'cloud-arrow-down']"
-            />
-          </f7-icon>
-        </template>
-        <f7-button fill :class="buttonIsActive()" @click="restore()"
-          >RESTORE</f7-button
+    <div v-if="getBackupFiles.length > 0">
+      <f7-block-header>RESTORE</f7-block-header>
+      <f7-list>
+        <f7-list-item title="Restore event data">
+          <template #media>
+            <f7-icon>
+              <font-awesome-icon
+                class="fa-fw custom-colour"
+                style="font-size: 20px"
+                :icon="['fal', 'cloud-arrow-down']"
+              />
+            </f7-icon>
+          </template>
+          <f7-button
+            :class="buttonIsActive()"
+            @click="restore()"
+            >RESTORE</f7-button
+          >
+        </f7-list-item>
+      </f7-list>
+    </div>
+    <div>
+      <f7-block-header>AVAILABLE BACK UPS</f7-block-header>
+      <f7-list v-if="getBackupFiles.length > 0">
+        <f7-list-item
+          v-for="(file, i) in getBackupFiles"
+          :key="i"
+          :title="file.name"
         >
-      </f7-list-item>
-    </f7-list>
-    <f7-block-header>AVAILABLE BACK UPS</f7-block-header>
-    <f7-list>
-      <f7-list-item
-        v-for="(file, i) in this.getBackupFiles"
-        :key="i"
-        :title="file.name"
-      >
-        <template #media>
-          <f7-icon>
-            <font-awesome-icon
-              class="fa-fw custom-colour"
-              style="font-size: 20px"
-              :icon="['fal', 'database']"
-            />
-          </f7-icon>
-        </template>
-      </f7-list-item>
-    </f7-list>
+          <template #media>
+            <f7-icon>
+              <font-awesome-icon
+                class="fa-fw custom-colour"
+                style="font-size: 20px"
+                :icon="['fal', 'database']"
+              />
+            </f7-icon>
+          </template>
+        </f7-list-item>
+      </f7-list>
+      <f7-block v-else>
+        <p>You have not backed up this event yet</p>
+      </f7-block>
+    </div>
   </div>
 </template>
 
@@ -94,9 +103,9 @@ export default {
     },
     buttonIsActive() {
       if (this.getBackupFiles.length > 0) {
-        return "color-green";
+        return "button-fill color-green";
       } else {
-        return "color-grey";
+        return "color-black";
       }
     },
     async success(json) {
@@ -129,11 +138,11 @@ export default {
   mounted() {
     var vue = this;
 
-      // Event - Restore file
-      vue.eventBus.on("restore-file", (file) => {
-        vue.submit(file);
-      });
-      this.eventBus.eventsListeners['restore-file'].splice(1);    
+    // Event - Restore file
+    vue.eventBus.on("restore-file", (file) => {
+      vue.submit(file);
+    });
+    this.eventBus.eventsListeners["restore-file"].splice(1);
 
     f7ready((f7) => {
       vue.delimitedString = store.getters.getLookup("schedule-qr-codes");
