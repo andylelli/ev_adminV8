@@ -2,8 +2,7 @@
 	<f7-actions id="actions-event" :opened="isActionsOpen">
 		<f7-actions-group>
 			<f7-actions-label>Select event</f7-actions-label>
-			<f7-actions-button color="black" v-for="event in this.getEventslist" :key="event.event_id"
-				@click="downloadEvent(event.event_id)">
+			<f7-actions-button color="black" v-for="event in this.getEventslist" :key="event.event_id" @click="downloadEvent(event.event_id)">
 				<div v-html="decode(event.event_name)"></div>
 			</f7-actions-button>
 		</f7-actions-group>
@@ -93,7 +92,7 @@ export default {
 			// Clear history from app
 			f7.views.main.router.clearPreviousHistory();
 
-			// Set app initialisation to true				
+			// Set app initialisation to true
 			store.dispatch("setInitiated");
 
 			// Close actions list
@@ -110,22 +109,11 @@ export default {
 			var message = "This event no longer exists.";
 			f7.dialog.alert(message);
 		},
-		beforeMounted() {
-			// Set event to open actions list when called
-			var vue = this;
-			this.store.dispatch("actionsEvent", (page) => {
-				vue.page = page;
-				f7.sheet.open("#actions-event", true);
-			});
-		},
 	},
 	mounted() {
 		var vue = this;
 		f7ready((f7) => {
-			if (
-				parseInt(localStorage.admin_userid) > 0 &&
-				localStorage.eventsList
-			) {
+			if (parseInt(localStorage.admin_userid) > 0 && localStorage.eventsList) {
 				vue.events = JSON.parse(localStorage.eventsList);
 			}
 		});
@@ -133,4 +121,6 @@ export default {
 };
 </script>
 
-<style scope></style>
+<style scope>
+
+</style>

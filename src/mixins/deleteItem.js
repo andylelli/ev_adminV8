@@ -284,7 +284,6 @@ export default {
 						vue.sortList(els, table);
 					}, 250);
 
-					//this.deleteSuccess(table);
 				}
 				f7.preloader.hide();
 				if (this.previousPage) {
@@ -375,9 +374,6 @@ export default {
 							f7.views.current.router.back();
 						}
 					}, 250);
-
-					//Show success alert				
-					//this.deleteSuccess(table);
 				}
 			}
 		},

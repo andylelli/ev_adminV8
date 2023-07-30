@@ -192,7 +192,7 @@ export default {
 			});
 			toast.open();
 			store.dispatch('addEventsList', item);
-			f7.actions.open(".actions-list");
+			f7.sheet.open("#actions-event");
 		},
 
 		///////////

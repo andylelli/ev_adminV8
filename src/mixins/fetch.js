@@ -181,6 +181,8 @@ export default {
             // If not online
             else {
                 console.log('NOT CONNECTED');
+                f7.preloader.hide();
+                f7.dialog.alert("No network.");
                 store.dispatch("setWorking", false);
                 return false;
             }
