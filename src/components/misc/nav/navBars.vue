@@ -1,7 +1,7 @@
 <template>
 	<f7-nav-right>
-		<div v-if="this.working == true" style="margin-right: 10px;">
-			<font-awesome-icon class="fa-spin" style="font-size: 20px; color: green;" :icon="['fal', 'sync']" />
+		<div style="width: 25px;">
+			<font-awesome-icon v-if="this.working != 'stopped'" class="fa-spin" style="font-size: 20px; color: green;" :icon="['fal', 'sync']" />
 		</div>	
 		<div v-if="this.online == false">
 			<font-awesome-icon class="fa-fw" style="font-size: 20px; color: red;" :icon="['fal', 'wifi-slash']" />

@@ -20,6 +20,7 @@
 						type="text"
 						step="0.01"
 						placeholder="Name"
+						:value="this.value"
 						@input="update($event)"
 						validate
 						required
@@ -39,6 +40,7 @@
 							label="CREATE"
 							width="200"
 							type="fill"
+							color="black"
 						></general-button>
 					</div>
 				</div>

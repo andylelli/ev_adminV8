@@ -4,53 +4,28 @@
 		<div class="text-align-center">
 			<div align="center"></div>
 			<div align="center">
-				<input
-					type="file"
-					name="file"
-					id="file"
-					class="c3-input-file c3-hide"
-				/>
-				<label
-					id="imageAjax"
-					for="file"
-					class="c3-show"
-					style="margin-top: 5px"
-				>
-					<img
-						id="image"
-						v-bind:class="imageEventClass"
-						width="300"
-						:src="imageEvent"
-						@load="setPalette()"
-					/>
-				</label>
-				<span
-					id="progress"
-					class="progressbar c3-hide"
-					data-progress="0"
-					style="width: 70vw; margin-top: 10px"
-				></span>
+				<input type="file" name="file" id="file" class="c3-input-file c3-hide" />
+				<label id="imageAjax" for="file" class="c3-show" style="margin-top: 5px">
+							<img
+								id="image"
+								v-bind:class="imageEventClass"
+								width="300"
+								:src="imageEvent"
+								@load="setPalette()"
+							/>
+						</label>
+				<span id="progress" class="progressbar c3-hide" data-progress="0" style="width: 70vw; margin-top: 10px"></span>
 				<div v-if="this.getEvent.event_image" align="center" style="margin-top: 20px">
-					<font-awesome-icon
-						@click="removeImage()"
-						class="fa-fw"
-						style="font-size: 30px; color: #2b2b2b;"
-						:icon="['fal', 'times']"
-					/>
+					<font-awesome-icon @click="removeImage()" class="fa-fw" style="font-size: 30px; color: #2b2b2b;" :icon="['fal', 'times']" />
 				</div>
 			</div>
 		</div>
-		<f7-block-header>THEME COLOUR</f7-block-header>
-		<f7-list style="cursor: pointer">
-			<f7-list-input
-				type="colorpicker"
-				placeholder="Color"
-				readonly
-				:value="this.getAppColour()"
-				:color-picker-params="this.pickerParams"
-				@colorpicker:change="colorChange($event.hex)"
-			></f7-list-input>
-		</f7-list>
+		<div v-if="this.getEvent.event_image">
+			<f7-block-header>THEME COLOUR</f7-block-header>
+			<f7-list style="cursor: pointer">
+				<f7-list-input type="colorpicker" placeholder="Color" readonly :value="this.getAppColour()" :color-picker-params="this.pickerParams" @colorpicker:change="colorChange($event.hex)"></f7-list-input>
+			</f7-list>
+		</div>
 	</div>
 </template>
 
@@ -123,7 +98,7 @@ export default {
 		},
 		getPalette() {
 			var vue = this;
-			var find = store.state.lookup.filter(function (result) {
+			var find = store.state.lookup.filter(function(result) {
 				return (
 					result.lookup_id === "palette" &&
 					result.lookup_eventid === vue.getEvent.event_id
@@ -151,7 +126,7 @@ export default {
 		},
 		getAppColour() {
 			var vue = this;
-			var find = store.state.lookup.filter(function (result) {
+			var find = store.state.lookup.filter(function(result) {
 				return (
 					result.lookup_id === "appcolour" &&
 					result.lookup_eventid === vue.getEvent.event_id
@@ -165,6 +140,10 @@ export default {
 					hex: hex,
 				};
 				return value;
+			} else {
+				var value = {
+					hex: "#2b2b2b"
+				};
 			}
 		},
 		colorChange(value) {
@@ -188,7 +167,7 @@ export default {
 				var palette = [];
 
 				this.colourThief = colorThief.getPalette(this.img, this.c);
-				this.colourThief.forEach(function (item) {
+				this.colourThief.forEach(function(item) {
 					colour =
 						"rgb(" + item[0] + "," + item[1] + "," + item[2] + ")";
 					palette.push(colour);
@@ -209,7 +188,7 @@ export default {
 			var colours_hex = [];
 			var clr_arr = [];
 			var vue = this;
-			palette.forEach(function (clr) {
+			palette.forEach(function(clr) {
 				clr = clr.replace("rgb(", "");
 				clr = clr.replace(")", "");
 				clr_arr = clr.split(",");
@@ -229,7 +208,7 @@ export default {
 		f7ready((f7) => {
 			var eventid = this.getEvent.event_id;
 			var vue = this;
-			$$(".c3-input-file").on("change", function (e) {
+			$$(".c3-input-file").on("change", function(e) {
 				var table = "event";
 				vue.imageLoad(e, eventid, table);
 			});
@@ -238,6 +217,6 @@ export default {
 };
 </script>
 
-<!-- <style scoped>
+<!--<style scoped>
 
 </style>-->

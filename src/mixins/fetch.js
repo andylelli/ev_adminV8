@@ -7,7 +7,7 @@ export default {
         async fetch(url, method, jsonx, success, failure, page, newEvent) {
 
             // Set working spinner
-            store.dispatch("setWorking", true);
+            store.dispatch("setWorking", "start");
 
             // Script to time out after set milliseconds
             var timeout = false;
@@ -84,7 +84,7 @@ export default {
                 if (timeout === false) {
 
                     // Unset working spinner
-                    store.dispatch("setWorking", false);
+                    store.dispatch("setWorking", "stopping");
 
                     // If response is in the 200 range
                     if (response.status >= 200 && response.status <= 299) {
@@ -174,7 +174,7 @@ export default {
                     console.log('TIMEOUT');
                     f7.preloader.hide();
                     f7.dialog.alert("Slow network. Action didn't complete");
-                    store.dispatch("setWorking", false);
+                    store.dispatch("setWorking", "stopping");
                     return false;
                 }
             }
@@ -183,7 +183,7 @@ export default {
                 console.log('NOT CONNECTED');
                 f7.preloader.hide();
                 f7.dialog.alert("No network.");
-                store.dispatch("setWorking", false);
+                store.dispatch("setWorking", "stopping");
                 return false;
             }
         }

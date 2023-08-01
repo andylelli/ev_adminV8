@@ -116,7 +116,21 @@ var actions = {
         state.autosync = value;
     },
     setWorking({ state }, value) {
-        state.working = value;
+        if(value == "stopping") {
+            state.working = "stopping";
+            setTimeout(() => {
+                if(state.working == "stopping") {
+                    setTimeout(() => {
+                        if(state.working == "stopping") {
+                        state.working = "stopped"; 
+                        }
+                    }, 350);                    
+                }
+            }, 350);
+        }
+        else {
+            state.working = value;
+        }
     },    
     setDevice({ state }) {
         var os;
