@@ -5,47 +5,33 @@
 			<li>
 				<div class="item-media">
 					<i class="icon">
-						<font-awesome-icon
-							class="fa-fw custom-colour"
-							style="font-size: 20px"
-							:icon="['fal', 'clock']"
-						/>
-					</i>
+							<font-awesome-icon
+								class="fa-fw custom-colour"
+								style="font-size: 20px"
+								:icon="['fal', 'clock']"
+							/>
+						</i>
 				</div>
 				<div class="c3-flex-space-full-width">
 					<div style="padding-left: 20px">Schedule</div>
 					<div align="right">
-						<input
-							class="text-align-right"
-							style="cursor: pointer"
-							type="text"
-							placeholder="Choose..."
-							readonly="readonly"
-							id="schedule-picker"
-						/>
+						<input class="text-align-right" style="cursor: pointer" type="text" placeholder="Choose..." readonly="readonly" id="schedule-picker" />
 					</div>
 				</div>
 			</li>
-			<li
-				v-if="this.getDirectory.directory_hidetype == 1 && this.getDirectory.directory_hidenames == 1"
-				class="item-content"
-			>
+			<li v-if="this.getDirectory.directory_hidetype == 1 && this.getDirectory.directory_hidenames == 1" class="item-content">
 				<div class="item-media">
 					<i class="icon">
-						<font-awesome-icon
-							class="fa-fw custom-colour"
-							style="font-size: 20px"
-							:icon="['fal', 'eye-slash']"
-						/>
-					</i>
+							<font-awesome-icon
+								class="fa-fw custom-colour"
+								style="font-size: 20px"
+								:icon="['fal', 'eye-slash']"
+							/>
+						</i>
 				</div>
 				<div style="padding-left: 20px">Hide name?</div>
 				<div class="item-after">
-					<f7-toggle
-						:checked="this.isCheckedScheduleHide()"
-						color="custom-color"
-						@toggle:change="toggleScheduleHide($event)"
-					></f7-toggle>
+					<f7-toggle :checked="this.isCheckedScheduleHide()" color="custom-color" @toggle:change="toggleScheduleHide($event)"></f7-toggle>
 				</div>
 			</li>
 		</ul>
@@ -91,7 +77,7 @@ export default {
 				var directoryid =
 					this.getDirectoryentry.directoryentry_directoryid;
 				if (directoryid) {
-					var find = store.state.directory.filter(function (result) {
+					var find = store.state.directory.filter(function(result) {
 						return result.directory_id === directoryid;
 					});
 					if (find.length > 0) {
@@ -136,11 +122,11 @@ export default {
 		getOrdinalNum(n) {
 			return (
 				n +
-				(n > 0
-					? ["th", "st", "nd", "rd"][
-							(n > 3 && n < 21) || n % 10 > 3 ? 0 : n % 10
-					  ]
-					: "")
+				(n > 0 ?
+					["th", "st", "nd", "rd"][
+						(n > 3 && n < 21) || n % 10 > 3 ? 0 : n % 10
+					] :
+					"")
 			);
 		},
 		setValue() {
@@ -199,12 +185,11 @@ export default {
 				inputEl: "#schedule-picker",
 				rotateEffect: true,
 
-				formatValue: function (values, displayValues) {
-					return values[0] + ", " + values[1] + ":" + values[2];
+				formatValue: function(values, displayValues) {
+					return values[0] + "  " + values[1] + ":" + values[2] + "  " + values[3] + "mins";
 				},
 
-				cols: [
-					{
+				cols: [{
 						textAlign: "left",
 						values: vue.dayList.split("|"),
 					},
@@ -213,7 +198,7 @@ export default {
 						content: "&nbsp;&nbsp",
 					},
 					{
-						values: (function () {
+						values: (function() {
 							var arr = [];
 							for (var i = 0; i <= 23; i++) {
 								var j = i;
@@ -230,7 +215,7 @@ export default {
 						content: "&nbsp;:&nbsp;",
 					},
 					{
-						values: (function () {
+						values: (function() {
 							var arr = [];
 							for (var i = 0; i <= 59; i++) {
 								var j = i;
@@ -242,9 +227,22 @@ export default {
 							return arr;
 						})(),
 					},
+					{
+						divider: true,
+						content: "&nbsp;&nbsp;",
+					},
+					{
+						values: (function() {
+							var arr = [];
+							for (var i = 0; i <= 1440; i = i + 5) {
+								arr.push(i);
+							}
+							return arr;
+						})(),
+					},
 				],
 				on: {
-					change: function (picker, values, displayValues) {
+					change: function(picker, values, displayValues) {
 						vue.pickerChange(picker);
 					},
 				},
@@ -255,6 +253,7 @@ export default {
 			var schedulePickerHour = this.getDirectoryentry.directoryentry_hour;
 			var schedulePickerMinute =
 				this.getDirectoryentry.directoryentry_minute;
+			var schedulePickerDuration = this.getDirectoryentry.directoryentry_duration;
 			if (schedulePickerDay) {
 				if (schedulePickerHour < 10 && schedulePickerHour.length < 2) {
 					schedulePickerHour = "0" + schedulePickerHour;
@@ -275,7 +274,7 @@ export default {
 				const dofw = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 				var d = dofw[day.getDay()];
 				var day = d + " " + dateTH;
-				var values = [day, schedulePickerHour, schedulePickerMinute];
+				var values = [day, schedulePickerHour, schedulePickerMinute, schedulePickerDuration];
 				this.pickerSchedule.setValue(values);
 			}
 		},
@@ -291,6 +290,7 @@ export default {
 			item.json.directoryentry_day = day;
 			item.json.directoryentry_hour = picker.value[1];
 			item.json.directoryentry_minute = picker.value[2];
+			item.json.directoryentry_duration = picker.value[3];
 			item.json.directoryentry_unixtime = unixtime;
 			store.dispatch("updateItemApp", item);
 		},
@@ -311,12 +311,15 @@ export default {
 .ios {
 	--f7-picker-sheet-bg-color: #ffffff;
 }
+
 .md {
 	--f7-picker-sheet-bg-color: #ffffff;
 }
+
 .c3-item-input-wrap {
 	width: auto important;
 }
+
 .c3-flex-space-full-width {
 	display: flex;
 	flex: 1 1 0;

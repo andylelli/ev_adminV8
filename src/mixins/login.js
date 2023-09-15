@@ -166,102 +166,118 @@ export default {
 
                 var response = await this.fetch(url, method);
 
-                if (response[0].status == "success") {
+                if (response) {
 
-                    // Set timestamp variable
-                    new Date;
-                    var unixtime = Date.now() / 1000;
+                    if (response[0].status == "success") {
 
-                    // Loop through each response item and insert into local App and DB storage
-                    for (j = 0; j < response[0].data.length; j++) {
+                        // Set timestamp variable
+                        new Date;
+                        var unixtime = Date.now() / 1000;
 
-                        // Prepare App and DB Insert / Update
-                        var item = {};
-                        item.table = tableArr[i];
-                        item.json = response[0].data[j];
+                        // Loop through each response item and insert into local App and DB storage
+                        for (j = 0; j < response[0].data.length; j++) {
 
-                        // Remove server timestamp
-                        delete item.json[tableArr[i] + '_uxtime'];
+                            // Prepare App and DB Insert / Update
+                            var item = {};
+                            item.table = tableArr[i];
+                            item.json = response[0].data[j];
 
-                        // Set local timestamp
-                        item.json[tableArr[i] + '_unixtime'] = unixtime;
+                            // Remove server timestamp
+                            delete item.json[tableArr[i] + '_uxtime'];
 
-                        //Check if item is for not for lookup table
-                        if (tableArr[i] != 'lookup') {
+                            // Set local timestamp
+                            item.json[tableArr[i] + '_unixtime'] = unixtime;
 
-                            // Check if this is going to be an insert or an update
-                            var find = store.state[tableArr[i]].filter(function (result) {
-                                return result[tableArr[i] + '_id'] === response[0].data[j][tableArr[i] + '_id'];
-                            });
+                            //Check if item is for not for lookup table
+                            if (tableArr[i] != 'lookup') {
 
-                            // Insert
-                            if (find.length < 1) {
-                                store.dispatch("insertItemApp", item);
-                                store.dispatch("insertItemDB", item);
-                                insert++;
+                                // Check if this is going to be an insert or an update
+                                var find = store.state[tableArr[i]].filter(function (result) {
+                                    return result[tableArr[i] + '_id'] === response[0].data[j][tableArr[i] + '_id'];
+                                });
+
+                                // Insert
+                                if (find.length < 1) {
+                                    store.dispatch("insertItemApp", item);
+                                    store.dispatch("insertItemDB", item);
+                                    insert++;
+                                }
+                                // Update
+                                else {
+                                    store.dispatch("updateItemApp", item);
+                                    store.dispatch("updateItemDB", item);
+                                    update++;
+                                }
+
+                            } else {
+
+                                // Check if this is going to be an insert or an update
+                                var find = store.state.lookup.filter(function (result) {
+                                    return (result.lookup_id === response[0].data[j].lookup_id && result.lookup_eventid === response[0].data[j].lookup_eventid);
+                                });
+
+                                if (item.json.lookup_id == 'palette' || item.json.lookup_id == 'schedule-qr-codes') {
+                                    item.json.lookup_value = item.json.lookup_value.replace(/\\/g, "");
+                                    var arr = JSON.parse(item.json.lookup_value);
+                                    item.json.lookup_value = arr;
+                                }
+
+                                // Insert
+                                if (find.length < 1) {
+                                    store.dispatch('insertLookupApp', item);
+                                    store.dispatch('insertLookupDB', item);
+                                    insert++;
+                                }
+
+                                // Update
+                                else {
+                                    store.dispatch('insertLookupApp', item);
+                                    store.dispatch('insertLookupDB', item);
+                                    update++;
+                                }
+
+                                // Set custom colours
+                                this.getCustomColours();
                             }
-                            // Update
-                            else {
-                                store.dispatch("updateItemApp", item);
-                                store.dispatch("updateItemDB", item);
-                                update++;
-                            }
-
-                        } else {
-
-                            // Check if this is going to be an insert or an update
-                            var find = store.state.lookup.filter(function (result) {
-                                return (result.lookup_id === response[0].data[j].lookup_id && result.lookup_eventid === response[0].data[j].lookup_eventid);
-                            });
-
-                            if (item.json.lookup_id == 'palette' || item.json.lookup_id == 'schedule-qr-codes') {
-                                item.json.lookup_value = item.json.lookup_value.replace(/\\/g, "");
-                                var arr = JSON.parse(item.json.lookup_value);
-                                item.json.lookup_value = arr;
-                            }
-
-                            // Insert
-                            if (find.length < 1) {
-                                store.dispatch('insertLookupApp', item);
-                                store.dispatch('insertLookupDB', item);
-                                insert++;
-                            }
-
-                            // Update
-                            else {
-                                store.dispatch('insertLookupApp', item);
-                                store.dispatch('insertLookupDB', item);
-                                update++;
-                            }
-
-                            // Set custom colours
-                            this.getCustomColours();
                         }
-                    }
 
-                    // Update counter
-                    localStorage[store.state.role + '_counter'] = Number(localStorage[store.state.role + '_counter']) + 1;
+                        // Update counter
+                        localStorage[store.state.role + '_counter'] = Number(localStorage[store.state.role + '_counter']) + 1;
 
-                    // Update last sync time
-                    localStorage[store.state.role + '_sync_' + tableArr[i] + '_time'] = unixtime + 1;
+                        // Update last sync time
+                        localStorage[store.state.role + '_sync_' + tableArr[i] + '_time'] = unixtime + 1;
 
-                    // Logging
-                    if (insert > 0) {
-                        console.log(insert + ' insert(s) made to ' + tableArr[i]);
-                    }
-                    else if (update > 0) {
-                        console.log(update + ' update(s) made to ' + tableArr[i]);
+                        // Logging
+                        if (insert > 0) {
+                            console.log(insert + ' insert(s) made to ' + tableArr[i]);
+                        }
+                        else if (update > 0) {
+                            console.log(update + ' update(s) made to ' + tableArr[i]);
+                        }
+                        else {
+                            console.log('0 insert(s)/update(s) made to ' + tableArr[i]);
+                            if (tableArr[i] == 'lookup') {
+                                this.getCustomColours();
+                            }
+                        };
                     }
                     else {
-                        console.log('0 insert(s)/update(s) made to ' + tableArr[i]);
-                        if (tableArr[i] == 'lookup') {
-                            this.getCustomColours();
-                        }
-                    };
+                        f7.dialog.close();
+                        f7.dialog.alert(response[0].message);
+                    }
                 }
                 else {
+
+                    // Set working spinner to error
+                    store.dispatch("setWorking", "stopping");
+
+                    // Set error
+                    store.dispatch("setError", true);
+
+                    //No network
                     f7.dialog.close();
-                    f7.dialog.alert(response[0].message);
+                    f7.dialog.alert("No network.");
+                    return;
                 }
             };
 

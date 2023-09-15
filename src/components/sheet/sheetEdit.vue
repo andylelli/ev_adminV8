@@ -11,7 +11,7 @@
 				<f7-block-title class="padding-bottom">
 					{{ this.titleString }}</f7-block-title
 				>
-				<f7-list form>
+				<f7-list form id="aaa">
 					<f7-list-input
 						:key="this.fieldname"
 						:id="fieldId(this.fieldname)"
@@ -150,6 +150,9 @@ export default {
 		},
 	},
 	beforeMounted() {},
+	unmounted() {
+		this.eventBus.eventsListeners['edit-' + this.table].splice(1);
+	},
 	mounted() {
 		f7.sheet.create({
 			el: this.sheetId,
@@ -158,20 +161,21 @@ export default {
 			backdrop: true,
 		});
 
-		var vue = this;
-
 		// Event - Edit
+		var vue = this;
 		this.eventBus.on("edit-" + this.table, (json) => {
-			this.id = json.id;
-			this.fieldname = json.fieldname;
-			this.value = json.value;
-			this.title = json.title;
-			this.fieldtype = json.fieldtype;
+			vue.id = json.id;
+			vue.fieldname = json.fieldname;
+			vue.value = json.value;
+			vue.title = json.title;
+			vue.fieldtype = json.fieldtype;
+
+			console.log(json);
 
 			$$(".item-input-error-message").html("");
 			f7.sheet.open("#" + vue.sheetId, true);
 		});
-		this.eventBus.eventsListeners['edit-' + this.table].splice(1);
+		
 	},
 };
 </script>

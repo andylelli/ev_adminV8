@@ -83,11 +83,11 @@ export default {
                 // If request compleest before network timeout
                 if (timeout === false) {
 
-                    // Unset working spinner
-                    store.dispatch("setWorking", "stopping");
-
                     // If response is in the 200 range
                     if (response.status >= 200 && response.status <= 299) {
+                        // Unset working spinner
+                        store.dispatch("setWorking", "stopping");
+
                         var json = await response.json();
 
                         // If array returned
@@ -135,6 +135,9 @@ export default {
                         }
                     }
                     else {
+                        // Set working spinner to error
+                        store.dispatch("setError", true);
+
                         // If error and json returned
                         var json = await response.json();
                         console.log('Status: ' + response.status + ' ' + method + ' ' + url);
@@ -170,8 +173,11 @@ export default {
                     };
                 }
                 else {
+                    // Set working spinner to error
+                    store.dispatch("setError", true);
+
                     // If timeout
-                    console.log('TIMEOUT');
+                    console.log("Slow network. Action didn't complete");
                     f7.preloader.hide();
                     f7.dialog.alert("Slow network. Action didn't complete");
                     store.dispatch("setWorking", "stopping");
@@ -180,10 +186,13 @@ export default {
             }
             // If not online
             else {
-                console.log('NOT CONNECTED');
+                // Set working spinner to error
+                store.dispatch("setError", true);                
+
+                //No network
+                console.log('Not connected to network');
                 f7.preloader.hide();
-                f7.dialog.alert("No network.");
-                store.dispatch("setWorking", "stopping");
+                f7.dialog.alert("Not connected to network.");
                 return false;
             }
         }

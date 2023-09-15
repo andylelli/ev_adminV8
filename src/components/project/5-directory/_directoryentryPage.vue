@@ -217,7 +217,6 @@ export default {
 						var item = {};
 						item.table = "directoryentry";
 						item.json = this.getDirectoryentry;
-
 						store.dispatch("updateItemDB", item);
 
 						localStorage.admin_update_directoryentry_time =

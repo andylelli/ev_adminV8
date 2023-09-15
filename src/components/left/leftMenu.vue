@@ -11,28 +11,28 @@
 			</div>
 		</f7-block-title>
 		<!-- Projects list -->
-		<f7-list style="margin-top: 40px" class="ripple-color-primary text-color-white list-divider">
+		<f7-list class="margin-top margin-bottom ripple-color-primary text-color-white list-divider">
 			<f7-list-item link v-for="item in this.items" :key="item.project_id" :position="item.project_position" class="bg-color-primary no-chevron" @click="openPage(item.project_typeid, item.project_id)">
 				{{ item.project_name }}
 			</f7-list-item>
 		</f7-list>
 		<!-- QR Scanner -->
-		<f7-list style="margin-top: 0px" class="ripple-color-primary text-color-white list-divider">
+		<f7-list class="margin-top margin-bottom  ripple-color-primary text-color-white list-divider">
 			<f7-list-item class="bg-color-primary no-chevron" link @click="openQRScanner()">QR Scanner</f7-list-item>
 		</f7-list>
 		<!-- Event functions -->
-		<f7-list style="margin-top: 0px" class="ripple-color-primary text-color-white list-divider">
+		<f7-list class="margin-top margin-bottom  ripple-color-primary text-color-white list-divider">
 			<!-- Change event -->
 			<f7-list-item class="bg-color-primary no-chevron" link @click="changeEvent()">Change Event</f7-list-item>
 			<!-- New event -->
 			<f7-list-item class="bg-color-primary no-chevron" link @click="newEvent()">New Event</f7-list-item>
 		</f7-list>
 		<!-- Log out -->
-		<f7-list style="margin-top: 0px; cursor: pointer" class="ripple-color-primary text-color-white">
+		<f7-list style="cursor: pointer" class="margin-top margin-bottom ripple-color-primary text-color-white">
 			<f7-list-item class="bg-color-primary" @click="logout()">Logout</f7-list-item>
 		</f7-list>
 		<!-- User details -->
-		<f7-block style="margin-top: 0px" class="text-color-white">
+		<f7-block style="margin-top margin-bottom" class="text-color-white">
 			<div v-html="getUserDetails()"></div>
 		</f7-block>
 	</div>

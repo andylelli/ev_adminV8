@@ -115,23 +115,29 @@ var actions = {
     setAutoSync({ state }, value) {
         state.autosync = value;
     },
+    setError({ state }, value) {
+        state.error = value;
+        setTimeout(() => {
+            state.error = false;
+        }, 4000);
+    },
     setWorking({ state }, value) {
-        if(value == "stopping") {
+        if (value == "stopping") {
             state.working = "stopping";
             setTimeout(() => {
-                if(state.working == "stopping") {
+                if (state.working == "stopping") {
                     setTimeout(() => {
-                        if(state.working == "stopping") {
-                        state.working = "stopped"; 
+                        if (state.working == "stopping") {
+                            state.working = "stopped";
                         }
-                    }, 350);                    
+                    }, 350);
                 }
             }, 350);
         }
         else {
             state.working = value;
         }
-    },    
+    },
     setDevice({ state }) {
         var os;
         if (device.ios == true) {
@@ -229,17 +235,17 @@ var actions = {
 
         var find = state.lookup.filter(function (result) {
             return result.lookup_id === lookup.lookup_id;
-        }); 
-       
-        if(find.length > 0) {
+        });
+
+        if (find.length > 0) {
             var i = 0;
             state.lookup.forEach(function () {
-    
+
                 if (state.lookup[i].lookup_id == lookup.lookup_id) {
                     state.lookup.splice(i, 1);
                 }
                 i++;
-            });            
+            });
         }
 
         //insert app
@@ -260,7 +266,7 @@ var actions = {
     unhideNamesApp: ({ state }, id) => {
 
         var unixtime = Date.now() / 1000;
-        var j=0;
+        var j = 0;
 
         state.directoryentry.forEach(function () {
 
@@ -271,7 +277,7 @@ var actions = {
             }
             j++;
         });
-    },    
+    },
     updateItemApp: ({ state }, item) => {
 
         var table = item.table;
@@ -560,7 +566,7 @@ var actions = {
                 .modify(item);
         });
 
-    }, 
+    },
     updateItemDB: ({ state }, item) => {
 
         var tableid = item.table + "_id";

@@ -144,7 +144,7 @@ var params = [
         key: "directoryid",
         displayName: "directory entry",
         newSheetName: "directoryentry",
-        db: ['directoryentry_id', 'directoryentry_position', 'directoryentry_name', 'directoryentry_image', 'directoryentry_lightcolour', 'directoryentry_darkcolour', 'directoryentry_mapid', 'directoryentry_lat', 'directoryentry_lng', 'directoryentry_shorttext', 'directoryentry_longtext', 'directoryentry_directoryid', 'directoryentry_parententryid', 'directoryentry_shopid', 'directoryentry_day', 'directoryentry_hour', 'directoryentry_minute', 'directoryentry_schedulehide', 'directoryentry_favourite', 'directoryentry_eventid', 'directoryentry_unixtime'],
+        db: ['directoryentry_id', 'directoryentry_position', 'directoryentry_name', 'directoryentry_image', 'directoryentry_lightcolour', 'directoryentry_darkcolour', 'directoryentry_mapid', 'directoryentry_lat', 'directoryentry_lng', 'directoryentry_shorttext', 'directoryentry_longtext', 'directoryentry_directoryid', 'directoryentry_parententryid', 'directoryentry_shopid', 'directoryentry_day', 'directoryentry_hour', 'directoryentry_minute', 'directoryentry_duration', 'directoryentry_schedulehide', 'directoryentry_favourite', 'directoryentry_eventid', 'directoryentry_unixtime'],
         decode: ['directoryentry_name', 'directoryentry_shorttext', 'directoryentry_longtext'],
         bulkInsert: {
             directoryentry_name: ['string', 50],
@@ -155,6 +155,7 @@ var params = [
             directoryentry_day: ['number', 12],
             directoryentry_hour: ['number', 2],
             directoryentry_minute: ['number', 2],
+            directoryentry_duration: ['number', 4],
             directoryentry_schedulehide: ['boolean', 1],
         },
         fields: [

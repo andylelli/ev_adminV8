@@ -3,9 +3,12 @@ import params from "../js/config/params.js";
 import escape from "../js/config/escape.js";
 
 var getters = {
+    getError: (state) => (x) => {
+        return state.error;
+    },
     getWorking: (state) => (x) => {
-            return state.working;
-    },    
+        return state.working;
+    },
     getEventID: (state) => (x) => {
         if (state.eventid) {
             return state.eventid;
@@ -309,8 +312,8 @@ var getters = {
             });
             var directory = state.directory.filter(function (result) {
                 return result.directory_id === marker[0].directoryentry_directoryid;
-            });  
-            marker[0].directory_colourid = directory[0].directory_colourid;          
+            });
+            marker[0].directory_colourid = directory[0].directory_colourid;
             markers.push(marker[0]);
             return marker;
         }

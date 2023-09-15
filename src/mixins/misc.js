@@ -433,27 +433,6 @@ export default {
 
 			return day + " " + dateTH + " " + monthName;
 		},
-		extractScheduleDataFromItem(item) {
-			var entry = {};
-			entry.id = item.directoryentry_id;
-			entry.name = item.directoryentry_name;
-			entry.image = item.directoryentry_image;
-			var hour = item.directoryentry_hour;
-			var minute = item.directoryentry_minute;
-			if (hour.length == 1) {
-				hour = "0" + hour;
-			}
-			if (minute.length == 1) {
-				minute = "0" + minute;
-			}
-			entry.hour = hour;
-			entry.minute = minute;
-			entry.image = item.directoryentry_image;
-			entry.shorttext = item.directoryentry_shorttext;
-			entry.longtext = item.directoryentry_longtext;
-
-			return entry;
-		},
 		getDirectoriesWithSchedule() {
 			//Get array of directories with a schedule
 			var dirWithSchedule = this.directory.filter(function (result) {
