@@ -170,8 +170,6 @@ export default {
 			vue.title = json.title;
 			vue.fieldtype = json.fieldtype;
 
-			console.log(json);
-
 			$$(".item-input-error-message").html("");
 			f7.sheet.open("#" + vue.sheetId, true);
 		});
