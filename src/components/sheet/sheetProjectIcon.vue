@@ -80,6 +80,10 @@ export default {
 				},
 				{
 					style: "fal",
+					name: "poll",
+				},				
+				{
+					style: "fal",
 					name: "qrcode",
 				},
 				{

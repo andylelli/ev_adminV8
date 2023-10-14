@@ -74,7 +74,7 @@ export default {
       sortReverse: false,
     };
   },
-  props: ["title", "table", "icon", "id", "after", "projectid", "sortable"],
+  props: ["title", "table", "icon", "id", "after", "projectid", "sortable", "sortAlpha"],
   components: {
     swipeoutActions,
   },
@@ -86,18 +86,66 @@ export default {
         return true;
       }
     },
+    isSortAlpha() {
+      if (this.sortAlpha == "true" || this.sort == true) {
+        return true;
+      }
+    },
     items() {
       var item = {
         table: this.table,
         key: this.key,
         id: this.id,
         type: "multiple",
-        sort: this.sort,
+        sort: this.isSortAlpha,
         sortTime: this.sortTime,
         sortReverse: this.sortReverse,
       };
 
       var entries = store.getters.getData(item);
+
+      if (entries) {
+        var items = [];
+        for (var i = 0; i < entries.length; i++) {
+          var item = {
+            id: entries[i][this.table + "_id"],
+          };
+          if (entries[i][this.table + "_name"]) {
+            item.name = entries[i][this.table + "_name"];
+            item.title = entries[i][this.table + "_name"];
+          }
+          if (entries[i][this.table + "_position"]) {
+            item.position = entries[i][this.table + "_position"];
+          }
+          if (entries[i][this.table + "_typeid"]) {
+            item.typeid = entries[i][this.table + "_typeid"];
+          }
+          if (entries[i][this.table + "_text"]) {
+            item.after = entries[i][this.table + "_text"];
+          }
+          if (entries[i][this.table + "_title"]) {
+            item.name = entries[i][this.table + "_title"];
+            item.title = entries[i][this.table + "_title"];
+          }
+          if (entries[i][this.table + "_message"]) {
+            item.message = entries[i][this.table + "_message"];
+          }
+          if (entries[i][this.table + "_schedulehide"]) {
+            item.schedulehide = entries[i][this.table + "_schedulehide"];
+          }
+          if (entries[i][this.table + "_directoryentryid"]) {
+            var directoryentryid = entries[i][this.table + "_directoryentryid"];
+            item.header = this.setDirectoryentryName(directoryentryid);
+          }
+          if (entries[i][this.table + "_time"]) {
+            var unixtime = entries[i][this.table + "_time"];
+            var formattedTime = this.unixtimeConversion(unixtime);
+            item.footer = formattedTime;
+          }
+          items.push(item);
+        }
+        return items;
+      }      
 
       if (entries) {
         var items = [];

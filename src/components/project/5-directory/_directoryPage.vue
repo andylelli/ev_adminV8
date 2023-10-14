@@ -32,6 +32,7 @@
       :id="getDirectory.directory_id"
       :projectid="getProject.project_id"
       sortable="true"
+      sort-alpha="true"
     ></list>
     <!---- New item ---->
     <new-item table="directoryentry" :name="getProject.project_name"></new-item>

@@ -3,7 +3,7 @@
 		<div style="width: 20px;">
 			<Transition name="fadein">
 				<div style="width: 10px" v-if="this.error == true">
-					<font-awesome-icon style="font-size: 20px; color: red" :icon="['far', 'exclamation']" />
+					<font-awesome-icon style="font-size: 20px; color: red" :icon="['fal', 'exclamation']" />
 				</div>
 			</Transition>
 		</div>

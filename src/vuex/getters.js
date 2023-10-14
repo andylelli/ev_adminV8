@@ -88,14 +88,21 @@ var getters = {
                 field = 'position';
             }
             if (sortReverse === true) {
-                data.reverse(function (a, b) {
-                    return a[table + '_' + field] - b[table + '_' + field];
-                });
+                field = 'name';
+                data = data.reverse((a, b) => {
+                    if (a[table + '_' + field] < b[table + '_' + field]) {
+                        return -1;
+                    }
+                });  
             }
             else {
-                data.sort(function (a, b) {
-                    return a[table + '_' + field] - b[table + '_' + field];
-                });
+                field = 'name';
+                data = data.sort((a, b) => {
+                    if (a[table + '_' + field] < b[table + '_' + field]) {
+                        console.log(a[table + '_' + field] + ' ' + b[table + '_' + field]);
+                        return -1;
+                    }
+                });                
             }
 
 
