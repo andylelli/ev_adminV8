@@ -1,5 +1,7 @@
 <template>
   <div>
+
+    <!-- TITLE -->
     <div class="display-flex justify-content-space-between">
       <f7-block-header style="text-transform: uppercase"
         ><div v-html="title"></div
@@ -14,8 +16,52 @@
         </f7-link>
       </f7-block-header>
     </div>
+
+    <!-- SEARCH BAR MAIN-->
+    <div
+      v-if="isSortAlpha == true && items.length > sortLength"
+      id="search-div"
+    >
+      <form
+        data-search-container=".search-list"
+        data-search-in=".item-title"
+        class="searchbar searchbar-init"
+      >
+        <div class="searchbar-inner">
+          <div class="searchbar-input-wrap">
+            <input type="search" placeholder="Search" />
+            <i class="searchbar-icon"></i>
+            <span class="input-clear-button"></span>
+          </div>
+          <span class="searchbar-disable-button">Cancel</span>
+        </div>
+      </form>
+    </div>
+
+    <!-- SEARCH BAR NOT FOUND-->
+    <div
+      v-if="items.length > sortLength"
+      strong-ios
+      outline-ios
+      dividers-ios
+      class="searchbar-not-found"
+    >
+      <div class="text-align-center">
+        <f7-block
+          strong
+          style="margin-top: 25px; margin-bottom: 25px; font-size: 18px"
+        >
+          Nothing found
+        </f7-block>
+      </div>
+    </div>
+
+    <!-- LIST -->
     <f7-list
-      :class="'ripple-color-primary no-margin-top no-padding-top sort-' + table"
+      :class="
+        'search-list searchbar-found ripple-color-primary no-margin-top no-padding-top sort-' +
+        table
+      "
       id="list"
       :sortable="isSortable"
       @sortable:sort="onSort()"
@@ -69,10 +115,19 @@ export default {
     return {
       event: store.state.event[0],
       key: null,
-      sortLength: 25
+      sortLength: 30,
     };
   },
-  props: ["title", "table", "icon", "id", "after", "projectid", "sortable", "sortTime", "sortPosition", "sortAlpha", "sortReverse"],
+  props: [
+    "title",
+    "table",
+    "icon",
+    "id",
+    "after",
+    "projectid",
+    "sortable",
+    "sortAlpha",
+  ],
   components: {
     swipeoutActions,
   },
@@ -80,43 +135,17 @@ export default {
   inject: ["eventBus"],
   computed: {
     isSortable() {
-      if (this.sortAlpha == "true" ) {
+      if (this.sortAlpha == "true") {
         return false;
-      }
-      else return true
-    },
-    isSortTime() {
-      if (this.sortTime == "true") {
-        return true;
-      }
-      else {
-        return false;
-      }
-    },
-    isSortPosition() {
-      if (this.sortPosition == "true") {
-        return true;
-      }
-      else {
-        return false;
-      }
+      } else return true;
     },
     isSortAlpha() {
       if (this.sortAlpha == "true") {
         return true;
-      }
-      else {
+      } else {
         return false;
       }
     },
-    isSortReverse() {
-      if (this.sortReverse == "true") {
-        return true;
-      }
-      else {
-        return false;
-      }
-    },    
     items() {
       var item = {
         table: this.table,
@@ -125,7 +154,7 @@ export default {
         type: "multiple",
         sort: this.isSortable,
         sortTime: this.isSortTime,
-        sortAlpha: this.isSortAlpha,               
+        sortAlpha: this.isSortAlpha,
       };
 
       var entries = store.getters.getData(item);
@@ -171,7 +200,7 @@ export default {
           items.push(item);
         }
         return items;
-      }      
+      }
     },
   },
   methods: {
@@ -303,13 +332,13 @@ export default {
       vue.eventBus.on("close-sortable", (x) => {
         vue.closeSortable();
       });
-      this.eventBus.eventsListeners['close-sortable'].splice(1);
+      this.eventBus.eventsListeners["close-sortable"].splice(1);
 
       // Event - Set eye slash
       vue.eventBus.on("set-eye-slash", (x) => {
         vue.setEyeSlash();
       });
-      this.eventBus.eventsListeners['set-eye-slash'].splice(1);
+      this.eventBus.eventsListeners["set-eye-slash"].splice(1);
     });
   },
 };
