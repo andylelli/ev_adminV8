@@ -76,7 +76,7 @@ export default {
 			allowChange: false,
 		};
 	},
-	props: ["page", "table", "projectid"],
+	props: ["page", "table", "projectid", "sortAlpha"],
 	mixins: [misc, newItem, login, fetch],
 	components: {
 		generalButton,
@@ -151,6 +151,7 @@ export default {
 				}
 
 				this.newItem(json, this.table, true, this.displayName);
+				
 				f7.sheet.close("#" + this.sheetId, true);
 			}
 		},

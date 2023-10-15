@@ -32,10 +32,10 @@
       :id="getDirectory.directory_id"
       :projectid="getProject.project_id"
       sortable="true"
-      sort-alpha="true"
+      :sort-alpha="this.isSortAlpha()"
     ></list>
     <!---- New item ---->
-    <new-item table="directoryentry" :name="getProject.project_name"></new-item>
+    <new-item table="directoryentry" :name="getProject.project_name" sort-alpha="true"></new-item>
     <!-- Sheet Modals-->
     <sheet-new table="directoryentry" :projectid="projectid"></sheet-new>
   </f7-page>
@@ -111,6 +111,13 @@ export default {
     },
   },
   methods: {
+    isSortAlpha() {
+      if (this.getDirectory.directory_sortalpha == 1) {
+        return "true";
+      } else {
+        return "false";
+      }
+    },
     reloadPage() {
       f7.views.current.router.refreshPage();
     },

@@ -69,12 +69,10 @@ export default {
     return {
       event: store.state.event[0],
       key: null,
-      sort: false,
-      sortTime: false,
-      sortReverse: false,
+      sortLength: 25
     };
   },
-  props: ["title", "table", "icon", "id", "after", "projectid", "sortable", "sortAlpha"],
+  props: ["title", "table", "icon", "id", "after", "projectid", "sortable", "sortTime", "sortPosition", "sortAlpha", "sortReverse"],
   components: {
     swipeoutActions,
   },
@@ -82,24 +80,52 @@ export default {
   inject: ["eventBus"],
   computed: {
     isSortable() {
-      if (this.sortable == "true") {
+      if (this.sortAlpha == "true" ) {
+        return false;
+      }
+      else return true
+    },
+    isSortTime() {
+      if (this.sortTime == "true") {
         return true;
+      }
+      else {
+        return false;
+      }
+    },
+    isSortPosition() {
+      if (this.sortPosition == "true") {
+        return true;
+      }
+      else {
+        return false;
       }
     },
     isSortAlpha() {
-      if (this.sortAlpha == "true" || this.sort == true) {
+      if (this.sortAlpha == "true") {
         return true;
       }
+      else {
+        return false;
+      }
     },
+    isSortReverse() {
+      if (this.sortReverse == "true") {
+        return true;
+      }
+      else {
+        return false;
+      }
+    },    
     items() {
       var item = {
         table: this.table,
         key: this.key,
         id: this.id,
         type: "multiple",
-        sort: this.isSortAlpha,
-        sortTime: this.sortTime,
-        sortReverse: this.sortReverse,
+        sort: this.isSortable,
+        sortTime: this.isSortTime,
+        sortAlpha: this.isSortAlpha,               
       };
 
       var entries = store.getters.getData(item);
@@ -146,49 +172,6 @@ export default {
         }
         return items;
       }      
-
-      if (entries) {
-        var items = [];
-        for (var i = 0; i < entries.length; i++) {
-          var item = {
-            id: entries[i][this.table + "_id"],
-          };
-          if (entries[i][this.table + "_name"]) {
-            item.name = entries[i][this.table + "_name"];
-            item.title = entries[i][this.table + "_name"];
-          }
-          if (entries[i][this.table + "_position"]) {
-            item.position = entries[i][this.table + "_position"];
-          }
-          if (entries[i][this.table + "_typeid"]) {
-            item.typeid = entries[i][this.table + "_typeid"];
-          }
-          if (entries[i][this.table + "_text"]) {
-            item.after = entries[i][this.table + "_text"];
-          }
-          if (entries[i][this.table + "_title"]) {
-            item.name = entries[i][this.table + "_title"];
-            item.title = entries[i][this.table + "_title"];
-          }
-          if (entries[i][this.table + "_message"]) {
-            item.message = entries[i][this.table + "_message"];
-          }
-          if (entries[i][this.table + "_schedulehide"]) {
-            item.schedulehide = entries[i][this.table + "_schedulehide"];
-          }
-          if (entries[i][this.table + "_directoryentryid"]) {
-            var directoryentryid = entries[i][this.table + "_directoryentryid"];
-            item.header = this.setDirectoryentryName(directoryentryid);
-          }
-          if (entries[i][this.table + "_time"]) {
-            var unixtime = entries[i][this.table + "_time"];
-            var formattedTime = this.unixtimeConversion(unixtime);
-            item.footer = formattedTime;
-          }
-          items.push(item);
-        }
-        return items;
-      }
     },
   },
   methods: {
@@ -294,15 +277,6 @@ export default {
       return result.table === vue.table;
     });
     this.key = find[0].key;
-    if (find[0].sort) {
-      this.sort = find[0].sort;
-    }
-    if (find[0].sortTime) {
-      this.sortTime = find[0].sortTime;
-    }
-    if (find[0].sortReverse) {
-      this.sortReverse = find[0].sortReverse;
-    }
   },
   mounted() {
     var vue = this;

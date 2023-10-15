@@ -1,6 +1,7 @@
 
 import params from "../js/config/params.js";
 import escape from "../js/config/escape.js";
+import { faSortAlphaAsc } from "@fortawesome/pro-light-svg-icons";
 
 var getters = {
     getError: (state) => (x) => {
@@ -57,6 +58,7 @@ var getters = {
         var sort = item.sort;
         var sortTime = item.sortTime;
         var sortReverse = item.sortReverse;
+        var sortAlpha = item.sortAlpha;
 
         var data = state[table].filter(function (result) {
             return result[table + '_' + key] === id;
@@ -79,33 +81,34 @@ var getters = {
         }
 
         //Sorting results
-        if (sort) {
-            var field;
-            if (sortTime) {
-                field = 'unixtime';
-            }
-            else {
-                field = 'position';
-            }
-            if (sortReverse === true) {
-                field = 'name';
-                data = data.reverse((a, b) => {
-                    if (a[table + '_' + field] < b[table + '_' + field]) {
-                        return -1;
-                    }
-                });  
-            }
-            else {
-                field = 'name';
-                data = data.sort((a, b) => {
-                    if (a[table + '_' + field] < b[table + '_' + field]) {
-                        console.log(a[table + '_' + field] + ' ' + b[table + '_' + field]);
-                        return -1;
-                    }
-                });                
-            }
+        var field;
 
-
+        if (sortTime) {
+            field = 'unixtime';
+            console.log("time");
+            data = data.reverse((a, b) => {
+                if (a[table + '_' + field] < b[table + '_' + field]) {
+                    return -1;
+                }
+            });
+        }
+        else if (sortAlpha) {
+            field = 'name';
+            console.log("name");
+            data = data.sort((a, b) => {
+                if (a[table + '_' + field] < b[table + '_' + field]) {
+                    return -1;
+                }
+            });
+        }
+        else {
+            field = 'position';
+            console.log("position");
+            data = data.sort((a, b) => {
+                if (a[table + '_' + field] < b[table + '_' + field]) {
+                    return -1;
+                }
+            });
         }
 
         //Single Item or Multiple Items

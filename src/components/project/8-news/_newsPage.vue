@@ -21,6 +21,7 @@
 			:id="getNews.news_id"
 			:projectid="this.projectid"
 			sortable="false"
+			sort-time="true"
 		></list>
 		<new-newsitem :projectid="this.projectid"></new-newsitem>
 	</f7-page>

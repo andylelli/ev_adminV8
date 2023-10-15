@@ -35,6 +35,12 @@
 			<segment :header="this.setShowImageHeader()">
 				<show-image :id="this.projectid" table="directory"></show-image>
 			</segment>
+			<!---- Sort Alphabetically ---->
+			<segment header="Sort Alphabetically">
+				<directory-settings-sort-alpha
+					:projectid="projectid"
+				></directory-settings-sort-alpha>
+			</segment>			
 			<!---- Location ---->
 			<segment header="Location">
 				<directory-settings-location
@@ -102,6 +108,7 @@ import sheetEdit from "../../sheet/sheetEdit.vue";
 import generalButton from "../../misc/generalButton.vue";
 import sheetProjectIcon from "../../sheet/sheetProjectIcon.vue";
 
+import directorySettingsSortAlpha from "./directorySettingsSortAlpha.vue";
 import directorySettingsLocation from "./directorySettingsLocation.vue";
 import directorySettingsParent from "./directorySettingsParent.vue";
 import directorySettingsSchedule from "./directorySettingsSchedule.vue";
@@ -132,6 +139,7 @@ export default {
 		sheetEdit,
 		sheetProjectIcon,
 		sheetDirectoryColour,
+		directorySettingsSortAlpha,		
 		directorySettingsLocation,
 		directorySettingsParent,
 		directorySettingsSchedule,
