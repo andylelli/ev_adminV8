@@ -19,7 +19,7 @@
 
     <!-- SEARCH BAR MAIN-->
     <div
-      v-if="isSortAlpha == true && items.length > sortLength"
+      v-if="items.length > sortLength"
       id="search-div"
     >
       <form
