@@ -13,9 +13,7 @@
               />
             </f7-icon>
           </template>
-          <f7-button
-            :class="buttonIsActive()"
-            @click="restore()"
+          <f7-button :class="buttonIsActive()" @click="restore()"
             >RESTORE</f7-button
           >
         </f7-list-item>
@@ -136,13 +134,14 @@ export default {
     this.eventBus.$off("restore-file");
   },
   mounted() {
-    var vue = this;
-
     // Event - Restore file
+    var vue = this;
     vue.eventBus.on("restore-file", (file) => {
       vue.submit(file);
+      if (vue.eventBus.eventsListeners["restore-file"].length > 1) {
+        vue.eventBus.eventsListeners["restore-file"].splice(1);
+      }
     });
-    this.eventBus.eventsListeners["restore-file"].splice(1);
 
     f7ready((f7) => {
       vue.delimitedString = store.getters.getLookup("schedule-qr-codes");

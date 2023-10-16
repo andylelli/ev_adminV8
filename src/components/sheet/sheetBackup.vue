@@ -8,7 +8,9 @@
   >
     <f7-page-content>
       <f7-block>
-        <f7-block-title><div align="center">SELECT BACK UP TO OVERWRITE</div></f7-block-title>
+        <f7-block-title
+          ><div align="center">SELECT BACK UP TO OVERWRITE</div></f7-block-title
+        >
         <f7-list inset strong>
           <f7-list-button
             v-for="(file, i) in this.files"
@@ -47,18 +49,20 @@ export default {
     remove(id) {
       f7.sheet.close("#sheet-backup", true);
       this.eventBus.emit("delete-file", id);
-    }
+    },
   },
   beforeMounted() {},
   mounted() {
     var vue = this;
 
     // Event - Open sheet backup
-		this.eventBus.on("open-sheet-backup", (json) => {
-			vue.files = json.files;
-			f7.sheet.open("#sheet-backup", true);
-		}); 
-    this.eventBus.eventsListeners['open-sheet-backup'].splice(1);   
+    this.eventBus.on("open-sheet-backup", (json) => {
+      vue.files = json.files;
+      f7.sheet.open("#sheet-backup", true);
+      if (vue.eventBus.eventsListeners["open-sheet-backup"].length > 1) {
+        vue.eventBus.eventsListeners["open-sheet-backup"].splice(1);
+      }
+    });
   },
 };
 </script>

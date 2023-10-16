@@ -57,8 +57,9 @@ var getters = {
         var type = item.type;
         var sort = item.sort;
         var sortTime = item.sortTime;
-        var sortReverse = item.sortReverse;
         var sortAlpha = item.sortAlpha;
+        var infiniteStart = item.infiniteStart;
+        var infiniteEnd = item.infiniteEnd;
 
         var data = state[table].filter(function (result) {
             return result[table + '_' + key] === id;
@@ -80,12 +81,14 @@ var getters = {
             }
         }
 
+        if (infiniteEnd) {
+            data = data.slice(infiniteStart, infiniteEnd);
+        }        
+
         //Sorting results
         var field;
-
         if (sortTime) {
             field = 'unixtime';
-            console.log("time");
             data = data.reverse((a, b) => {
                 if (a[table + '_' + field] < b[table + '_' + field]) {
                     return -1;
@@ -94,7 +97,6 @@ var getters = {
         }
         else if (sortAlpha) {
             field = 'name';
-            console.log("name");
             data = data.sort((a, b) => {
                 if (a[table + '_' + field] < b[table + '_' + field]) {
                     return -1;
@@ -103,7 +105,6 @@ var getters = {
         }
         else {
             field = 'position';
-            console.log("position");
             data = data.sort((a, b) => {
                 if (a[table + '_' + field] < b[table + '_' + field]) {
                     return -1;

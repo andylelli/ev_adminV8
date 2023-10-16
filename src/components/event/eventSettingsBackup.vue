@@ -109,13 +109,14 @@ export default {
     },
   },
   mounted() {
-    var vue = this;
-
     // Event - Delete file
+    var vue = this;
     this.eventBus.on("delete-file", (file) => {
       vue.submit(file);
+      if (vue.eventBus.eventsListeners["delete-file"].length > 1) {
+        vue.eventBus.eventsListeners["delete-file"].splice(1);
+      }
     });
-    this.eventBus.eventsListeners['delete-file'].splice(1);
   },
 };
 </script>

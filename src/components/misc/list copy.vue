@@ -17,7 +17,7 @@
     </div>
 
     <!-- SEARCH BAR MAIN-->
-    <div class="md" id="search-div" :style="iosSearchDiv()">
+    <div v-if="items.length > sortLength" class="md" id="search-div">
       <form
         data-search-container=".search-list"
         data-search-in=".item-title"
@@ -26,7 +26,7 @@
         <div class="md searchbar-inner">
           <div class="searchbar-input-wrap">
             <input type="search" placeholder="Search" />
-            <i class="searchbar-icon"></i>
+            <i class="searchbar-icon" style="top: 7px"></i>
             <span class="input-clear-button"></span>
           </div>
           <span class="searchbar-disable-button">Cancel</span>
@@ -96,10 +96,8 @@
 import store from "../../vuex/store.js";
 
 import { f7, f7ready } from "framework7-vue";
-
-import { getDevice, Dom7 } from "framework7";
+import { Dom7 } from "framework7";
 var $$ = Dom7;
-const device = getDevice();
 
 import misc from "../../mixins/misc";
 
@@ -114,8 +112,6 @@ export default {
       event: store.state.event[0],
       key: null,
       sortLength: 30,
-      directoryentries: [],
-      total: 0,
     };
   },
   props: [
@@ -134,9 +130,6 @@ export default {
   mixins: [misc],
   inject: ["eventBus"],
   computed: {
-    getDirectoryentries() {
-      return this.directoryentries;
-    },
     isSortable() {
       if (this.sortAlpha == "true") {
         return false;
@@ -150,7 +143,17 @@ export default {
       }
     },
     items() {
-      var entries = this.getDirectoryentries;
+      var item = {
+        table: this.table,
+        key: this.key,
+        id: this.id,
+        type: "multiple",
+        sort: this.isSortable,
+        sortTime: this.isSortTime,
+        sortAlpha: this.isSortAlpha,
+      };
+
+      var entries = store.getters.getData(item);
 
       if (entries) {
         var items = [];
@@ -197,18 +200,6 @@ export default {
     },
   },
   methods: {
-    iosSearchDiv() {
-      var style;
-      if (device.ios) {
-        style =
-          "margin-bottom: 0px; margin-top: 0px; max-height: 0; overflow: hidden; transition: max-height 0.8s ease-out;";
-        return style;
-      } else {
-        style =
-          "max-height: 0; overflow: hidden; transition: max-height 0.8s ease-out;";
-        return style;
-      }
-    },
     setBadge(item) {
       if (this.table == "pollitem") {
         var data = {
@@ -304,59 +295,6 @@ export default {
       var els = $$(".sort-" + this.table + " ul").children();
       this.sortList(els, this.table);
     },
-    infiniteLoad() {
-      f7.preloader.show();
-
-      var items = {
-        table: "directoryentry",
-        key: "directoryid",
-        id: this.id,
-        type: "multiple",
-        sortAlpha: this.isSortAlpha,
-        infiniteStart: this.infiniteStart,
-        infiniteEnd: 20,
-      };
-
-      var data = store.getters.getData(items);
-      this.directoryentries = data;
-
-      var items = {
-        table: "directoryentry",
-        key: "directoryid",
-        id: this.id,
-        type: "multiple",
-      };
-
-      var data = store.getters.getData(items);
-      if (data) {
-        this.total = data.length;
-
-        if (this.total > 30) {
-          var vue = this;
-          setTimeout(() => {
-            var items = {
-              table: "directoryentry",
-              key: "directoryid",
-              id: this.id,
-              type: "multiple",
-              sortAlpha: this.isSortAlpha,
-              infiniteStart: 30,
-              infiniteEnd: vue.total,
-            };
-
-            var data = store.getters.getData(items);
-            vue.directoryentries = vue.directoryentries.concat(data);
-
-            f7.preloader.hide();
-
-            vue.accordianSlide("search-div", 80);
-          }, 200);
-        }
-        f7.preloader.hide();
-      } else {
-        this.total = 0;
-      }
-    },
   },
   beforeMount() {
     var vue = this;
@@ -368,15 +306,6 @@ export default {
   mounted() {
     var vue = this;
     f7ready((f7) => {
-      this.infiniteLoad();
-
-      vue.eventBus.on("infinite-load", (x) => {
-        vue.infiniteLoad();
-        if (vue.eventBus.eventsListeners["infinite-load"].length > 1) {
-          vue.eventBus.eventsListeners["infinite-load"].splice(1);
-        }
-      });
-
       $$(".item-link").addClass("ripple-color-primary");
 
       $$(".badge").css("padding-bottom", "2px");
@@ -411,15 +340,6 @@ export default {
         }
       });
     });
-
-    // On close
-    vue.eventBus.on("list-on-close", (x) => {
-      this.directoryentries = [];
-      this.getDirectoryentries = [];
-      if (vue.eventBus.eventsListeners["list-on-close"].length > 1) {
-        vue.eventBus.eventsListeners["list-on-close"].splice(1);
-      }
-    });
   },
 };
 </script>
@@ -431,10 +351,6 @@ export default {
 .ios .badge {
   padding-left: 4px !important;
   padding-bottom: 2px !important;
-}
-
-.ios .searchbar-icon {
-  top: 7px;
 }
 
 .md .badge {

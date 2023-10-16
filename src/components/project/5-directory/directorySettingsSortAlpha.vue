@@ -21,6 +21,8 @@
 <script>
 import store from "../../../vuex/store.js";
 
+import { f7 } from "framework7-vue";
+
 export default {
 	name: "directory-settings-sort-alpha",
 	data() {
@@ -29,6 +31,7 @@ export default {
 		};
 	},
 	props: ["projectid"],
+	inject: ["eventBus"],
 	computed: {
 		getItem() {
 			var item = {
@@ -48,7 +51,8 @@ export default {
 				return false;
 			}
 		},
-		toggle(event) {
+		async toggle(event) {
+
 			var value;
 			if (event === true) {
 				value = 1;
@@ -64,7 +68,10 @@ export default {
 			item.json = this.getItem;
 			item.json[this.table + "_sortalpha"] = value;
 			item.json[this.table + "_unixtime"] = unixtime;
-			store.dispatch("updateItemApp", item);
+			await store.dispatch("updateItemApp", item);
+
+			await this.eventBus.emit("infinite-load");
+
 		},
 	},
 	mounted() {},

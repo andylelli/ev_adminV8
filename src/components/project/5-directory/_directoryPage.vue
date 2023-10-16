@@ -9,7 +9,7 @@
   >
     <!-- Nav bar-->
     <f7-navbar>
-      <nav-back-link></nav-back-link>
+      <nav-back-link page="directory"></nav-back-link>
       <f7-nav-title v-if="getProject">
         <div v-html="getProject.project_name"></div
       ></f7-nav-title>
