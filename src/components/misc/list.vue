@@ -17,16 +17,22 @@
     </div>
 
     <!-- SEARCH BAR MAIN-->
-    <div class="md" id="search-div" :style="iosSearchDiv()">
+    <div :style="iosSearchDiv()" id="search-div">
       <form
         data-search-container=".search-list"
         data-search-in=".item-title"
-        class="searchbar searchbar-init"
+        class="searchbar searchbar-init background-white"
+        :style="iosSearchForm()"
       >
-        <div class="md searchbar-inner">
-          <div class="searchbar-input-wrap">
-            <input type="search" placeholder="Search" />
-            <i class="searchbar-icon"></i>
+        <div class="searchbar-inner" :style="iosSearchInner()">
+          <div class="searchbar-input-wrap" :style="iosSearchWrap()">
+            <input
+              type="search"
+              placeholder="Search"
+              class="light-tint"
+              :style="iosSearchInput()"
+            />
+            <i class="searchbar-icon" :style="iosSearchIcon()"></i>
             <span class="input-clear-button"></span>
           </div>
           <span class="searchbar-disable-button">Cancel</span>
@@ -35,13 +41,7 @@
     </div>
 
     <!-- SEARCH BAR NOT FOUND-->
-    <div
-      v-if="items.length > sortLength"
-      strong-ios
-      outline-ios
-      dividers-ios
-      class="searchbar-not-found"
-    >
+    <div class="md searchbar-not-found">
       <div class="text-align-center">
         <f7-block
           strong
@@ -127,6 +127,7 @@ export default {
     "projectid",
     "sortable",
     "sortAlpha",
+    "sortTime",
   ],
   components: {
     swipeoutActions,
@@ -137,17 +138,17 @@ export default {
     getDirectoryentries() {
       return this.directoryentries;
     },
-    isSortable() {
-      if (this.sortAlpha == "true") {
-        return false;
-      } else return true;
-    },
     isSortAlpha() {
       if (this.sortAlpha == "true") {
         return true;
       } else {
         return false;
       }
+    },
+    isSortable() {
+      if (this.isSortAlpha == true || this.isSortTime == true) {
+        return false;
+      } else return true;
     },
     items() {
       var entries = this.getDirectoryentries;
@@ -192,6 +193,7 @@ export default {
           }
           items.push(item);
         }
+
         return items;
       }
     },
@@ -201,12 +203,42 @@ export default {
       var style;
       if (device.ios) {
         style =
-          "margin-bottom: 0px; margin-top: 0px; max-height: 0; overflow: hidden; transition: max-height 0.8s ease-out;";
+          "margin-bottom: 0px; margin-top: 0px; max-height: 0; overflow: hidden; transition: max-height 1s ease-out;";
         return style;
       } else {
         style =
-          "max-height: 0; overflow: hidden; transition: max-height 0.8s ease-out;";
+          "max-height: 0; overflow: hidden; transition: max-height 1s ease-out;";
         return style;
+      }
+    },
+    iosSearchInner() {
+      var style;
+      if (device.ios) {
+        style = "height: 60px; padding-top: 25px; padding-bottom: 50px;";
+        return style;
+      } else {
+        style = "height: 60px; padding-top: 5px; padding-bottom: 20px;";
+        return style;
+      }
+    },
+    iosSearchForm() {
+      if (device.ios) {
+        return "height: 52px; margin-bottom: 10px";
+      }
+    },
+    iosSearchWrap() {
+      if (device.ios) {
+        return "height: 40px; padding-top: 7px; padding-bottom: 3px; margin-bottom:5px;";
+      }
+    },
+    iosSearchIcon() {
+      if (device.ios) {
+        return "padding-left: 13px; padding-top: 2px;";
+      }
+    },
+    iosSearchInput() {
+      if (device.ios) {
+        return "border-radius: 18px; padding-left: 43px; margin-top: 1px;";
       }
     },
     setBadge(item) {
@@ -266,6 +298,8 @@ export default {
       }
     },
     setEyeSlash() {
+      console.log(this.table);
+
       if (this.table == "directoryentry") {
         var data = {
           table: "directory",
@@ -277,8 +311,14 @@ export default {
         var directoryHidenames = directory.directory_hidenames;
         var directoryHidetype = directory.directory_hidetype;
 
+        console.log("22222");
+
         if (directoryHidenames == 1 && directoryHidetype == 1) {
+          console.log("33333");
+
           this.items.forEach((item) => {
+            console.log("33333");
+
             if (item.schedulehide == 1) {
               var replaceID = "sort-" + this.table + "-" + item.id;
               var el = $$("#" + replaceID);
@@ -304,15 +344,16 @@ export default {
       var els = $$(".sort-" + this.table + " ul").children();
       this.sortList(els, this.table);
     },
-    infiniteLoad() {
+    infiniteLoad(accordian) {
       f7.preloader.show();
 
       var items = {
-        table: "directoryentry",
-        key: "directoryid",
+        table: this.table,
+        key: this.key,
         id: this.id,
         type: "multiple",
         sortAlpha: this.isSortAlpha,
+        sortTime: this.isSortTime,
         infiniteStart: this.infiniteStart,
         infiniteEnd: 20,
       };
@@ -321,8 +362,8 @@ export default {
       this.directoryentries = data;
 
       var items = {
-        table: "directoryentry",
-        key: "directoryid",
+        table: this.table,
+        key: this.key,
         id: this.id,
         type: "multiple",
       };
@@ -335,11 +376,12 @@ export default {
           var vue = this;
           setTimeout(() => {
             var items = {
-              table: "directoryentry",
-              key: "directoryid",
+              table: this.table,
+              key: this.key,
               id: this.id,
               type: "multiple",
               sortAlpha: this.isSortAlpha,
+              sortTime: this.isSortTime,
               infiniteStart: 30,
               infiniteEnd: vue.total,
             };
@@ -349,11 +391,31 @@ export default {
 
             f7.preloader.hide();
 
-            vue.accordianSlide("search-div", 80);
+            if (accordian == true) {
+              vue.accordianSlide("search-div", 80);
+            }
           }, 200);
+
+          setTimeout(() => {
+            var data = {
+              table: "directory",
+              key: "id",
+              id: this.id,
+              type: "single",
+            };
+            var directory = store.getters.getData(data);
+            if (directory) {
+              if (directory.directory_hidenames == 1) {
+                this.setEyeSlash();
+              }
+            }
+          }, 200);
+
+        } else {
+          f7.preloader.hide();
         }
-        f7.preloader.hide();
       } else {
+        f7.preloader.hide();
         this.total = 0;
       }
     },
@@ -368,32 +430,13 @@ export default {
   mounted() {
     var vue = this;
     f7ready((f7) => {
-      this.infiniteLoad();
-
-      vue.eventBus.on("infinite-load", (x) => {
-        vue.infiniteLoad();
-        if (vue.eventBus.eventsListeners["infinite-load"].length > 1) {
-          vue.eventBus.eventsListeners["infinite-load"].splice(1);
-        }
-      });
+      var accordian = true;
+      this.infiniteLoad(accordian);
 
       $$(".item-link").addClass("ripple-color-primary");
 
       $$(".badge").css("padding-bottom", "2px");
       $$(".badge").css("padding-left", "4px");
-
-      var data = {
-        table: "directory",
-        key: "id",
-        id: this.id,
-        type: "single",
-      };
-      var directory = store.getters.getData(data);
-      if (directory) {
-        if (directory.directory_hidenames == 1) {
-          this.setEyeSlash();
-        }
-      }
 
       // Event - Close sortable
       vue.eventBus.on("close-sortable", (x) => {
@@ -420,6 +463,15 @@ export default {
         vue.eventBus.eventsListeners["list-on-close"].splice(1);
       }
     });
+
+    // Infinite load
+    vue.eventBus.on("infinite-load", (x) => {
+      var accordian = false;
+      vue.infiniteLoad(accordian);
+      if (vue.eventBus.eventsListeners["infinite-load"].length > 1) {
+        vue.eventBus.eventsListeners["infinite-load"].splice(1);
+      }
+    });
   },
 };
 </script>
@@ -433,8 +485,12 @@ export default {
   padding-bottom: 2px !important;
 }
 
-.ios .searchbar-icon {
-  top: 7px;
+.ios .light-tint {
+  background-color: var(--f7-md-secondary-container) !important;
+}
+
+.ios .background-white {
+  background-color: white !important;
 }
 
 .md .badge {

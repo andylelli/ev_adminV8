@@ -50,12 +50,14 @@ var getters = {
     },
     getData: (state) => (item) => {
 
+        //DEBUG
+        //console.log(item);
+
         //Return data
         var table = item.table;
         var key = item.key;
         var id = item.id;
         var type = item.type;
-        var sort = item.sort;
         var sortTime = item.sortTime;
         var sortAlpha = item.sortAlpha;
         var infiniteStart = item.infiniteStart;
