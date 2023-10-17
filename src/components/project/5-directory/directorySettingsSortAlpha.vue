@@ -21,8 +21,6 @@
 <script>
 import store from "../../../vuex/store.js";
 
-import { f7 } from "framework7-vue";
-
 export default {
 	name: "directory-settings-sort-alpha",
 	data() {

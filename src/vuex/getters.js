@@ -4,6 +4,9 @@ import escape from "../js/config/escape.js";
 import { faSortAlphaAsc } from "@fortawesome/pro-light-svg-icons";
 
 var getters = {
+    getEmail: (state) => (x) => {
+        return state.email;
+    },    
     getError: (state) => (x) => {
         return state.error;
     },
@@ -81,11 +84,7 @@ var getters = {
                     }
                 });
             }
-        }
-
-        if (infiniteEnd) {
-            data = data.slice(infiniteStart, infiniteEnd);
-        }        
+        }       
 
         //Sorting results
         var field;
@@ -113,6 +112,10 @@ var getters = {
                 }
             });
         }
+
+        if (infiniteEnd) {
+            data = data.slice(infiniteStart, infiniteEnd);
+        }         
 
         //Single Item or Multiple Items
         if (type == 'single') {

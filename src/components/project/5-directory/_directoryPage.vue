@@ -4,7 +4,6 @@
     name="directory"
     @page:beforein="
       closeSortable();
-      setEyeSlash();
     "
   >
     <!-- Nav bar-->
@@ -24,7 +23,7 @@
     </segment>
     <!-- Main section-->
     <!---- List ---->
-    <list
+    <directoryentry-list  
       v-if="getProject && getDirectory"
       :title="getProject.project_name"
       table="directoryentry"
@@ -33,7 +32,7 @@
       :projectid="getProject.project_id"
       sortable="true"
       :sort-alpha="this.isSortAlpha()"
-    ></list>
+    ></directoryentry-list>
     <!---- New item ---->
     <new-item table="directoryentry" :name="getProject.project_name" sort-alpha="true"></new-item>
     <!-- Sheet Modals-->
@@ -56,7 +55,7 @@ import navBars from "../../misc/nav/navBars.vue";
 
 import segment from "../../misc/segment.vue";
 import generalSettings from "../../misc/generalSettings.vue";
-import list from "../../misc/list.vue";
+import directoryentryList from "./directoryentryList.vue";
 import newItem from "../../misc/newItem.vue";
 
 import sheetNew from "../../sheet/sheetNew.vue";
@@ -78,7 +77,7 @@ export default {
     navBars,
     segment,
     generalSettings,
-    list,
+    directoryentryList,
     newItem,
     sheetNew,
   },
@@ -123,11 +122,6 @@ export default {
     },
     closeSortable() {
       this.eventBus.emit("close-sortable");
-    },
-    setEyeSlash() {
-      if (this.getDirectory.directory_hidenames == 1) {
-        this.eventBus.emit("set-eye-slash");
-      }
     },
   },
   mounted() {

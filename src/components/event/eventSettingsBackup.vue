@@ -22,6 +22,8 @@
 <script>
 import store from "../../vuex/store.js";
 
+import { f7 } from "framework7-vue";
+
 import misc from "../../mixins/misc";
 import fetch from "../../mixins/fetch";
 
@@ -77,6 +79,8 @@ export default {
       let method = "GET";
       let data = null;
 
+      f7.preloader.show();
+
       // Post data
       this.fetch(url, method, data, this.success, this.failure);
     },
@@ -95,6 +99,10 @@ export default {
 
       store.dispatch("insertLookupApp", item);
       store.dispatch("insertLookupDB", item);
+
+      f7.preloader.hide();
+
+      f7.dialog.alert("Backup successful", "Backup");
 
       console.log(json.message);
     },

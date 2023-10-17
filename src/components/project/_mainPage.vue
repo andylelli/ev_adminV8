@@ -102,8 +102,6 @@ export default {
 				localStorage.removeItem("app_update_in_progress");
 			}
 			console.log("Main page loaded successfully");
-
-			//console.log(f7.colors);
 		});
 	},
 };

@@ -56,6 +56,9 @@ export default {
 	},
 	mixins: [misc, login, fetch],
 	computed: {
+		setEmail() {
+			return store.getters.getEmail();
+		},
 		showQrscanner() {
 			return this.isScannerActive;
 		},
@@ -143,7 +146,7 @@ export default {
 
 			return (
 				"User: " +
-				email +
+				this.setEmail +
 				"<br/>Role: " +
 				type +
 				"<br/><br/>Version: " +

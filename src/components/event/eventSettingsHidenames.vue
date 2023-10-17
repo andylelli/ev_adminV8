@@ -51,7 +51,7 @@
 					>CREATE</f7-button
 				>
 			</f7-list-item>
-			<f7-list-item title="Import Lineup from string">
+			<!-- <f7-list-item title="Import Lineup from string">
 				<template #media>
 					<f7-icon>
 						<font-awesome-icon
@@ -67,7 +67,7 @@
 					@click="importData(importString)"
 					>IMPORT</f7-button
 				>
-			</f7-list-item>
+			</f7-list-item> -->
 		</f7-list>
 		<div v-if="this.getHiddenDirectories().length > 0">
 			<div v-for="(item, i) in this.delimitedString" :key="i">
@@ -83,6 +83,7 @@
 					></qrcode-vue>
 				</p>
 			</div>
+			<!-- 
 			<f7-text-editor
 				:value="getDelimitedStrings(delimitedString)"
 				@texteditor:change="(value) => (importString = value)"
@@ -90,6 +91,7 @@
 				:buttons="[[]]"
 			>
 			</f7-text-editor>
+		-->
 		</div>
 	</div>
 </template>

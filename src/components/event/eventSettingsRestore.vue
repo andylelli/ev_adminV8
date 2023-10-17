@@ -96,8 +96,12 @@ export default {
       let method = "POST";
       let data = { file: file };
 
+      // Show preloader
+      f7.preloader.show();
+
       // Post data
       await this.fetch(url, method, data, this.success, this.failure);
+
     },
     buttonIsActive() {
       if (this.getBackupFiles.length > 0) {
@@ -107,8 +111,6 @@ export default {
       }
     },
     async success(json) {
-      //f7.preloader.show();
-
       localStorage.admin_counter = 0;
 
       var tables = false;
@@ -124,9 +126,15 @@ export default {
         getDeletes
       );
 
+      // Hide preloader
+      f7.preloader.hide();
+
       f7.dialog.alert("Restoration of backup has completed successfully");
     },
     failure(json) {
+      // Hide preloader
+      f7.preloader.hide();
+
       console.log(json.message);
     },
   },

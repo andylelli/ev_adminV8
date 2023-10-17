@@ -111,7 +111,7 @@ var actions = {
         );
     },
 
-    //BASE STATE
+    //BASE STATE   
     setAutoSync({ state }, value) {
         state.autosync = value;
     },
@@ -163,6 +163,7 @@ var actions = {
         state.userid = parseInt(localStorage.admin_userid);
         state.role = localStorage.admin_role;
         state.token = localStorage.admin_token;
+        state.email = localStorage.admin_email;
         if (localStorage.admin_eventid) {
             state.eventid = parseInt(localStorage.admin_eventid);
         }

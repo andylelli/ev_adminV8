@@ -16,42 +16,6 @@
       </f7-block-header>
     </div>
 
-    <!-- SEARCH BAR MAIN-->
-    <div :style="iosSearchDiv()" id="search-div">
-      <form
-        data-search-container=".search-list"
-        data-search-in=".item-title"
-        class="searchbar searchbar-init background-white"
-        :style="iosSearchForm()"
-      >
-        <div class="searchbar-inner" :style="iosSearchInner()">
-          <div class="searchbar-input-wrap" :style="iosSearchWrap()">
-            <input
-              type="search"
-              placeholder="Search"
-              class="light-tint"
-              :style="iosSearchInput()"
-            />
-            <i class="searchbar-icon" :style="iosSearchIcon()"></i>
-            <span class="input-clear-button"></span>
-          </div>
-          <span class="searchbar-disable-button">Cancel</span>
-        </div>
-      </form>
-    </div>
-
-    <!-- SEARCH BAR NOT FOUND-->
-    <div class="md searchbar-not-found">
-      <div class="text-align-center">
-        <f7-block
-          strong
-          style="margin-top: 25px; margin-bottom: 25px; font-size: 18px"
-        >
-          Nothing found
-        </f7-block>
-      </div>
-    </div>
-
     <!-- LIST -->
     <f7-list
       :class="
@@ -113,9 +77,6 @@ export default {
     return {
       event: store.state.event[0],
       key: null,
-      sortLength: 30,
-      directoryentries: [],
-      total: 0,
     };
   },
   props: [
@@ -135,8 +96,16 @@ export default {
   mixins: [misc],
   inject: ["eventBus"],
   computed: {
-    getDirectoryentries() {
-      return this.directoryentries;
+    getItems() {
+      var item = {
+        table: this.table,
+        key: this.key,
+        id: this.id,
+        sortAlpha: this.isSortAlpha,
+        sortTime: this.isSortTime,        
+        type: "multiple",
+      };
+      return store.getters.getData(item);
     },
     isSortAlpha() {
       if (this.sortAlpha == "true") {
@@ -145,13 +114,20 @@ export default {
         return false;
       }
     },
+    isSortTime() {
+      if (this.sortTime == "true") {
+        return true;
+      } else {
+        return false;
+      }
+    },    
     isSortable() {
       if (this.isSortAlpha == true || this.isSortTime == true) {
         return false;
       } else return true;
     },
     items() {
-      var entries = this.getDirectoryentries;
+      var entries = this.getItems;
 
       if (entries) {
         var items = [];
@@ -297,127 +273,12 @@ export default {
         return text;
       }
     },
-    setEyeSlash() {
-      console.log(this.table);
-
-      if (this.table == "directoryentry") {
-        var data = {
-          table: "directory",
-          key: "id",
-          id: this.id,
-          type: "single",
-        };
-        var directory = store.getters.getData(data);
-        var directoryHidenames = directory.directory_hidenames;
-        var directoryHidetype = directory.directory_hidetype;
-
-        console.log("22222");
-
-        if (directoryHidenames == 1 && directoryHidetype == 1) {
-          console.log("33333");
-
-          this.items.forEach((item) => {
-            console.log("33333");
-
-            if (item.schedulehide == 1) {
-              var replaceID = "sort-" + this.table + "-" + item.id;
-              var el = $$("#" + replaceID);
-              var itemAfter = el.find(".item-inner");
-              itemAfter.html(
-                '<div class="item-title">' +
-                  item.name +
-                  '</div><div class="item-after"><span><svg class="svg-inline--fa fa-eye-slash fa-fw custom-colour" aria-hidden="true" focusable="false" data-prefix="fal" data-icon="eye-slash" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" style="font-size: 20px;"><path class="" fill="currentColor" d="M25.9 3.4C19-2 8.9-.8 3.4 6.1S-.8 23.1 6.1 28.6l608 480c6.9 5.5 17 4.3 22.5-2.6s4.3-17-2.6-22.5L25.9 3.4zM605.5 268.3c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-51.2 0-96 14.8-133.9 36.8l27.3 21.5C244.6 74.2 280.2 64 320 64c70.4 0 127.7 32 170.8 72c43.1 40 71.9 88 85.2 120c-9.2 22.1-25.9 52-49.5 81.5l25.1 19.8c25.6-32 43.7-64.4 53.9-89zM88.4 154.7c-25.6 32-43.7 64.4-53.9 89c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c51.2 0 96-14.8 133.9-36.8l-27.3-21.5C395.4 437.8 359.8 448 320 448c-70.4 0-127.7-32-170.8-72C106.1 336 77.3 288 64 256c9.2-22.1 25.9-52 49.5-81.5L88.4 154.7zM320 384c16.7 0 32.7-3.2 47.4-9.1l-30.9-24.4c-5.4 .9-10.9 1.4-16.5 1.4c-51 0-92.8-39.8-95.8-90.1l-30.9-24.4c-.9 6-1.3 12.2-1.3 18.5c0 70.7 57.3 128 128 128zM448 256c0-70.7-57.3-128-128-128c-16.7 0-32.7 3.2-47.4 9.1l30.9 24.4c5.4-.9 10.9-1.4 16.5-1.4c51 0 92.8 39.8 95.8 90.1l30.9 24.4c.9-6 1.3-12.2 1.3-18.5z"></path></svg></span></div>'
-              );
-            } else {
-              var replaceID = "sort-" + this.table + "-" + item.id;
-              var el = $$("#" + replaceID + " .item-inner div.item-after");
-              el.remove();
-            }
-          });
-        }
-      }
-    },
     closeSortable() {
       f7.sortable.disable(".sort-" + this.table);
     },
     onSort() {
       var els = $$(".sort-" + this.table + " ul").children();
       this.sortList(els, this.table);
-    },
-    infiniteLoad(accordian) {
-      f7.preloader.show();
-
-      var items = {
-        table: this.table,
-        key: this.key,
-        id: this.id,
-        type: "multiple",
-        sortAlpha: this.isSortAlpha,
-        sortTime: this.isSortTime,
-        infiniteStart: this.infiniteStart,
-        infiniteEnd: 20,
-      };
-
-      var data = store.getters.getData(items);
-      this.directoryentries = data;
-
-      var items = {
-        table: this.table,
-        key: this.key,
-        id: this.id,
-        type: "multiple",
-      };
-
-      var data = store.getters.getData(items);
-      if (data) {
-        this.total = data.length;
-
-        if (this.total > 30) {
-          var vue = this;
-          setTimeout(() => {
-            var items = {
-              table: this.table,
-              key: this.key,
-              id: this.id,
-              type: "multiple",
-              sortAlpha: this.isSortAlpha,
-              sortTime: this.isSortTime,
-              infiniteStart: 30,
-              infiniteEnd: vue.total,
-            };
-
-            var data = store.getters.getData(items);
-            vue.directoryentries = vue.directoryentries.concat(data);
-
-            f7.preloader.hide();
-
-            if (accordian == true) {
-              vue.accordianSlide("search-div", 80);
-            }
-          }, 200);
-
-          setTimeout(() => {
-            var data = {
-              table: "directory",
-              key: "id",
-              id: this.id,
-              type: "single",
-            };
-            var directory = store.getters.getData(data);
-            if (directory) {
-              if (directory.directory_hidenames == 1) {
-                this.setEyeSlash();
-              }
-            }
-          }, 200);
-
-        } else {
-          f7.preloader.hide();
-        }
-      } else {
-        f7.preloader.hide();
-        this.total = 0;
-      }
     },
   },
   beforeMount() {
@@ -430,9 +291,6 @@ export default {
   mounted() {
     var vue = this;
     f7ready((f7) => {
-      var accordian = true;
-      this.infiniteLoad(accordian);
-
       $$(".item-link").addClass("ripple-color-primary");
 
       $$(".badge").css("padding-bottom", "2px");
@@ -446,31 +304,6 @@ export default {
         }
       });
 
-      // Event - Set eye slash
-      vue.eventBus.on("set-eye-slash", (x) => {
-        vue.setEyeSlash();
-        if (vue.eventBus.eventsListeners["set-eye-slash"].length > 1) {
-          vue.eventBus.eventsListeners["set-eye-slash"].splice(1);
-        }
-      });
-    });
-
-    // On close
-    vue.eventBus.on("list-on-close", (x) => {
-      this.directoryentries = [];
-      this.getDirectoryentries = [];
-      if (vue.eventBus.eventsListeners["list-on-close"].length > 1) {
-        vue.eventBus.eventsListeners["list-on-close"].splice(1);
-      }
-    });
-
-    // Infinite load
-    vue.eventBus.on("infinite-load", (x) => {
-      var accordian = false;
-      vue.infiniteLoad(accordian);
-      if (vue.eventBus.eventsListeners["infinite-load"].length > 1) {
-        vue.eventBus.eventsListeners["infinite-load"].splice(1);
-      }
     });
   },
 };
