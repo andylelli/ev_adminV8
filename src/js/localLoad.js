@@ -72,7 +72,9 @@ var localLoad = {
                 }
             }
 
-            f7.params.name = store.state.event[0].event_name;
+            if (store.state.event.length > 0) {
+                f7.params.name = store.state.event[0].event_name;
+            }
         }
 
     },

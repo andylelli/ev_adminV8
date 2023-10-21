@@ -17,7 +17,7 @@
 			</f7-list-item>
 		</f7-list>
 		<!-- QR Scanner -->
-		<f7-list class="margin-top margin-bottom  ripple-color-primary text-color-white list-divider">
+		<f7-list v-if="isEventExists" class="margin-top margin-bottom  ripple-color-primary text-color-white list-divider">
 			<f7-list-item class="bg-color-primary no-chevron" link @click="openQRScanner()">QR Scanner</f7-list-item>
 		</f7-list>
 		<!-- Event functions -->
@@ -52,7 +52,9 @@ import params from "../../js/config/params.js";
 export default {
 	name: "left-menu",
 	data() {
-		return {};
+		return {
+			isEventExists: false
+		};
 	},
 	mixins: [misc, login, fetch],
 	computed: {
@@ -61,6 +63,9 @@ export default {
 		},
 		showQrscanner() {
 			return this.isScannerActive;
+		},
+		isEventExists() {
+			return this.isEventExists;
 		},
 		getEvent() {
 			var item = {
@@ -71,7 +76,11 @@ export default {
 			};
 			var data = store.getters.getData(item);
 			if (data) {
+				this.isEventExists = true;
 				return data;
+			}
+			else {
+				this.isEventExists = false;
 			}
 		},
 		getEventName() {

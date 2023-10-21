@@ -3,7 +3,7 @@
 		<f7-block-header>DARK THEME</f7-block-header>
 		<f7-list list class="no-margin-bottom no-hairline">
 			<f7-list-item
-				:title="'Use dark theme as default'"
+				:title="'Use dark theme'"
 				class="no-hairline"
 			>
 				<template #media>

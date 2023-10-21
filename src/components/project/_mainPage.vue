@@ -4,14 +4,17 @@
     name="main"
     @page:beforein="beforeIn();"
   >
-    <f7-navbar v-if="getEvent">
+    <f7-navbar >
       <f7-nav-left></f7-nav-left>
-      <f7-nav-title :title="getEvent.event_name"></f7-nav-title>
+      <f7-nav-title v-show="isEventExists" :title="getEvent.event_name"></f7-nav-title>
       <nav-bars></nav-bars>
     </f7-navbar>
-    <general></general>
-    <project-list title="CONTENT" table="project"></project-list>
-    <new-project></new-project>
+    <div v-show="!isEventExists" style="margin-top: 250px;">
+      <p align="center">Please open another event or create a new one</p>
+    </div>
+    <general v-show="isEventExists"> </general>
+    <project-list v-show="isEventExists" title="CONTENT" table="project"></project-list>
+    <new-project v-show="isEventExists" ></new-project>
     <sheet-new table="project"></sheet-new>
   </f7-page>
 </template>
@@ -41,6 +44,7 @@ export default {
       eventid: parseInt(localStorage.admin_eventid),
       role: store.state.role,
       ptrDistance: 100,
+      eventExists: false,
     };
   },
   components: {
@@ -56,6 +60,9 @@ export default {
     f7route: Object,
   },
   computed: {
+    isEventExists() {
+      return this.eventExists;
+    },
     initiated() {
       return store.state.initiated;
     },
@@ -67,7 +74,15 @@ export default {
         type: "single",
       };
       var data = store.getters.getData(item);
-      return data;
+      if(data) {
+        this.eventExists = true;
+        this.initialLoad = true;
+        return data;
+      }
+      else {
+        this.eventExists = false;
+        return "Loading...";
+      }
     },
     getEventName() {
       if (this.getEvent) {

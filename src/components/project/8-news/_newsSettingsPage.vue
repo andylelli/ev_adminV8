@@ -29,9 +29,9 @@
 					table="project"
 				></image-load>
 			</segment>
-			<segment :header="this.setShowImageHeader()">
+			<!-- <segment :header="this.setShowImageHeader()">
 				<show-image :id="this.projectid" table="news"></show-image>
-			</segment>
+			</segment> -->
 			<segment v-if="this.desktop == true" >
 				<general-button
 					class="margin-bottom"

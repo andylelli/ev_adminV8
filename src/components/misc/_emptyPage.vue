@@ -7,6 +7,9 @@
       ></f7-nav-title>
       <nav-bars></nav-bars>
     </f7-navbar>
+    <div style="margin-top: 250px;">
+      <p align="center">Please open another event or create a new one</p>
+    </div>
   </f7-page>
 </template>
 
