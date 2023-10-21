@@ -107,6 +107,7 @@ export default {
                     }
                 }
                 else {
+                    f7.preloader.hide();
                     f7.dialog.alert('There was a problem uploading the image.');
                 }
             }

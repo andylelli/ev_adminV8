@@ -140,8 +140,6 @@ export default {
 			store.dispatch('insertItemApp', item);
 			store.dispatch('insertItemDB', item);
 
-			console.log(table);
-
 			if (refresh == true && table == 'directoryentry') {
 				var view = f7.views.current;
 				view.router.refreshPage();

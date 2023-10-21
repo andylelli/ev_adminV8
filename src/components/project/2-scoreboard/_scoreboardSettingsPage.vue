@@ -73,6 +73,7 @@ import navBackLink from "../../misc/nav/navBackLink.vue";
 import navBars from "../../misc/nav/navBars.vue";
 
 import segment from "../../misc/segment.vue";
+import fieldEditText from "../../misc/fieldEditText.vue";
 import projectIcon from "../../misc/projectIcon.vue";
 import imageLoad from "../../misc/imageLoad.vue";
 import showImage from "../../misc/showImage.vue";
@@ -97,6 +98,7 @@ export default {
 		navBackLink,
 		navBars,
 		segment,
+		fieldEditText,
 		projectIcon,
 		imageLoad,
 		showImage,

@@ -73,15 +73,15 @@ var params = [
         linkSuffix: '/',
         childTables: ['directoryentry']
     },
-    {
-        table: "shop",
-        displayName: "shop",
-        newSheetName: "project",
-        db: ['shop_id', 'shop_imageid', 'shop_eventid', 'shop_projectid', 'shop_unixtime'],
-        icon: 'shopping-bag',
-        linkSuffix: '/0/',
-        childTables: ['shopitem']
-    },
+    //{
+    //    table: "shop",
+    //    displayName: "shop",
+    //    newSheetName: "project",
+    //    db: ['shop_id', 'shop_imageid', 'shop_eventid', 'shop_projectid', 'shop_unixtime'],
+    //    icon: 'shopping-bag',
+    //    linkSuffix: '/0/',
+    //    childTables: ['shopitem']
+    //},
     {
         table: "hunt",
         displayName: "hunt",
@@ -180,37 +180,37 @@ var params = [
         sort: true,
         link: true
     },
-    {
-        table: "shopitem",
-        key: "shopid",
-        displayName: "shop item",
-        newSheetName: "shopitem",
-        db: ['shopitem_id', 'shopitem_position', 'shopitem_name', 'shopitem_price', 'shopitem_text', 'shopitem_image', 'shopitem_eventid', 'shopitem_shopid', 'shopitem_unixtime'],
-        decode: ['shopitem_name', 'shopitem_text'],
-        fields: [
-            {
-                name: "name",
-                placeholder: "Name",
-                type: "text",
-                maxlen: "???"
-            },
-            {
-                name: "text",
-                placeholder: "Description",
-                type: "text",
-                maxlen: "???",
-                optional: true,
-            },
-            {
-                name: "price",
-                placeholder: "Price",
-                type: "number",
-                maxlen: "???"
-            },
-        ],
-        sort: true,
-        link: false
-    },
+    //{
+    //    table: "shopitem",
+    //    key: "shopid",
+    //    displayName: "shop item",
+    //    newSheetName: "shopitem",
+    //    db: ['shopitem_id', 'shopitem_position', 'shopitem_name', 'shopitem_price', 'shopitem_text', 'shopitem_image', 'shopitem_eventid', 'shopitem_shopid', 'shopitem_unixtime'],
+    //    decode: ['shopitem_name', 'shopitem_text'],
+    //    fields: [
+    //        {
+    //            name: "name",
+    //            placeholder: "Name",
+    //            type: "text",
+    //            maxlen: "???"
+    //        },
+    //        {
+    //            name: "text",
+    //            placeholder: "Description",
+    //            type: "text",
+    //            maxlen: "???",
+    //            optional: true,
+    //        },
+    //        {
+    //            name: "price",
+    //            placeholder: "Price",
+    //            type: "number",
+    //            maxlen: "???"
+    //        },
+    //    ],
+    //    sort: true,
+    //    link: false
+    //},
     {
         table: "huntitem",
         key: "huntid",

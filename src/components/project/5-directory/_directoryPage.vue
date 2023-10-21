@@ -1,11 +1,5 @@
 <template>
-  <f7-page
-    stacked
-    name="directory"
-    @page:beforein="
-      closeSortable();
-    "
-  >
+  <f7-page stacked name="directory" @page:beforein="closeSortable()">
     <!-- Nav bar-->
     <f7-navbar>
       <nav-back-link page="directory"></nav-back-link>
@@ -23,7 +17,7 @@
     </segment>
     <!-- Main section-->
     <!---- List ---->
-    <directoryentry-list  
+    <directoryentry-list
       v-if="getProject && getDirectory"
       :title="getProject.project_name"
       table="directoryentry"
@@ -34,9 +28,17 @@
       :sort-alpha="this.isSortAlpha()"
     ></directoryentry-list>
     <!---- New item ---->
-    <new-item table="directoryentry" :name="getProject.project_name" sort-alpha="true"></new-item>
+    <new-item
+      table="directoryentry"
+      :name="getProject.project_name"
+      sort-alpha="true"
+    ></new-item>
     <!-- Sheet Modals-->
-    <sheet-new table="directoryentry" :projectid="projectid" refresh="true"></sheet-new>
+    <sheet-new
+      table="directoryentry"
+      :projectid="projectid"
+      refresh="true"
+    ></sheet-new>
   </f7-page>
 </template>
 
@@ -66,6 +68,7 @@ export default {
       eventid: store.state.eventid,
       projectid: parseInt(this.f7route.params.projectId),
       lookup: store.state.lookup,
+      reloadPage: false,
     };
   },
   props: {
@@ -84,6 +87,9 @@ export default {
   mixins: [misc],
   inject: ["eventBus"],
   computed: {
+    isReloadPage() {
+      return this.reloadPage;
+    },
     getProject() {
       var item = {
         table: "project",

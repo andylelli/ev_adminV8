@@ -144,8 +144,6 @@ export default {
 					json: obj,
 				};
 
-				console.log(item);
-
 				item.json[this.table + "_unixtime"] = unixtime;
 				store.dispatch("updateItemApp", item);
 				this.changed = false;
@@ -154,9 +152,6 @@ export default {
 		},
 	},
 	beforeMounted() {},
-	unmounted() {
-		this.eventBus.eventsListeners['edit-' + this.table].splice(1);
-	},
 	mounted() {
 		f7.sheet.create({
 			el: this.sheetId,
@@ -167,6 +162,7 @@ export default {
 
 		// Event - Edit
 		var vue = this;
+		this.eventBus.eventsListeners["edit-" + this.table] = [];
 		this.eventBus.on("edit-" + this.table, (json) => {
 			vue.id = json.id;
 			vue.fieldname = json.fieldname;

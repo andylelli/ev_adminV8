@@ -146,6 +146,7 @@ export default {
 			});
 
 			// Event - New
+			this.eventBus.eventsListeners["new-" + this.table] = [];
 			this.eventBus.on("new-" + this.table, (json) => {
 				var vue = this;
 
@@ -191,11 +192,6 @@ export default {
 				$$(".new-field input").val("");
 				$$(".item-input-error-message").html("");
 				f7.sheet.open("#" + this.sheetId, true);
-
-				if (this.eventBus.eventsListeners["new-project"].length > 2) {
-					this.eventBus.eventsListeners["new-project"].splice(1);
-				}
-
 			});
 
 		});

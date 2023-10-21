@@ -125,6 +125,9 @@ export default {
 			);
 		},
 	},
+	beforeUnmounted() {
+		this.eventBus.eventsListeners["new-" + this.table] == [];
+	},
 	mounted() {},
 };
 </script>

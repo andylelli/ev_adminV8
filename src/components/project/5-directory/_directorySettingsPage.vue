@@ -1,89 +1,87 @@
 <template>
-	<f7-page stacked name="directory-settings">
-		<!-- Nav bar-->
-		<f7-navbar>
-			<nav-back-link force></nav-back-link>
-			<f7-nav-title v-if="getProject">
-				<div v-html="this.getProject.project_name + ' - Settings'"></div
-			></f7-nav-title>
-			<nav-bars></nav-bars>
-		</f7-navbar>
-		<!-- Main section-->
-		<div v-if="getProject">
-			<segment header="Name">
-				<field-edit-text
-					type="single"
-					:id="this.getProject.project_id"
-					table="project"
-					fieldname="name"
-					title="Name"
-					fieldtype="text"
-				></field-edit-text>
-			</segment>
-			<!---- Icon ---->
-			<segment header="Icon">
-				<project-icon :id="this.getProject.project_id"></project-icon>
-			</segment>
-			<!---- Image ---->
-			<segment :header="this.getProject.project_name + ' Image'">
-				<image-load
-					:id="this.getProject.project_id"
-					table="project"
-				></image-load>
-			</segment>
-			<!---- Item Images ---->
-			<segment :header="this.setShowImageHeader()">
-				<show-image :id="this.projectid" table="directory"></show-image>
-			</segment>
-			<!---- Sort Alphabetically ---->
-			<segment header="Sort Alphabetically">
-				<directory-settings-sort-alpha
-					:projectid="projectid"
-				></directory-settings-sort-alpha>
-			</segment>			
-			<!---- Location ---->
-			<segment header="Location">
-				<directory-settings-location
-					:projectid="projectid"
-				></directory-settings-location>
-			</segment>
-			<!---- Parent / Child ---->
-			<segment header="Parent">
-				<directory-settings-parent
-					:projectid="projectid"
-				></directory-settings-parent>
-			</segment>
-			<!---- Schedule ---->
-			<segment header="Schedule">
-				<directory-settings-schedule
-					:projectid="projectid"
-				></directory-settings-schedule>
-			</segment>
-			<!---- Location ---->
-			<segment header="Bulk Upload">
-				<directory-settings-bulk-upload
-					:projectid="getProject.project_id"
-				></directory-settings-bulk-upload>
-			</segment>
-			<!-- Delete -->
-			<segment v-if="this.desktop == true">
-				<general-button
-					class="margin-bottom"
-					@generalButtonAction="deleteItem()"
-					label="DELETE"
-					width="200"
-					colour="red"
-					type="fill"
-				></general-button>
-			</segment>
-			<!-- Sheet Modals-->
-			<sheet-edit table="project"></sheet-edit>
-			<sheet-directory-colour
-				:projectid="projectid"
-			></sheet-directory-colour>
-			<sheet-project-icon :projectid="projectid"></sheet-project-icon>
-		</div>
-	</f7-page>
+  <f7-page stacked name="directory-settings">
+    <!-- Nav bar-->
+    <f7-navbar>
+      <nav-back-link force @click="onClose()"></nav-back-link>
+      <f7-nav-title v-if="getProject">
+        <div v-html="this.getProject.project_name + ' - Settings'"></div
+      ></f7-nav-title>
+      <nav-bars></nav-bars>
+    </f7-navbar>
+    <!-- Main section-->
+    <div v-if="getProject">
+      <segment header="Name">
+        <field-edit-text
+          type="single"
+          :id="this.getProject.project_id"
+          table="project"
+          fieldname="name"
+          title="Name"
+          fieldtype="text"
+        ></field-edit-text>
+      </segment>
+      <!---- Icon ---->
+      <segment header="Icon">
+        <project-icon :id="this.getProject.project_id"></project-icon>
+      </segment>
+      <!---- Image ---->
+      <segment :header="this.getProject.project_name + ' Image'">
+        <image-load
+          :id="this.getProject.project_id"
+          table="project"
+        ></image-load>
+      </segment>
+      <!---- Item Images ---->
+      <segment :header="this.setShowImageHeader()">
+        <show-image :id="this.projectid" table="directory"></show-image>
+      </segment>
+      <!---- Sort Alphabetically ---->
+      <segment header="Sort Alphabetically">
+        <directory-settings-sort-alpha
+          :projectid="projectid"
+        ></directory-settings-sort-alpha>
+      </segment>
+      <!---- Location ---->
+      <segment header="Location">
+        <directory-settings-location
+          :projectid="projectid"
+        ></directory-settings-location>
+      </segment>
+      <!---- Parent / Child ---->
+      <segment header="Parent">
+        <directory-settings-parent
+          :projectid="projectid"
+        ></directory-settings-parent>
+      </segment>
+      <!---- Schedule ---->
+      <segment header="Schedule">
+        <directory-settings-schedule
+          :projectid="projectid"
+        ></directory-settings-schedule>
+      </segment>
+      <!---- Location ---->
+      <segment header="Bulk Upload">
+        <directory-settings-bulk-upload
+          :projectid="getProject.project_id"
+        ></directory-settings-bulk-upload>
+      </segment>
+      <!-- Delete -->
+      <segment v-if="this.desktop == true">
+        <general-button
+          class="margin-bottom"
+          @generalButtonAction="deleteItem()"
+          label="DELETE"
+          width="200"
+          colour="red"
+          type="fill"
+        ></general-button>
+      </segment>
+      <!-- Sheet Modals-->
+      <sheet-edit table="project"></sheet-edit>
+      <sheet-directory-colour :projectid="projectid"></sheet-directory-colour>
+      <sheet-project-icon :projectid="projectid"></sheet-project-icon>
+    </div>
+  </f7-page>
 </template>
 
 <script>
@@ -117,79 +115,81 @@ import directorySettingsBulkUpload from "./directorySettingsBulkUpload.vue";
 import sheetDirectoryColour from "./sheetDirectoryColour.vue";
 
 export default {
-	data() {
-		return {
-			projectid: parseInt(this.f7route.params.projectId),
-			desktop: device.desktop,
-			previousPage: "main",
-		};
-	},
-	props: {
-		f7route: Object,
-	},
-	components: {
-		navBackLink,
-		navBars,
-		segment,
-		fieldEditText,
-		projectIcon,
-		imageLoad,
-		showImage,
-		generalButton,
-		sheetEdit,
-		sheetProjectIcon,
-		sheetDirectoryColour,
-		directorySettingsSortAlpha,		
-		directorySettingsLocation,
-		directorySettingsParent,
-		directorySettingsSchedule,
-		directorySettingsBulkUpload,
-		directorySettingsShop,
-	},
-	mixins: [deleteItem, misc, fetch],
-	computed: {
-		getProject() {
-			var item = {
-				table: "project",
-				key: "id",
-				id: this.projectid,
-				type: "single",
-			};
-			var data = store.getters.getData(item);
-			if (data) {
-				return data;
-			}
-		},
-		getDirectory() {
-			var item = {
-				table: "directory",
-				key: "projectid",
-				id: this.projectid,
-				type: "single",
-			};
-			var data = store.getters.getData(item);
-			if (data) {
-				return data;
-			}
-		},
-	},
-	methods: {
-		setShowImageHeader() {
-			var header =
-				"Show " +
-				this.getProject.project_name.toUpperCase() +
-				" Item Images?";
-			return header;
-		},
-		deleteItem() {
-			this.deleteItemButton(
-				this.getProject.project_id,
-				"project",
-				this.getProject.project_name
-			);
-		},
-	},
-	mounted() {},
+  data() {
+    return {
+      projectid: parseInt(this.f7route.params.projectId),
+      desktop: device.desktop,
+      previousPage: "main",
+    };
+  },
+  props: {
+    f7route: Object,
+  },
+  inject: ["eventBus"],  
+  components: {
+    navBackLink,
+    navBars,
+    segment,
+    fieldEditText,
+    projectIcon,
+    imageLoad,
+    showImage,
+    generalButton,
+    sheetEdit,
+    sheetProjectIcon,
+    sheetDirectoryColour,
+    directorySettingsSortAlpha,
+    directorySettingsLocation,
+    directorySettingsParent,
+    directorySettingsSchedule,
+    directorySettingsBulkUpload,
+    directorySettingsShop,
+  },
+  mixins: [deleteItem, misc, fetch],
+  computed: {
+    getProject() {
+      var item = {
+        table: "project",
+        key: "id",
+        id: this.projectid,
+        type: "single",
+      };
+      var data = store.getters.getData(item);
+      if (data) {
+        return data;
+      }
+    },
+    getDirectory() {
+      var item = {
+        table: "directory",
+        key: "projectid",
+        id: this.projectid,
+        type: "single",
+      };
+      var data = store.getters.getData(item);
+      if (data) {
+        return data;
+      }
+    },
+  },
+  methods: {
+    onClose() {
+      this.eventBus.emit("list-on-close");
+    },
+    setShowImageHeader() {
+      var header =
+        "Show " + this.getProject.project_name.toUpperCase() + " Item Images?";
+      return header;
+    },
+    deleteItem() {
+      this.deleteItemButton(
+        this.getProject.project_id,
+        "project",
+        this.getProject.project_name
+      );
+    },
+  },
+  mounted() {},
 };
 </script>
 

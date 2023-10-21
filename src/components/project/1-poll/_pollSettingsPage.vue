@@ -80,7 +80,8 @@ export default {
 		return {
 			projectid: parseInt(this.f7route.params.projectId),
 			desktop: device.desktop,
-			previousPage: "main",			
+			previousPage: "main",	
+			table: "pollitem"		
 		};
 	},
 	props: {
@@ -140,6 +141,9 @@ export default {
 				this.getProject.project_name
 			);
 		},
+	},
+	beforeUnmounted() {
+		this.eventBus.eventsListeners["new-" + this.table] == [];
 	},
 	mounted() {},
 };

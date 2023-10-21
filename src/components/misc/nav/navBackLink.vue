@@ -27,6 +27,7 @@ export default {
 		f7router: Object,
 		page: String,
 		id: Number,
+		force: Boolean,
 	},
 	inject: ["eventBus"],
 	components: {},
@@ -39,16 +40,17 @@ export default {
 				this.eventBus.emit("list-on-close");
 			}
 
-			if (this.page && this.id) {
+
+			if ((this.page && this.id) || !this.force) {
 				var url = "/";
 				var force = false;
-				this.navBackLink(url, force, this.f7router);
+				this.navBackLink(url, force);
 			} else {
 				var view = f7.views.current;
 				var len = view.history.length;
 				var url = view.history[len];
 				var force = true;
-				this.navBackLink(url, force, this.f7router);
+				this.navBackLink(url, force);
 			}
 		},
 	},

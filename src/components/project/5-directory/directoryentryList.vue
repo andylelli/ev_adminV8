@@ -54,7 +54,10 @@
 
     <!-- LIST-->
     <div
-      :class="'search-list list sortable searchbar-found ripple-color-primary no-margin-top no-padding-top sort-' + this.table"
+      :class="
+        'search-list list sortable searchbar-found ripple-color-primary no-margin-top no-padding-top sort-' +
+        this.table
+      "
       style="top: 0px; margin-top: 0px; padding-top: 0px"
     >
       <ul>
@@ -80,7 +83,11 @@
               <div class="item-inner">
                 <div class="item-title" v-html="item.directoryentry_name"></div>
                 <div
-                  v-if="item.directoryentry_schedulehide == 1 || (getDirectory.directory_hidenames == 1 && getDirectory.directory_hidetype == 0)"
+                  v-if="
+                    item.directoryentry_schedulehide == 1 ||
+                    (getDirectory.directory_hidenames == 1 &&
+                      getDirectory.directory_hidetype == 0)
+                  "
                   class="item-after"
                 >
                   <font-awesome-icon
@@ -97,7 +104,6 @@
         </li>
       </ul>
     </div>
-
   </div>
 </template>
 
@@ -154,7 +160,7 @@ export default {
       if (data) {
         return data;
       }
-    },   
+    },
     getDirectoryentries() {
       return this.directoryentries;
     },
@@ -172,9 +178,6 @@ export default {
     },
   },
   methods: {
-    nameValue(value) {
-      return escape.decodeXML(value);
-    },
     toggleSort(el) {
       f7.sortable.toggle(el);
     },
@@ -283,11 +286,12 @@ export default {
             vue.directoryentries = vue.directoryentries.concat(data);
 
             f7.preloader.hide();
-
-            if (accordian == true) {
-              vue.accordianSlide("search-div", 80);
-            }
-          }, 200);
+            setTimeout(() => {
+              if (accordian == true) {
+                vue.accordianSlide("search-div", 80);
+              }
+            }, 100);
+          }, 100);
         } else {
           f7.preloader.hide();
         }
@@ -311,38 +315,30 @@ export default {
       this.infiniteLoad(accordian);
 
       // Event - Close sortable
+      vue.eventBus.eventsListeners["close-sortable"] = [];
       vue.eventBus.on("close-sortable", (x) => {
         vue.closeSortable();
-        if (vue.eventBus.eventsListeners["close-sortable"].length > 1) {
-          vue.eventBus.eventsListeners["close-sortable"].splice(1);
-        }
       });
     });
 
     // On close
+    vue.eventBus.eventsListeners["list-on-close"] = [];
     vue.eventBus.on("list-on-close", (x) => {
       this.directoryentries = [];
       this.getDirectoryentries = [];
-      if (vue.eventBus.eventsListeners["list-on-close"].length > 1) {
-        vue.eventBus.eventsListeners["list-on-close"].splice(1);
-      }
     });
 
     // Infinite load
+    vue.eventBus.eventsListeners["infinite-load"] = [];
     vue.eventBus.on("infinite-load", (x) => {
       var accordian = false;
       vue.infiniteLoad(accordian);
-      if (vue.eventBus.eventsListeners["infinite-load"].length > 1) {
-        vue.eventBus.eventsListeners["infinite-load"].splice(1);
-      }
     });
-
 
     var vue = this;
-    f7.on('sortableSort', function (el) {
+    f7.on("sortableSort", function (el) {
       vue.onSort();
     });
-
   },
 };
 </script>
