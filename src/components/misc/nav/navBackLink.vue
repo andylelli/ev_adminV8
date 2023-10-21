@@ -36,11 +36,6 @@ export default {
 	methods: {
 		_navBackLink() {
 
-			if (this.page == "directory"){
-				this.eventBus.emit("list-on-close");
-			}
-
-
 			if ((this.page && this.id) || !this.force) {
 				var url = "/";
 				var force = false;

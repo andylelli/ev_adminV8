@@ -59,6 +59,7 @@
         this.table
       "
       style="top: 0px; margin-top: 0px; padding-top: 0px"
+      @click="onClose()"
     >
       <ul>
         <li
@@ -128,9 +129,10 @@ export default {
     return {
       event: store.state.event[0],
       key: null,
-      sortLength: 30,
+      sortLength: 20,
       directoryentries: [],
       total: 0,
+      infiniteStart: 0,
     };
   },
   props: [
@@ -178,6 +180,9 @@ export default {
     },
   },
   methods: {
+    onClose() {
+      this.eventBus.emit("list-on-close");
+    },    
     toggleSort(el) {
       f7.sortable.toggle(el);
     },
@@ -185,11 +190,11 @@ export default {
       var style;
       if (device.ios) {
         style =
-          "margin-bottom: 0px; margin-top: 0px; max-height: 0; overflow: hidden; transition: max-height 1s ease-out;";
+          "margin-bottom: 0px; margin-top: 0px; max-height: 0; overflow: hidden; transition: max-height 1.2s ease-out;";
         return style;
       } else {
         style =
-          "max-height: 0; overflow: hidden; transition: max-height 1s ease-out;";
+          "max-height: 0; overflow: hidden; transition: max-height 1.2s ease-out;";
         return style;
       }
     },
@@ -241,7 +246,6 @@ export default {
       this.sortList(els, this.table);
     },
     infiniteLoad(accordian) {
-      f7.preloader.show();
 
       var items = {
         table: this.table,
@@ -251,7 +255,7 @@ export default {
         sortAlpha: this.isSortAlpha,
         sortTime: this.isSortTime,
         infiniteStart: this.infiniteStart,
-        infiniteEnd: 30,
+        infiniteEnd: 20,
       };
 
       var data = store.getters.getData(items);
@@ -269,6 +273,7 @@ export default {
         this.total = data.length;
 
         if (this.total > 20) {
+
           var vue = this;
           setTimeout(() => {
             var items = {
@@ -278,25 +283,22 @@ export default {
               type: "multiple",
               sortAlpha: this.isSortAlpha,
               sortTime: this.isSortTime,
-              infiniteStart: 30,
+              infiniteStart: 20,
               infiniteEnd: vue.total,
             };
 
-            var data = store.getters.getData(items);
-            vue.directoryentries = vue.directoryentries.concat(data);
-
-            f7.preloader.hide();
             setTimeout(() => {
               if (accordian == true) {
                 vue.accordianSlide("search-div", 80);
               }
-            }, 100);
-          }, 100);
-        } else {
-          f7.preloader.hide();
+            }, 150);
+
+            var data = store.getters.getData(items);
+            vue.directoryentries = vue.directoryentries.concat(data);
+
+          }, 225);
         }
       } else {
-        f7.preloader.hide();
         this.total = 0;
       }
     },
@@ -315,29 +317,31 @@ export default {
       this.infiniteLoad(accordian);
 
       // Event - Close sortable
-      vue.eventBus.eventsListeners["close-sortable"] = [];
-      vue.eventBus.on("close-sortable", (x) => {
+      this.eventBus.eventsListeners["close-sortable"] = [];
+      this.eventBus.on("close-sortable", (x) => {
         vue.closeSortable();
       });
     });
 
     // On close
-    vue.eventBus.eventsListeners["list-on-close"] = [];
-    vue.eventBus.on("list-on-close", (x) => {
-      this.directoryentries = [];
-      this.getDirectoryentries = [];
+    this.eventBus.eventsListeners["list-on-close"] = [];
+    this.eventBus.on("list-on-close", (x) => {
+      var len = this.directoryentries.length;
+      if (len > 20) {
+        this.directoryentries.splice(20, len - 20);
+      }
     });
 
     // Infinite load
-    vue.eventBus.eventsListeners["infinite-load"] = [];
-    vue.eventBus.on("infinite-load", (x) => {
+    this.eventBus.eventsListeners["infinite-load"] = [];
+    this.eventBus.on("infinite-load", (x) => {
       var accordian = false;
-      vue.infiniteLoad(accordian);
+      this.infiniteLoad(accordian);
     });
 
     var vue = this;
     f7.on("sortableSort", function (el) {
-      vue.onSort();
+      this.onSort();
     });
   },
 };

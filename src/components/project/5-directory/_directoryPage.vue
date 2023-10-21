@@ -2,7 +2,7 @@
   <f7-page stacked name="directory" @page:beforein="closeSortable()">
     <!-- Nav bar-->
     <f7-navbar>
-      <nav-back-link page="directory"></nav-back-link>
+      <nav-back-link @click="onClose()"></nav-back-link>
       <f7-nav-title v-if="getProject">
         <div v-html="getProject.project_name"></div
       ></f7-nav-title>
@@ -13,6 +13,7 @@
       <general-settings
         page="directory"
         :projectid="projectid"
+        @click="onClose()"
       ></general-settings>
     </segment>
     <!-- Main section-->
@@ -116,6 +117,9 @@ export default {
     },
   },
   methods: {
+    onClose() {
+      this.eventBus.emit("list-on-close");
+    },
     isSortAlpha() {
       if (this.getDirectory.directory_sortalpha == 1) {
         return "true";
@@ -163,7 +167,7 @@ export default {
 
             store.dispatch("updateItemDB", item);
 
-            localStorage.admin_update_directory_time = Date.now() / 1000;
+            localStorage.admin_update_directory_time = unixtime;
           }
         },
         { deep: true }
