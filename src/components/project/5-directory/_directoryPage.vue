@@ -36,7 +36,7 @@
     <!---- New item ---->
     <new-item table="directoryentry" :name="getProject.project_name" sort-alpha="true"></new-item>
     <!-- Sheet Modals-->
-    <sheet-new table="directoryentry" :projectid="projectid"></sheet-new>
+    <sheet-new table="directoryentry" :projectid="projectid" refresh="true"></sheet-new>
   </f7-page>
 </template>
 

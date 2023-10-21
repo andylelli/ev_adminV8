@@ -160,10 +160,18 @@ var actions = {
         localStorage.eventsList = JSON.stringify(state.eventsList);
     },
     setUserCredentials({ state }) {
-        state.userid = parseInt(localStorage.admin_userid);
-        state.role = localStorage.admin_role;
-        state.token = localStorage.admin_token;
-        state.email = localStorage.admin_email;
+        if (localStorage.admin_userid) {
+            state.userid = parseInt(localStorage.admin_userid);
+        }
+        if (localStorage.admin_role) {
+            state.role = localStorage.admin_role;
+        }
+        if (localStorage.admin_token) {
+            state.token = localStorage.admin_token;
+        }
+        if (localStorage.admin_email) {
+            state.email = localStorage.admin_email;
+        }
         if (localStorage.admin_eventid) {
             state.eventid = parseInt(localStorage.admin_eventid);
         }
@@ -303,7 +311,7 @@ var actions = {
     },
     updateEditLongTextApp({ state }, item) {
         var table = item.table;
-        item.value = escape.encodeXML(item.value);
+        //item.value = escape.encodeXML(item.value);
 
         var i = 0;
         state[table].forEach(function () {

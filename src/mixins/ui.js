@@ -5,10 +5,10 @@ var $$ = Dom7;
 
 export default {
 	methods: {		
-		navBackLink(url, f7router) {
+		navBackLink(url, force) {
 			var view = f7.views.current;
-			view.router.back({
-				url: url,
+			view.router.back(url,{
+				force: force
 			});
 		},
 		uiDropdown(match) {

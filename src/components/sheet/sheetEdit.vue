@@ -132,6 +132,8 @@ export default {
 				};
 				var obj = store.getters.getData(item);
 
+				obj = JSON.parse(JSON.stringify(obj));
+
 				new Date();
 				var unixtime = Date.now() / 1000;
 
@@ -141,6 +143,8 @@ export default {
 					table: this.table,
 					json: obj,
 				};
+
+				console.log(item);
 
 				item.json[this.table + "_unixtime"] = unixtime;
 				store.dispatch("updateItemApp", item);

@@ -2,7 +2,7 @@
 	<f7-page stacked name="directory-settings">
 		<!-- Nav bar-->
 		<f7-navbar>
-			<nav-back-link></nav-back-link>
+			<nav-back-link force></nav-back-link>
 			<f7-nav-title v-if="getProject">
 				<div v-html="this.getProject.project_name + ' - Settings'"></div
 			></f7-nav-title>

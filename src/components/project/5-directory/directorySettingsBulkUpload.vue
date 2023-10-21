@@ -3,9 +3,10 @@
 		<f7-list class="no-margin-top">
 			<f7-list-item title="Upload items from file">
 				<template #media>
-					<f7-icon>
-						<font-awesome-icon class="fa-fw custom-colour" style="font-size: 20px" :icon="['fal', 'upload']" />
-					</f7-icon></template>
+						<f7-icon>
+							<font-awesome-icon class="fa-fw custom-colour" style="font-size: 20px" :icon="['fal', 'upload']" />
+						</f7-icon>
+</template>
 				<input type="file" name="file-bulk-upload" id="file-bulk-upload" accept=".csv"
 					class="input-file-bulk-upload c3-hide" />
 				<f7-button fill class="color-green" @click="uploadData()">UPLOAD</f7-button>
@@ -97,9 +98,9 @@ export default {
 
 				// Map the rows to header values and create key value pair in array
 				var vue = this;
-				var data = rows.map(function (row) {
+				var data = rows.map(function(row) {
 					const values = row.split(delimiter);
-					const el = headers.reduce(function (object, header, index) {
+					const el = headers.reduce(function(object, header, index) {
 						object[header] = values[index];
 						return object;
 					}, {});
@@ -122,8 +123,7 @@ export default {
 
 				if (message.success != true) {
 					f7.dialog.alert(message.error);
-				}
-				else {
+				} else {
 					//console.log(data);
 					this.sendToServer(data);
 				}
@@ -135,7 +135,7 @@ export default {
 		},
 		validate(headers, input) {
 			var table = "directoryentry";
-			var paramsTable = params.filter(function (result) {
+			var paramsTable = params.filter(function(result) {
 				return result.table == table;
 			});
 			var bulkInsert = paramsTable[0].bulkInsert;
@@ -167,12 +167,10 @@ export default {
 					if (dataType == "boolean" && parseInt(item[headers[i]]) < 2) {
 						var msg = "Error in row " + row + ". " + headers[i] + " should be boolean";
 						//Do nothing
-					}
-					else {
+					} else {
 						if (parseInt(item[headers[i]]) || parseInt(item[headers[i]]) == 0) {
 							fieldType = "number";
-						}
-						else {
+						} else {
 							fieldType = "string";
 						}
 						if (fieldType != dataType) {
@@ -181,8 +179,7 @@ export default {
 							message.error = msg;
 							i = headers.length;
 							return message;
-						}
-						else if (fieldType == "string") {
+						} else if (fieldType == "string") {
 							var j = row - 1;
 							var str = output[j][headers[i]];
 							str = str.replaceAll("@comma@", ",");
@@ -245,7 +242,7 @@ export default {
 			var progress = 0;
 			var dialog = f7.dialog.progress("Loading", progress, "primary");
 			var vue = this;
-			var timer = setInterval(function () {
+			var timer = setInterval(function() {
 				// Update progress percentage
 				progress = ((vue.count + 1) / total) * 100;
 
@@ -276,7 +273,7 @@ export default {
 
 					var tables = ['directoryentry'];
 					var fullSync = false;
-					var getDeletes = true;
+					var getDeletes = false;
 					vue.syncGetFromWebServer(
 						vue.eventid,
 						tables,
@@ -290,7 +287,7 @@ export default {
 	mounted() {
 		f7ready((f7) => {
 			var vue = this;
-			$$(".input-file-bulk-upload").on("change", function (e) {
+			$$(".input-file-bulk-upload").on("change", function(e) {
 				var file = e.target.files[0];
 				var delimiter = vue.delimiter;
 
@@ -304,6 +301,6 @@ export default {
 };
 </script>
 
-<!-- <style scoped>
+<!--<style scoped>
 
 </style>-->

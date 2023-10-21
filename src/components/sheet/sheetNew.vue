@@ -1,46 +1,15 @@
 <template>
-	<f7-sheet
-		class="justify-content-center"
-		:id="this.sheetId"
-		style="height: auto; --f7-sheet-bg-color: #fff"
-		swipe-to-close
-		backdrop
-		@sheet:closed="clearForm()"
-	>
+	<f7-sheet class="justify-content-center" :id="this.sheetId" style="height: auto; --f7-sheet-bg-color: #fff" swipe-to-close backdrop @sheet:closed="clearForm()">
 		<f7-page-content>
 			<f7-block class="padding-top">
 				<f7-block-title class="padding-bottom">
-					{{ this.title }}</f7-block-title
-				>
+					{{ this.title }}</f7-block-title>
 				<f7-list form>
-					<f7-list-input
-						class="new-field"
-						v-for="field in this.fields"
-						:key="field.name"
-						:id="fieldId(field.name)"
-						:type="field.type"
-						step="0.01"
-						:placeholder="field.placeholder"
-						@input="update(field.name, $event)"
-						validate
-						required
-					></f7-list-input>
+					<f7-list-input class="new-field" v-for="field in this.fields" :key="field.name" :id="fieldId(field.name)" :type="field.type" step="0.01" :placeholder="field.placeholder" @input="update(field.name, $event)" validate required></f7-list-input>
 				</f7-list>
-				<div
-					style="
-						padding-left: 25px;
-						padding-right: 25px;
-						height: 50px;
-					"
-				>
+				<div style="padding-left: 25px; padding-right: 25px; height: 50px">
 					<div v-show="this.allowChange === true">
-						<general-button
-							class="margin-top margin-bottom"
-							@generalButtonAction="submit()"
-							label="UPDATE"
-							width="200"
-							type="fill"
-						></general-button>
+						<general-button class="margin-top margin-bottom" @generalButtonAction="submit()" label="CREATE" width="200" type="fill"></general-button>
 					</div>
 				</div>
 			</f7-block>
@@ -63,6 +32,7 @@ import fetch from "../../mixins/fetch";
 import generalButton from "../misc/generalButton.vue";
 
 import params from "../../js/config/params.js";
+import escape from "../../js/config/escape.js";
 
 export default {
 	name: "sheet-new",
@@ -76,11 +46,11 @@ export default {
 			allowChange: false,
 		};
 	},
-	props: ["page", "table", "projectid", "sortAlpha"],
+	props: ["page", "table", "projectid", "sortAlpha", "refresh"],
 	mixins: [misc, newItem, login, fetch],
 	components: {
 		generalButton,
-	},	
+	},
 	inject: ["eventBus"],
 	computed: {
 		title() {
@@ -91,6 +61,13 @@ export default {
 			var str = "new-" + this.table;
 			return str;
 		},
+		isRefresh() {
+			if (this.refresh == "true") {
+				return true;
+			} else {
+				return false;
+			}
+		},		
 	},
 	methods: {
 		update(name, event) {
@@ -147,12 +124,14 @@ export default {
 					table: targetTable,
 				};
 				for (var i = 0; i < this.fields.length; i++) {
-					json[this.fields[i].name] = this.data[this.fields[i].name];
+					json[this.fields[i].name] =  escape.encodeXML(this.data[this.fields[i].name]);
 				}
-
-				this.newItem(json, this.table, true, this.displayName);
 				
+				this.newItem(json, this.table, true, this.displayName, this.isRefresh);
+
 				f7.sheet.close("#" + this.sheetId, true);
+
+				this.allowChange = false;
 			}
 		},
 	},
@@ -174,25 +153,27 @@ export default {
 				this.fields = [];
 
 				// GET FIELD PARAMETERS
-				var findTable = params.filter(function (result) {
+				var findTable = params.filter(function(result) {
 					return result.table === vue.table;
 				});
 				this.fields = [];
 				var sheetFields = findTable[0].fields;
 				for (var i = 0; i < sheetFields.length; i++) {
 					if (!sheetFields[i].optional) {
-						this.fields.push(sheetFields[i]);
-						this.data[this.fields[i].name] = "";
+						vue.fields.push(sheetFields[i]);
+						vue.data[this.fields[i].name] = "";
 					}
 				}
 
 				//GET DISPLAY NAME
 				if (json.subtable) {
 					this.subtable = json.subtable;
-					var findSubtable = params.filter(function (result) {
+					var findSubtable = params.filter(function(result) {
 						return result.table === json.subtable;
 					});
-					this.displayName = findSubtable[0].displayName;
+
+					vue.displayName = findSubtable[0].displayName;
+
 				} else if (this.projectid) {
 					var item = {
 						table: "project",
@@ -210,8 +191,13 @@ export default {
 				$$(".new-field input").val("");
 				$$(".item-input-error-message").html("");
 				f7.sheet.open("#" + this.sheetId, true);
+
+				if (this.eventBus.eventsListeners["new-project"].length > 2) {
+					this.eventBus.eventsListeners["new-project"].splice(1);
+				}
+
 			});
-			this.eventBus.eventsListeners['new-' + this.table].splice(1);
+
 		});
 	},
 };

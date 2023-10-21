@@ -29,13 +29,14 @@
 				@texteditor:change="change($event)"
 			></f7-text-editor>
 		</div>
-		<segment v-show="changed == true">
+		<segment v-show="getChanged == true">
 			<general-button
 				class="padding-top padding-bottom"
 				label="UPDATE"
 				width="200"
 				type="fill"
 				@generalButtonAction="submit()"
+				@click="changed = false"
 			></general-button>
 		</segment>
 	</f7-page>
@@ -78,6 +79,9 @@ export default {
 	},
 	mixins: [login, misc],
 	computed: {
+		getChanged() {
+			return this.changed;
+		},	
 		buttonClass() {
 			if (this.changed === true) {
 				return "button button-round button-fill button-large";
@@ -140,7 +144,11 @@ export default {
 			toast.open();
 		},
 	},
-	mounted() {},
+	mounted() {
+		f7ready((f7) => {
+			this.changed = false;
+		});
+	},
 };
 </script>
 

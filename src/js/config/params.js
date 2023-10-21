@@ -84,7 +84,7 @@ var params = [
     },
     {
         table: "hunt",
-        displayName: "treasure hunt",
+        displayName: "hunt",
         newSheetName: "project",
         db: ['hunt_id', 'hunt_imageid', 'hunt_eventid', 'hunt_projectid', 'hunt_unixtime'],
         icon: 'treasure-chest',

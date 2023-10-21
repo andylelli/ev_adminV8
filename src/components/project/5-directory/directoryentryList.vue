@@ -172,6 +172,9 @@ export default {
     },
   },
   methods: {
+    nameValue(value) {
+      return escape.decodeXML(value);
+    },
     toggleSort(el) {
       f7.sortable.toggle(el);
     },

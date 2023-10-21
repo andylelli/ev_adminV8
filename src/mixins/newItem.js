@@ -8,7 +8,7 @@ import params from "../js/config/params.js";
 
 export default {
 	methods: {
-		async newItem(post, table, preloader, displayName) {
+		async newItem(post, table, preloader, displayName, refresh) {
 
 			var t;
 			var projects = [];
@@ -59,7 +59,7 @@ export default {
 					this.eventNew(response);
 				}
 				else {
-					this.insertNew(post, response, t, displayName);
+					this.insertNew(post, response, t, displayName, refresh);
 				}
 			}
 			else {
@@ -70,7 +70,7 @@ export default {
 			}
 		},
 
-		insertNew(post, response, table, displayName) {
+		insertNew(post, response, table, displayName, refresh) {
 
 			new Date; var unixtime = Date.now() / 1000;
 
@@ -110,6 +110,11 @@ export default {
 				store.dispatch('insertItemApp', item);
 				store.dispatch('insertItemDB', item);
 
+				if (refresh == true) {
+					var view = f7.views.current;
+					view.router.refreshPage();
+				}
+
 			}
 
 			////////////////
@@ -134,6 +139,13 @@ export default {
 
 			store.dispatch('insertItemApp', item);
 			store.dispatch('insertItemDB', item);
+
+			console.log(table);
+
+			if (refresh == true && table == 'directoryentry') {
+				var view = f7.views.current;
+				view.router.refreshPage();
+			}			
 
 			// Close preloader, form and show success alert
 			f7.preloader.hide();

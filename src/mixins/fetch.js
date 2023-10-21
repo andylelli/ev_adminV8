@@ -70,7 +70,10 @@ export default {
 
                 this.debugUrl = url;
                 this.debugProps = JSON.stringify(props);
-
+                
+                // DEBUG
+                //console.log(url);
+                //console.log(props);
 
                 // Send request to server
                 var response = await fetch(url, props);

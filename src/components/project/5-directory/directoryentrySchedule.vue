@@ -249,49 +249,70 @@ export default {
 			});
 		},
 		setPicker() {
+			// Get the day, hour, minute, and duration from the directory entry
 			var schedulePickerDay = this.getDirectoryentry.directoryentry_day;
 			var schedulePickerHour = this.getDirectoryentry.directoryentry_hour;
 			var schedulePickerMinute =
 				this.getDirectoryentry.directoryentry_minute;
 			var schedulePickerDuration = this.getDirectoryentry.directoryentry_duration;
-			if (schedulePickerDay) {
-				if (schedulePickerHour < 10 && schedulePickerHour.length < 2) {
-					schedulePickerHour = "0" + schedulePickerHour;
-				}
-				if (
-					schedulePickerMinute < 10 &&
-					schedulePickerMinute.length < 2
-				) {
-					schedulePickerMinute = "0" + schedulePickerMinute;
-				}
 
-				var YYYY = schedulePickerDay.substring(0, 4);
-				var MM = schedulePickerDay.substring(4, 6) - 1;
-				var DD = schedulePickerDay.substring(6, 8);
-
-				var day = new Date(YYYY, MM, DD);
-				var dateTH = this.getOrdinalNum(DD);
-				const dofw = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-				var d = dofw[day.getDay()];
-				var day = d + " " + dateTH;
-				var values = [day, schedulePickerHour, schedulePickerMinute, schedulePickerDuration];
-				this.pickerSchedule.setValue(values);
+			// If the hour is less than 10, add a leading zero
+			if (schedulePickerHour < 10 && schedulePickerHour.length < 2) {
+				schedulePickerHour = "0" + schedulePickerHour;
 			}
+
+			// If the minute is less than 10, add a leading zero
+			if (
+				schedulePickerMinute < 10 &&
+				schedulePickerMinute.length < 2
+			) {
+				schedulePickerMinute = "0" + schedulePickerMinute;
+			}
+
+			// Get the year, month, and date from the directory entry
+			var YYYY = schedulePickerDay.substring(0, 4);
+			var MM = schedulePickerDay.substring(4, 6) - 1;
+			var DD = schedulePickerDay.substring(6, 8);
+
+			// Format the day
+			var day = YYYY + MM + DD;
+
+			// Get the date and add the ordinal number
+			var dateTH = this.getOrdinalNum(DD);
+
+			// Get the day of the week
+			var d = this.getOrdinalNum(day);
+
+			// Create the day string
+			var day = d + " " + dateTH;
+
 		},
 		pickerChange(picker) {
+			// get the selected day
 			var pickerDay = picker.value[0];
+			// get the index of the selected day in the day array
 			var index = this.dayArr.indexOf(pickerDay);
+			// get the selected day in the yyyymmdd format
 			var day = this.yyyymmddArr[index];
-			new Date();
+			// get the unixtime in seconds
 			var unixtime = Date.now() / 1000;
+			// create an empty object
 			var item = {};
+			// set the table name
 			item.table = "directoryentry";
+			// set the json object
 			item.json = this.getDirectoryentry;
+			// set the day
 			item.json.directoryentry_day = day;
+			// set the hour
 			item.json.directoryentry_hour = picker.value[1];
+			// set the minute
 			item.json.directoryentry_minute = picker.value[2];
+			// set the duration
 			item.json.directoryentry_duration = picker.value[3];
+			// set the unixtime
 			item.json.directoryentry_unixtime = unixtime;
+			// update the data store
 			store.dispatch("updateItemApp", item);
 		},
 	},
