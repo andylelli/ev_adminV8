@@ -17,9 +17,9 @@
 			</f7-list-item>
 		</f7-list>
 		<!-- QR Scanner -->
-		<f7-list v-if="isEventExists" class="margin-top margin-bottom  ripple-color-primary text-color-white list-divider">
+		<!-- <f7-list v-if="isEventExists" class="margin-top margin-bottom  ripple-color-primary text-color-white list-divider">
 			<f7-list-item class="bg-color-primary no-chevron" link @click="openQRScanner()">QR Scanner</f7-list-item>
-		</f7-list>
+		</f7-list> -->
 		<!-- Event functions -->
 		<f7-list class="margin-top margin-bottom  ripple-color-primary text-color-white list-divider">
 			<!-- Change event -->

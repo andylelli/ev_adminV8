@@ -6,7 +6,7 @@ import { createStore } from 'vuex'
 
 export const store = createStore({
   state: {
-    version: "v8 20231021_16",
+    version: "v8 20231021_18",
 
     url: "https://www.evaria.io/public/",
     urlQR: "https://www.evaria.io/admin/index.html?",

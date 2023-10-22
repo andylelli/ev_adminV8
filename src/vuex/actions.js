@@ -280,7 +280,7 @@ var actions = {
         state.directoryentry.forEach(function () {
 
             if (state.directoryentry[j].directoryentry_directoryid == id) {
-
+                console.log()
                 state.directoryentry[j].directoryentry_schedulehide = 0;
                 state.directoryentry[j].directoryentry_unixtime = unixtime;
             }

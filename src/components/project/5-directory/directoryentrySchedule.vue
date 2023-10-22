@@ -249,42 +249,35 @@ export default {
 			});
 		},
 		setPicker() {
-			// Get the day, hour, minute, and duration from the directory entry
 			var schedulePickerDay = this.getDirectoryentry.directoryentry_day;
 			var schedulePickerHour = this.getDirectoryentry.directoryentry_hour;
 			var schedulePickerMinute =
 				this.getDirectoryentry.directoryentry_minute;
-			var schedulePickerDuration = this.getDirectoryentry.directoryentry_duration;
+			var schedulePickerDuration =
+				this.getDirectoryentry.directoryentry_duration;
+			if (schedulePickerDay) {
+				if (schedulePickerHour < 10 && schedulePickerHour.length < 2) {
+					schedulePickerHour = "0" + schedulePickerHour;
+				}
+				if (
+					schedulePickerMinute < 10 &&
+					schedulePickerMinute.length < 2
+				) {
+					schedulePickerMinute = "0" + schedulePickerMinute;
+				}
 
-			// If the hour is less than 10, add a leading zero
-			if (schedulePickerHour < 10 && schedulePickerHour.length < 2) {
-				schedulePickerHour = "0" + schedulePickerHour;
+				var YYYY = schedulePickerDay.substring(0, 4);
+				var MM = schedulePickerDay.substring(4, 6) - 1;
+				var DD = schedulePickerDay.substring(6, 8);
+
+				var day = new Date(YYYY, MM, DD);
+				var dateTH = this.getOrdinalNum(DD);
+				const dofw = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+				var d = dofw[day.getDay()];
+				var day = d + " " + dateTH;
+				var values = [day, schedulePickerHour, schedulePickerMinute, schedulePickerDuration];
+				this.pickerSchedule.setValue(values);
 			}
-
-			// If the minute is less than 10, add a leading zero
-			if (
-				schedulePickerMinute < 10 &&
-				schedulePickerMinute.length < 2
-			) {
-				schedulePickerMinute = "0" + schedulePickerMinute;
-			}
-
-			// Get the year, month, and date from the directory entry
-			var YYYY = schedulePickerDay.substring(0, 4);
-			var MM = schedulePickerDay.substring(4, 6) - 1;
-			var DD = schedulePickerDay.substring(6, 8);
-
-			// Format the day
-			var day = YYYY + MM + DD;
-
-			// Get the date and add the ordinal number
-			var dateTH = this.getOrdinalNum(DD);
-
-			// Get the day of the week
-			var d = this.getOrdinalNum(day);
-
-			// Create the day string
-			var day = d + " " + dateTH;
 
 		},
 		pickerChange(picker) {
