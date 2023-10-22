@@ -85,9 +85,10 @@
                 <div class="item-title" v-html="item.directoryentry_name"></div>
                 <div
                   v-if="
-                    item.directoryentry_schedulehide == 1 ||
-                    (getDirectory.directory_hidenames == 1 &&
-                      getDirectory.directory_hidetype == 0)
+                    getDirectory.directory_hidenames == 1 &&
+                    (getDirectory.directory_hidetype == 0 ||
+                      (getDirectory.directory_hidetype == 1 &&
+                        item.directoryentry_schedulehide == 1))
                   "
                   class="item-after"
                 >
@@ -182,7 +183,7 @@ export default {
   methods: {
     onClose() {
       this.eventBus.emit("list-on-close");
-    },    
+    },
     toggleSort(el) {
       f7.sortable.toggle(el);
     },
@@ -246,7 +247,6 @@ export default {
       this.sortList(els, this.table);
     },
     infiniteLoad(accordian) {
-
       var items = {
         table: this.table,
         key: this.key,
@@ -273,7 +273,6 @@ export default {
         this.total = data.length;
 
         if (this.total > 20) {
-
           var vue = this;
           setTimeout(() => {
             var items = {
@@ -295,7 +294,6 @@ export default {
 
             var data = store.getters.getData(items);
             vue.directoryentries = vue.directoryentries.concat(data);
-
           }, 225);
         }
       } else {
