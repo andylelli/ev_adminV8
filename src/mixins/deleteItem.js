@@ -52,20 +52,19 @@ export default {
 			// Success
 			if (response[0].status == 'success') {
 
+				console.log(response[0]);
+
 				this.spinnerToTick(id, table);
 
 				var vue = this;
-				setTimeout(function () {
-
-					vue.tickToDone(id, table);
 
 					setTimeout(async function () {
 						//close swipeout
-						var el = "#sort-" + table + "-" + id;
+						var el = "#" + table + "-" + id;
+						console.log(el);
 						f7.swipeout.close(el);
 						vue.deleteExecute(t, id);
 					}, 500);
-				}, 1000);
 			}
 			else {
 				this.spinnerToError(id, table);
@@ -74,7 +73,8 @@ export default {
 				var vue = this;
 				setTimeout(async function () {
 					//close swipeout
-					var el = "#sort-" + table + "-" + id;
+					var el = "#" + table + "-" + id;
+					console.log(el);
 					f7.swipeout.close(el);
 					var message = name + " couldn't be deleted.";
 					f7.dialog.alert(message);
@@ -161,7 +161,7 @@ export default {
 			//CLEAR DATA
 			var tables = store.getters.getTableNames("all");
 			store.dispatch("initiateState", tables);
-			store.dispatch("initiateDB", tables);	
+			store.dispatch("initiateDB", tables);
 
 			f7.preloader.hide();
 
@@ -184,26 +184,23 @@ export default {
 		},
 		tickToDone(id, table) {
 			$$('#swipeout-' + table + '-tick-' + id).hide();
-			$$('#swipeout-' + table + '-delete-' + id).show();
 		},
 		spinnerToError(id, table) {
 			var vue = this;
-			function change() {
+			function changeSpinnerToError() {
 				$$('#swipeout-' + table + '-spinner-' + id).hide();
 				$$('#swipeout-' + table + '-error-' + id).show();
 				vue.errorToDelete(id, table);
 			}
-			setTimeout(change, 1000)
+			setTimeout(changeSpinnerToError, 1000)
 		},
 		errorToDelete(id, table) {
 			var vue = this;
-			function change() {
+			function changeErrorToDelete() {
 				$$('#swipeout-' + table + '-error-' + id).hide();
 				$$('#swipeout-' + table + '-delete-' + id).show();
-				var el = "#sort-" + table + "-" + id;
-				f7.swipeout.close(el);
 			}
-			setTimeout(change, 1000)
+			setTimeout(changeErrorToDelete, 1000)
 		},
 
 		deleteExecute(table, id) {
@@ -321,18 +318,8 @@ export default {
 				store.dispatch('deleteItemApp', item);
 				store.dispatch('deleteItemDB', item);
 
-				// Reorder list  
-				var sort = paramsTable[0].sort;
-				if (sort) {
-					setTimeout(function () {
-						var els = $$(".sort-" + table + " ul").children();
-						vue.sortList(els, table);
-					}, 250);
-				}
-				else {
-					var view = f7.views.current;
-					view.router.refreshPage();
-				}
+				var view = f7.views.current;
+				view.router.refreshPage();
 
 				//DELETE CHILD TABLES
 				var childTables = paramsTable[0].childTables;
@@ -365,10 +352,10 @@ export default {
 					var vue = this;
 					setTimeout(function () {
 						var path = "/" + vue.previousPage + "/" + vue.projectid + "/";
-						
+
 						//IF NEWS
 						if (vue.previousPage == 'news') {
-							f7.views.current.router.back(path, {force: true});
+							f7.views.current.router.back(path, { force: true });
 						}
 						else {
 							f7.views.current.router.back();

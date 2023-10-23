@@ -56,17 +56,19 @@
     <div
       :class="
         'search-list list sortable searchbar-found ripple-color-primary no-margin-top no-padding-top sort-' +
-        this.table
+        this.table +
+        '-' +
+        this.id
       "
       style="top: 0px; margin-top: 0px; padding-top: 0px"
       @click="onClose()"
     >
       <ul>
         <li
-          v-for="item in this.getDirectoryentries"
+          v-for="item in this.watchDirectoryentries"
           :key="item.directoryentry_id"
           class="swipeout"
-          :id="'directoryentry' + item.directoryentry_id"
+          :id="'directoryentry-' + item.directoryentry_id"
           :position="item.directoryentry_position"
         >
           <div class="swipeout-content">
@@ -101,7 +103,11 @@
               </div>
             </a>
           </div>
-          <swipeout-actions :item="item" :table="table"></swipeout-actions>
+          <swipeout-actions
+            :id="item.directoryentry_id"
+            :name="item.directoryentry_name"
+            :table="table"
+          ></swipeout-actions>
           <div class="sortable-handler"></div>
         </li>
       </ul>
@@ -131,9 +137,9 @@ export default {
       event: store.state.event[0],
       key: null,
       sortLength: 20,
-      directoryentries: [],
-      total: 0,
+      total: null,
       infiniteStart: 0,
+      directoryentries: this.watchDirectory,
     };
   },
   props: [
@@ -151,7 +157,62 @@ export default {
   },
   mixins: [misc],
   inject: ["eventBus"],
+  watch: {
+    getDirectoryentries(oldValue, newValue) {
+      if (this.directoryentries) {
+        this.total = this.directoryentries.length;
+      }
+
+      var items = {
+        table: this.table,
+        key: this.key,
+        id: this.id,
+        type: "multiple",
+        sortAlpha: this.isSortAlpha,
+        sortTime: this.isSortTime,
+        infiniteStart: 0,
+        infiniteEnd: 20,
+      };
+      var data = store.getters.getData(items);
+      this.directoryentries = data;
+
+      var n = this.getDirectoryentries.splice(20);
+      var directoryentries = this.directoryentries.concat(n);
+
+      var ms = 250;
+      if(directoryentries.length - this.total == 1) {
+        ms = 0;
+      };
+
+      var vue = this;
+      if (data.length >= 20) {
+        setTimeout(() => {
+          vue.directoryentries = vue.directoryentries.concat(n);
+        }, ms);
+      } else {
+        vue.directoryentries = data;
+      }
+      
+    },
+  },
   computed: {
+    watchDirectoryentries() {
+      return this.directoryentries;
+    },
+    getDirectoryentries() {
+      var items = {
+        table: this.table,
+        key: this.key,
+        id: this.id,
+        type: "multiple",
+        sortAlpha: this.isSortAlpha,
+        sortTime: this.isSortTime,
+        infiniteStart: this.infiniteStart,
+        infiniteEnd: 99999,
+      };
+      var data = store.getters.getData(items);
+      return data;
+    },
     getDirectory() {
       var item = {
         table: "directory",
@@ -164,9 +225,7 @@ export default {
         return data;
       }
     },
-    getDirectoryentries() {
-      return this.directoryentries;
-    },
+
     isSortAlpha() {
       if (this.sortAlpha == "true") {
         return true;
@@ -246,60 +305,6 @@ export default {
       var els = $$(".sort-" + this.table + " ul").children();
       this.sortList(els, this.table);
     },
-    infiniteLoad(accordian) {
-      var items = {
-        table: this.table,
-        key: this.key,
-        id: this.id,
-        type: "multiple",
-        sortAlpha: this.isSortAlpha,
-        sortTime: this.isSortTime,
-        infiniteStart: this.infiniteStart,
-        infiniteEnd: 20,
-      };
-
-      var data = store.getters.getData(items);
-      this.directoryentries = data;
-
-      var items = {
-        table: this.table,
-        key: this.key,
-        id: this.id,
-        type: "multiple",
-      };
-
-      var data = store.getters.getData(items);
-      if (data) {
-        this.total = data.length;
-
-        if (this.total > 20) {
-          var vue = this;
-          setTimeout(() => {
-            var items = {
-              table: this.table,
-              key: this.key,
-              id: this.id,
-              type: "multiple",
-              sortAlpha: this.isSortAlpha,
-              sortTime: this.isSortTime,
-              infiniteStart: 20,
-              infiniteEnd: vue.total,
-            };
-
-            setTimeout(() => {
-              if (accordian == true) {
-                vue.accordianSlide("search-div", 80);
-              }
-            }, 150);
-
-            var data = store.getters.getData(items);
-            vue.directoryentries = vue.directoryentries.concat(data);
-          }, 225);
-        }
-      } else {
-        this.total = 0;
-      }
-    },
   },
   beforeMount() {
     var vue = this;
@@ -312,7 +317,11 @@ export default {
     var vue = this;
     f7ready((f7) => {
       var accordian = true;
-      this.infiniteLoad(accordian);
+      setTimeout(() => {
+        if (accordian == true) {
+          vue.accordianSlide("search-div", 80);
+        }
+      }, 150);
 
       // Event - Close sortable
       this.eventBus.eventsListeners["close-sortable"] = [];
@@ -328,13 +337,6 @@ export default {
       if (len > 20) {
         this.directoryentries.splice(20, len - 20);
       }
-    });
-
-    // Infinite load
-    this.eventBus.eventsListeners["infinite-load"] = [];
-    this.eventBus.on("infinite-load", (x) => {
-      var accordian = false;
-      this.infiniteLoad(accordian);
     });
 
     var vue = this;

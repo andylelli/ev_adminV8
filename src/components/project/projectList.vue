@@ -43,10 +43,7 @@
 						/>
 					</f7-icon>
 				</template>
-				<swipeout-actions
-					:item="item"
-					:table="table"
-				></swipeout-actions>
+				<swipeout-actions :id="item.id" :name="item.name" :table="table"></swipeout-actions>
 			</f7-list-item>
 		</f7-list>
 	</div>

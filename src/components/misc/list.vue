@@ -20,7 +20,7 @@
     <f7-list
       :class="
         'search-list searchbar-found ripple-color-primary no-margin-top no-padding-top sort-' +
-        table
+        table + '-' + id
       "
       id="list"
       :sortable="isSortable"
@@ -50,7 +50,7 @@
             />
           </f7-icon>
         </template>
-        <swipeout-actions :item="item" :table="table"></swipeout-actions>
+        <swipeout-actions :id="item.id" :name="item.name" :table="table"></swipeout-actions>
       </f7-list-item>
     </f7-list>
   </div>

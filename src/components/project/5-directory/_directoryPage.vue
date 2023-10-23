@@ -38,7 +38,6 @@
     <sheet-new
       table="directoryentry"
       :projectid="projectid"
-      refresh="true"
     ></sheet-new>
   </f7-page>
 </template>
