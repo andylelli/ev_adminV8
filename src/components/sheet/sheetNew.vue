@@ -3,6 +3,8 @@
     class="justify-content-center"
     :id="this.sheetId"
     style="height: auto; --f7-sheet-bg-color: #fff"
+    swipe-to-close
+    backdrop
     @sheet:close="clearForm()"
   >
     <f7-page-content>

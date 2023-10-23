@@ -38,10 +38,13 @@ export default {
   },
   props: ["id", "name", "table"],
   mixins: [deleteItem, misc, fetch],
+  inject: ["eventBus"],
   computed: {},
   methods: {
     deleteListItem(id, table, name) {
+      this.eventBus.emit("is-delete", true);
       this.deleteItem(id, table, name);
+      this.eventBus.emit("is-delete", false);
     },
   },
   mounted() {},

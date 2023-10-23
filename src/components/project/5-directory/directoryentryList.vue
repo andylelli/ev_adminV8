@@ -140,6 +140,7 @@ export default {
       total: null,
       infiniteStart: 0,
       directoryentries: this.watchDirectory,
+      isDelete: false,
     };
   },
   props: [
@@ -159,6 +160,7 @@ export default {
   inject: ["eventBus"],
   watch: {
     getDirectoryentries(oldValue, newValue) {
+      console.log("watch");
       if (this.directoryentries) {
         this.total = this.directoryentries.length;
       }
@@ -180,9 +182,9 @@ export default {
       var directoryentries = this.directoryentries.concat(n);
 
       var ms = 250;
-      if(directoryentries.length - this.total == 1) {
+      if (directoryentries.length - this.total == 1) {
         ms = 0;
-      };
+      }
 
       var vue = this;
       if (data.length >= 20) {
@@ -192,7 +194,6 @@ export default {
       } else {
         vue.directoryentries = data;
       }
-      
     },
   },
   computed: {
@@ -331,12 +332,19 @@ export default {
     });
 
     // On close
-    this.eventBus.eventsListeners["list-on-close"] = [];
-    this.eventBus.on("list-on-close", (x) => {
-      var len = this.directoryentries.length;
-      if (len > 20) {
-        this.directoryentries.splice(20, len - 20);
-      }
+    //this.eventBus.eventsListeners["list-on-close"] = [];
+    //this.eventBus.on("list-on-close", (x) => {
+    //  var len = this.directoryentries.length;
+    //  if (len > 20) {
+    //    this.directoryentries.splice(20, len - 20);
+    //  }
+    //});
+
+    // Event - Close sortable
+    this.eventBus.eventsListeners["is-delete"] = [];
+    this.eventBus.on("is-delete", (bool) => {
+      vue.isDelete = bool;
+      console.log(vue.isDelete);
     });
 
     var vue = this;
