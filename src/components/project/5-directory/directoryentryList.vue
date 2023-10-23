@@ -368,4 +368,8 @@ export default {
   padding-left: 6px !important;
   padding-bottom: 4px !important;
 }
+
+.md .searchbar-disable-button {
+  top: 23px;
+}
 </style>
