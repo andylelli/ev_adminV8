@@ -6,7 +6,7 @@
         ><div v-html="title"></div
       ></f7-block-header>
       <f7-block-header>
-        <f7-link v-if="isSortable === true" :sortable-toggle="'.sort-' + table">
+        <f7-link v-if="isSortable === true" :sortable-toggle="'.sort-' + table + '-' + this.id">
           <font-awesome-icon
             class="fa-fw custom-colour"
             style="font-size: 20px"
@@ -68,7 +68,7 @@
           v-for="item in this.watchDirectoryentries"
           :key="item.directoryentry_id"
           class="swipeout"
-          :id="'directoryentry-' + item.directoryentry_id"
+          :id="'sort-directoryentry-' + item.directoryentry_id"
           :position="item.directoryentry_position"
         >
           <div class="swipeout-content">
@@ -102,13 +102,13 @@
                 </div>
               </div>
             </a>
+            <div class="sortable-handler"></div>
           </div>
           <swipeout-actions
             :id="item.directoryentry_id"
             :name="item.directoryentry_name"
             :table="table"
           ></swipeout-actions>
-          <div class="sortable-handler"></div>
         </li>
       </ul>
     </div>
@@ -160,7 +160,6 @@ export default {
   inject: ["eventBus"],
   watch: {
     getDirectoryentries(oldValue, newValue) {
-      console.log("watch");
       if (this.directoryentries) {
         this.total = this.directoryentries.length;
       }
@@ -175,6 +174,7 @@ export default {
         infiniteStart: 0,
         infiniteEnd: 20,
       };
+
       var data = store.getters.getData(items);
       this.directoryentries = data;
 
@@ -207,10 +207,9 @@ export default {
         id: this.id,
         type: "multiple",
         sortAlpha: this.isSortAlpha,
-        sortTime: this.isSortTime,
-        infiniteStart: this.infiniteStart,
-        infiniteEnd: 99999,
+        sortTime: false,
       };
+
       var data = store.getters.getData(items);
       return data;
     },
@@ -303,7 +302,7 @@ export default {
       f7.sortable.disable(".sort-" + this.table);
     },
     onSort() {
-      var els = $$(".sort-" + this.table + " ul").children();
+      var els = $$(".sort-" + this.table + "-" + this.id + " ul").children();
       this.sortList(els, this.table);
     },
   },
@@ -322,7 +321,7 @@ export default {
         if (accordian == true) {
           vue.accordianSlide("search-div", 80);
         }
-      }, 150);
+      }, 350);
 
       // Event - Close sortable
       this.eventBus.eventsListeners["close-sortable"] = [];
@@ -332,24 +331,23 @@ export default {
     });
 
     // On close
-    //this.eventBus.eventsListeners["list-on-close"] = [];
-    //this.eventBus.on("list-on-close", (x) => {
-    //  var len = this.directoryentries.length;
-    //  if (len > 20) {
-    //    this.directoryentries.splice(20, len - 20);
-    //  }
-    //});
+    this.eventBus.eventsListeners["list-on-close"] = [];
+    this.eventBus.on("list-on-close", (x) => {
+      var len = this.directoryentries.length;
+      if (len > 20) {
+        this.directoryentries.splice(20, len - 20);
+      }
+    });
 
     // Event - Close sortable
     this.eventBus.eventsListeners["is-delete"] = [];
     this.eventBus.on("is-delete", (bool) => {
       vue.isDelete = bool;
-      console.log(vue.isDelete);
     });
 
     var vue = this;
     f7.on("sortableSort", function (el) {
-      this.onSort();
+      vue.onSort();
     });
   },
 };

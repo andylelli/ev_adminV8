@@ -132,6 +132,12 @@ export default {
 
             console.log(json.message);
 
+            setTimeout(() => {
+                console.log("END");
+                f7.views.current.router.refreshPage();
+            }, 500);
+
+
         }
     }
 }

@@ -11,9 +11,9 @@
             <segment header="Name">
                 <field-edit-text type="single" :id="this.getEvent.event_id" table="event" fieldname="name"></field-edit-text>
             </segment>
+            <event-settings-image></event-settings-image>
             <event-settings-qr-code></event-settings-qr-code>
             <event-settings-date-time></event-settings-date-time>
-            <event-settings-image></event-settings-image>
             <event-settings-dark-theme></event-settings-dark-theme>
             <settings-auto-update></settings-auto-update>
             <event-settings-sync></event-settings-sync>

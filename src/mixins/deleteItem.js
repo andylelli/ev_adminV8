@@ -58,13 +58,16 @@ export default {
 
 				var vue = this;
 
+				console.l
+				setTimeout(async function () {
 					setTimeout(async function () {
 						//close swipeout
 						var el = "#" + table + "-" + id;
 						console.log(el);
 						f7.swipeout.close(el);
 						vue.deleteExecute(t, id);
-					}, 500);
+					}, 600);
+				}, 600);
 			}
 			else {
 				this.spinnerToError(id, table);
@@ -179,28 +182,27 @@ export default {
 			$$('#swipeout-' + table + '-spinner-' + id).show();
 		},
 		spinnerToTick(id, table) {
-			$$('#swipeout-' + table + '-spinner-' + id).hide();
-			$$('#swipeout-' + table + '-tick-' + id).show();
-		},
-		tickToDone(id, table) {
-			$$('#swipeout-' + table + '-tick-' + id).hide();
+			function change() {
+				$$('#swipeout-' + table + '-spinner-' + id).hide();
+				$$('#swipeout-' + table + '-tick-' + id).show();
+			}
+			setTimeout(change, 600)
 		},
 		spinnerToError(id, table) {
 			var vue = this;
-			function changeSpinnerToError() {
+			function change() {
 				$$('#swipeout-' + table + '-spinner-' + id).hide();
 				$$('#swipeout-' + table + '-error-' + id).show();
 				vue.errorToDelete(id, table);
 			}
-			setTimeout(changeSpinnerToError, 1000)
+			setTimeout(change, 600)
 		},
 		errorToDelete(id, table) {
-			var vue = this;
-			function changeErrorToDelete() {
+			function change() {
 				$$('#swipeout-' + table + '-error-' + id).hide();
 				$$('#swipeout-' + table + '-delete-' + id).show();
 			}
-			setTimeout(changeErrorToDelete, 1000)
+			setTimeout(change, 1200)
 		},
 
 		deleteExecute(table, id) {

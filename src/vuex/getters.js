@@ -115,7 +115,9 @@ var getters = {
 
         if (infiniteEnd) {
             data = data.slice(infiniteStart, infiniteEnd);
-        }         
+        }  
+        
+        
 
         //Single Item or Multiple Items
         if (type == 'single') {

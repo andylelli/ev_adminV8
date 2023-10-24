@@ -46,7 +46,7 @@
 import store from "../../vuex/store.js";
 
 import { f7, f7ready } from "framework7-vue";
-import { utils, Dom7 } from "framework7";
+import { Dom7 } from "framework7";
 var $$ = Dom7;
 
 import misc from "../../mixins/misc";
@@ -71,7 +71,7 @@ export default {
       allowChange: false,
     };
   },
-  props: ["page", "table", "projectid", "sortAlpha", "refresh"],
+  props: ["page", "table", "projectid", "projectName", "sortAlpha", "refresh"],
   mixins: [misc, newItem, login, fetch],
   components: {
     generalButton,
@@ -85,7 +85,7 @@ export default {
       return this.fields;
     },
     title() {
-      var title = "NEW " + this.displayName;
+      var title = "NEW " + this.displayName + " ITEM";
       return title.toUpperCase();
     },
     sheetId() {
@@ -180,7 +180,6 @@ export default {
       // Event - New
       if (vue.eventBus.eventsListeners["new-" + vue.table]) {
         if (vue.eventBus.eventsListeners["new-" + vue.table].length > 2) {
-          console.log(vue.eventBus.eventsListeners["new-" + vue.table]);
           vue.eventBus.eventsListeners["new-" + vue.table].splice(1);
         }
       }
@@ -193,7 +192,7 @@ export default {
           });
           vue.displayName = findSubtable[0].displayName;
         } else {
-          vue.displayName = vue.table;
+          vue.displayName = vue.projectName;
         }
 
 
@@ -207,11 +206,6 @@ export default {
           if (!sheetFields[i].optional) {
             vue.fields.push(sheetFields[i]);
             vue.data[vue.fields[i].name] = "";
-
-            var field = JSON.stringify(sheetFields[i]);
-            console.log("FIELD" + field);
-            console.log(vue.fields);
-            console.log(vue.data);
           }
         }
 

@@ -7,110 +7,6 @@ import { getDevice, Dom7 } from "framework7";
 const device = getDevice();
 
 var actions = {
-    //IMPORT DIRECTORYENTRY NAMES
-    importDirectoryentryNamesApp: ({ state }, string) => {
-
-        var table = "directoryentry";
-
-        var importArray = string.split("|");
-        importArray.splice(0, 2);
-        var itemArray = [];
-        var itemId, itemName;
-        var unixtime = Date.now() / 1000;
-
-        importArray.forEach(lineitem => {
-
-            itemArray = lineitem.split('#');
-
-            itemId = parseInt(itemArray[0]);
-            itemName = itemArray[1];
-
-            var i = 0;
-            var len = state[table].length;
-
-            for (var i = 0; i < len; i++) {
-                if (state[table][i][table + '_id'] == itemId) {
-                    state[table][i][table + '_name'] = itemName;
-                    state[table][i][table + '_unixtime'] = unixtime;
-                }
-            }
-        });
-
-        console.log('Directoryentry schedule names imported into App.');
-    },
-    importDirectoryentryNamesDB: ({ state }, string) => {
-
-        var table = "directoryentry";
-
-        var importArray = string.split("|");
-        importArray.splice(0, 2);
-        var itemArray = [];
-        var itemId, itemName;
-        var unixtime = Date.now() / 1000;
-
-        db.open().then(function () {
-
-            importArray.forEach(lineitem => {
-
-                itemArray = lineitem.split('#');
-
-                itemId = parseInt(itemArray[0]);
-                itemName = itemArray[1];
-
-                db.table(table)
-                    .where(table + '_id').equals(itemId)
-                    .modify({ directoryentry_name: itemName, directoryentry_unixtime: unixtime });
-            });
-        });
-
-        console.log('Directoryentry schedule names imported into DB.');
-    },
-    //DELETE DIRECTORYENTRY NAMES
-    deleteDirectoryentryNamesApp: ({ state }, directory) => {
-        var unixtime = Date.now() / 1000;
-        var len = state.directoryentry.length;
-        for (var i = 0; i < len; i++) {
-            if (state.directoryentry[i].directoryentry_directoryid == directory.directory_id) {
-                state.directoryentry[i].directoryentry_name = 'TBC';
-                state.directoryentry[i].directoryentry_unixtime = unixtime;
-            }
-        }
-
-        var project = state.project.filter(
-            (result) =>
-                (result.project_id == directory.directory_projectid)
-        );
-        var projectName = project[0].project_name;
-
-        console.log(
-            "Directoryentry schedule names for " + projectName + " removed from App"
-        );
-    },
-    deleteDirectoryentryNamesDB: ({ state }, directory) => {
-
-        var table = "directoryentry";
-        var key = "directoryentry_directoryid";
-        var directoryid = directory.directory_id;
-        var unixtime = Date.now() / 1000;
-
-        db.open().then(function () {
-
-            db.table(table)
-                .where(key).equals(directoryid)
-                .modify({ directoryentry_name: "TBC", directoryentry_unixtime: unixtime });
-        });
-
-        var project = state.project.filter(
-            (result) =>
-                (result.project_id == directory.directory_projectid)
-        );
-        var projectName = project[0].project_name;
-
-        console.log(
-            "Directoryentry schedule names for " + projectName + " removed from DB"
-        );
-    },
-
     //BASE STATE   
     setAutoSync({ state }, value) {
         state.autosync = value;
@@ -409,6 +305,85 @@ var actions = {
     ////////////////
     //DELETE
     //////////////
+    //IMPORT DIRECTORYENTRY NAMES
+    importDirectoryentryNamesApp: ({ state }, string) => {
+
+        var table = "directoryentry";
+
+        var importArray = string.split("|");
+        importArray.splice(0, 2);
+        var itemArray = [];
+        var itemId, itemName;
+        var unixtime = Date.now() / 1000;
+
+        importArray.forEach(lineitem => {
+
+            itemArray = lineitem.split('#');
+
+            itemId = parseInt(itemArray[0]);
+            itemName = itemArray[1];
+
+            var i = 0;
+            var len = state[table].length;
+
+            for (var i = 0; i < len; i++) {
+                if (state[table][i][table + '_id'] == itemId) {
+                    state[table][i][table + '_name'] = itemName;
+                    state[table][i][table + '_unixtime'] = unixtime;
+                }
+            }
+        });
+
+        console.log('Directoryentry schedule names imported into App.');
+    },
+    importDirectoryentryNamesDB: ({ state }, string) => {
+
+        var table = "directoryentry";
+
+        var importArray = string.split("|");
+        importArray.splice(0, 2);
+        var itemArray = [];
+        var itemId, itemName;
+        var unixtime = Date.now() / 1000;
+
+        db.open().then(function () {
+
+            importArray.forEach(lineitem => {
+
+                itemArray = lineitem.split('#');
+
+                itemId = parseInt(itemArray[0]);
+                itemName = itemArray[1];
+
+                db.table(table)
+                    .where(table + '_id').equals(itemId)
+                    .modify({ directoryentry_name: itemName, directoryentry_unixtime: unixtime });
+            });
+        });
+
+        console.log('Directoryentry schedule names imported into DB.');
+    },
+    //DELETE DIRECTORYENTRY NAMES
+    deleteDirectoryentryNamesApp: ({ state }, directory) => {
+        var unixtime = Date.now() / 1000;
+        var len = state.directoryentry.length;
+        for (var i = 0; i < len; i++) {
+            if (state.directoryentry[i].directoryentry_directoryid == directory.directory_id) {
+                state.directoryentry[i].directoryentry_name = 'TBC';
+                state.directoryentry[i].directoryentry_unixtime = unixtime;
+            }
+        }
+
+        var project = state.project.filter(
+            (result) =>
+                (result.project_id == directory.directory_projectid)
+        );
+        var projectName = project[0].project_name;
+
+        console.log(
+            "Directoryentry schedule names for " + projectName + " removed from App"
+        );
+    },
     deleteEventlistApp: ({ state }, id) => {
 
         var i = 0;
@@ -684,6 +659,30 @@ var actions = {
 
             console.log(table + ' all items deleted from DB.');
         }
+    },
+    deleteDirectoryentryNamesDB: ({ state }, directory) => {
+
+        var table = "directoryentry";
+        var key = "directoryentry_directoryid";
+        var directoryid = directory.directory_id;
+        var unixtime = Date.now() / 1000;
+
+        db.open().then(function () {
+
+            db.table(table)
+                .where(key).equals(directoryid)
+                .modify({ directoryentry_name: "TBC", directoryentry_unixtime: unixtime });
+        });
+
+        var project = state.project.filter(
+            (result) =>
+                (result.project_id == directory.directory_projectid)
+        );
+        var projectName = project[0].project_name;
+
+        console.log(
+            "Directoryentry schedule names for " + projectName + " removed from DB"
+        );
     },
     deleteItemDB: ({ state }, item) => {
 

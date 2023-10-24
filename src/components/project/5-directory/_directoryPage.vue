@@ -37,6 +37,7 @@
     <!-- Sheet Modals-->
     <sheet-new
       table="directoryentry"
+      :project-name="getProject.project_name"
       :projectid="projectid"
     ></sheet-new>
   </f7-page>
@@ -73,7 +74,7 @@ export default {
   },
   props: {
     f7route: Object,
-    f7router: Object,
+    projectName: String,
   },
   components: {
     navBackLink,
