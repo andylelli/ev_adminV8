@@ -191,8 +191,6 @@ export default {
 							id: pollid,
 						};
 
-						console.log(item);
-
 						store.dispatch("deleteItemApp", item);
 						store.dispatch("deleteItemDB", item);
 

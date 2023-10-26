@@ -159,7 +159,6 @@ export default {
 				//Do nothing
 			}
 			else if (table == 'newsitem') {
-				console.log("newsitem");
 				var view = f7.views.current;
 
 				//$$(".page-previous").remove();

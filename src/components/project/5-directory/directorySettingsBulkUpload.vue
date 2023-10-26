@@ -124,7 +124,6 @@ export default {
 				if (message.success != true) {
 					f7.dialog.alert(message.error);
 				} else {
-					//console.log(data);
 					this.sendToServer(data);
 				}
 			};

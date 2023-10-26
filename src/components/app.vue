@@ -84,7 +84,6 @@ export default {
 				const queryString = window.location.search;
 				const urlParams = new URLSearchParams(queryString);
 				var theme = urlParams.get("theme");
-				console.log(theme);
 				if (theme) {
 					return theme;
 				} else {

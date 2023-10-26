@@ -76,11 +76,9 @@ $$(document).on('page:afterin', (e, page) => {
               case 'installed':
                 if (navigator.serviceWorker.controller) {
                   // new update available
-                  console.log('TRUE');
                   resolve(true);
                 } else {
                   // no update available
-                  console.log('FALSE');
                   resolve(false);
                 }
                 break;

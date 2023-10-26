@@ -172,10 +172,6 @@ export default {
 				},
 				{
 					style: "fal",
-					name: "square",
-				},
-				{
-					style: "fal",
 					name: "map-marker-plus",
 				},
 				{

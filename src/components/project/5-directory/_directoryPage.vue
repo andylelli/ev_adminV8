@@ -26,7 +26,7 @@
       :id="getDirectory.directory_id"
       :projectid="getProject.project_id"
       sortable="true"
-      :sort-alpha="this.isSortAlpha()"
+      :sort-alpha="this.isSortAlpha"
     ></directoryentry-list>
     <!---- New item ---->
     <new-item
@@ -88,6 +88,13 @@ export default {
   mixins: [misc],
   inject: ["eventBus"],
   computed: {
+    isSortAlpha() {
+      if (this.getDirectory.directory_sortalpha == 1) {
+        return "true";
+      } else {
+        return "false";
+      }
+    },    
     isReloadPage() {
       return this.reloadPage;
     },
@@ -119,13 +126,6 @@ export default {
   methods: {
     onClose() {
       this.eventBus.emit("list-on-close");
-    },
-    isSortAlpha() {
-      if (this.getDirectory.directory_sortalpha == 1) {
-        return "true";
-      } else {
-        return "false";
-      }
     },
     reloadPage() {
       f7.views.current.router.refreshPage();

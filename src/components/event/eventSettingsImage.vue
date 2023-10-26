@@ -178,7 +178,6 @@ export default {
       this.imageLoad(e, eventid, table, remove);
     },
     colorChange(value) {
-      console.log(value);
       if (value) {
         var colour = value.hex;
         colour = colour.replace("#", "");

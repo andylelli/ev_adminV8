@@ -295,7 +295,6 @@ export default {
 
 		},
 		failure() {
-			console.log("FAILURE");
 			f7.preloader.hide();
 			f7.dialog.alert(response[0].message);
 

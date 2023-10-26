@@ -217,7 +217,6 @@ export default {
 	},
 	mounted() {
 		f7ready((f7) => {
-			console.log("Directory entry list loaded successfully");
 		});
 	},
 };

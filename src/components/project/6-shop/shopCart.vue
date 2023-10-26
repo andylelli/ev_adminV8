@@ -187,7 +187,6 @@ export default {
   },
   mounted() {
     f7ready((f7) => {
-      console.log("Shopping cart sheet loaded.");
     });
     //this.orderModalCheck();
   },

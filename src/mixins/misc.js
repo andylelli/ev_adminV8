@@ -167,7 +167,6 @@ export default {
 			else {
 				colour = "#2b2b2b";
 			}
-			//console.log('SET COLOUR TO ' + colour);
 			f7.setColorTheme(colour);
 		},
 		clearLocalStorage() {

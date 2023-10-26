@@ -74,9 +74,6 @@ export default {
 		},
 	},
 	mounted() {
-		f7ready((f7) => {
-			console.log();
-		});
 	},
 };
 </script>

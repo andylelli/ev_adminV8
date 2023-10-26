@@ -16,8 +16,6 @@ export default {
 
             if (tables) {
                 let isDirectoryEntry = Object.values(tables).includes("directoryentry");
-                console.log(isDirectoryEntry);
-
                 var items = {
                     table: "directoryentry",
                     key: "favourite",

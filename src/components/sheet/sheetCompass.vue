@@ -190,7 +190,6 @@ export default {
 					(err) => {
 						vue.permissionGranted = false;
 						this.errorStr = err.message;
-						console.log(this.errorStr);
 					}
 				);
 			}

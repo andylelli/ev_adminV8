@@ -201,7 +201,6 @@ export default {
           return result.table === vue.table;
         });
         var sheetFields = findTable[0].fields;
-        console.log(sheetFields);
         for (var i = 0; i < sheetFields.length; i++) {
           if (!sheetFields[i].optional) {
             vue.fields.push(sheetFields[i]);

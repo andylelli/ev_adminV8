@@ -103,8 +103,6 @@ export default {
       f7.preloader.hide();
 
       f7.dialog.alert("Backup successful", "Backup");
-
-      console.log(json.message);
     },
     failure(json) {
       console.log(json.message);

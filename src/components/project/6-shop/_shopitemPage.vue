@@ -162,8 +162,6 @@ export default {
 						var item = {};
 						item.table = "shopitem";
 						item.json = this.getShopitem;
-						console.log(item);
-
 						store.dispatch("updateItemDB", item);
 
 						localStorage.admin_update_shopitem_time = unixtime;

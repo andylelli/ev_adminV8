@@ -203,7 +203,6 @@ export default {
 			var unixtime = Date.now() / 1000;
 			var item = {};
 			item.json = this.getDirectory;
-			console.log
 			item.table = "directory";
 			item.json.directory_mapid = map[0].mapId;
 			item.json.directory_unixtime = unixtime;

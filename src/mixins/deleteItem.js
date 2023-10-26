@@ -63,7 +63,6 @@ export default {
 					setTimeout(async function () {
 						//close swipeout
 						var el = "#" + table + "-" + id;
-						console.log(el);
 						f7.swipeout.close(el);
 						vue.deleteExecute(t, id);
 					}, 600);
@@ -77,7 +76,6 @@ export default {
 				setTimeout(async function () {
 					//close swipeout
 					var el = "#" + table + "-" + id;
-					console.log(el);
 					f7.swipeout.close(el);
 					var message = name + " couldn't be deleted.";
 					f7.dialog.alert(message);
