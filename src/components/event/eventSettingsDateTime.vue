@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<f7-block-header>DATE / TIME</f7-block-header>
+		<f7-block-header>START / END DATE</f7-block-header>
 		<f7-list>
 			<f7-list-item title="Dates">
 				<template #media>
@@ -18,17 +18,20 @@
 						type="text"
 						placeholder="Select..."
 						readonly="readonly"
-						id="date-range"
+						id="range-date"
 					/>
 				</div>
 			</f7-list-item>
-			<f7-list-item title="End time">
+		</f7-list>
+		<f7-block-header>APP EXPIRY DATE</f7-block-header>
+		<f7-list>
+			<f7-list-item title="Expiry date">
 				<template #media>
 					<f7-icon>
 						<font-awesome-icon
 							class="fa-fw custom-colour"
 							style="font-size: 20px"
-							:icon="['fal', 'clock']"
+							:icon="['fal', 'calendar']"
 						/>
 					</f7-icon>
 				</template>
@@ -38,7 +41,7 @@
 						type="text"
 						placeholder="Select..."
 						readonly="readonly"
-						id="end-time"
+						id="expiry-date"
 					/>
 				</div>
 			</f7-list-item>
@@ -90,7 +93,7 @@ export default {
 			//////////////////////////
 
 			var calendarRange = f7.calendar.create({
-				inputEl: "#date-range",
+				inputEl: "#range-date",
 				rangePicker: true,
 				on: {
 					change: function (calendar, values, displayValues) {
@@ -133,77 +136,38 @@ export default {
 				},
 			});
 
-			var startDate = this.getEvent.event_startdate;
-			var endDate = this.getEvent.event_enddate;
-
-			if (startDate != "" && endDate != "") {
-				var start_year = startDate.substring(0, 4);
-				var start_month = startDate.substring(4, 6);
-				var start_day = startDate.substring(6, 8);
-
-				var end_year = endDate.substring(0, 4);
-				var end_month = endDate.substring(4, 6);
-				var end_day = endDate.substring(6, 8);
-
-				startDate = start_year + "-" + start_month + "-" + start_day;
-				endDate = end_year + "-" + end_month + "-" + end_day;
-
-				var start_date = new Date(startDate);
-				var end_date = new Date(endDate);
-
-				calendarRange.setValue([start_date, end_date]);
-			}
-
-			////////////////////////////
-			// UI - Time picker
-			// Daily end time
-			//////////////////////////
-
-			var endTime = f7.picker.create({
-				inputEl: "#end-time",
-				rotateEffect: true,
-
-				formatValue: function (values, displayValues) {
-					return values[0] + ":" + values[1];
-				},
-
-				cols: [
-					{
-						values: "00 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23".split(
-							" "
-						),
-					},
-					{
-						divider: true,
-						content: "&nbsp;:&nbsp;",
-					},
-					{
-						values: "00 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58 59".split(
-							" "
-						),
-					},
-				],
+			var calendarExpiry = f7.calendar.create({
+				inputEl: "#expiry-date",
+				rangePicker: false,
 				on: {
-					change: function (picker, values, displayValues) {
+					change: function (calendar, values, displayValues) {
+						var expiry = calendar.value[0];
+
+						var expiry_conv = new Date(expiry);
+
+						var expiry_year = expiry_conv.getFullYear().toString();
+						var expiry_month = (expiry_conv.getMonth() + 1).toString();
+						var expiry_day = expiry_conv.getDate().toString();
+						if (expiry_month.length < 2)
+							expiry_month = "0" + expiry_month;
+						if (expiry_day.length < 2) expiry_day = "0" + expiry_day;
+
+						expiry = expiry_year + expiry_month + expiry_day;
+
+
 						new Date();
 						var unixtime = Date.now() / 1000;
 						var item = {};
 						item.table = "event";
 						item.json = vue.getEvent;
-						item.json.event_dailyendtime =
-							picker.value[0] + picker.value[1];
+						item.json.event_expirydate = expiry;
 						item.json.event_unixtime = unixtime;
 						store.dispatch("updateItemApp", item);
 					},
 				},
-			});
+			});			
 
-			var endHour = vue.getEvent.event_dailyendtime.substring(0, 2);
-			var endMinute = vue.getEvent.event_dailyendtime.substring(2, 4);
 
-			if (endHour !== "" && endMinute !== "") {
-				endTime.setValue([endHour, endMinute]);
-			}
 		});
 	},
 };
