@@ -2,65 +2,54 @@
 	<div>
 		<f7-block-header>REVEAL NAMES BY QR</f7-block-header>
 		<f7-list>
-			<f7-list-item
-				radio
-				radio-icon="end"
-				title="1 QR Code for event"
-				name="qr"
-				value="1"
-				:checked="this.isCheckedHideQrType(1)"
-				@change="radioHideQrType($event.target.value)"
-			>
+			<f7-list-item radio radio-icon="end" title="1 QR Code for event" name="qr" value="1" :checked="this.isCheckedHideQrType(1)" @change="radioHideQrType($event.target.value)">
 				<template #media>
-					<f7-icon>
-						<font-awesome-icon
-							class="fa-fw custom-colour"
-							style="font-size: 20px"
-							:icon="['fal', 'qrcode']" /></f7-icon></template
-			></f7-list-item>
-			<f7-list-item
-				radio
-				radio-icon="end"
-				title="1 QR Code per day"
-				name="qr"
-				value="2"
-				:checked="this.isCheckedHideQrType(2)"
-				@change="radioHideQrType($event.target.value)"
-			>
-				<template #media>
-					<f7-icon>
-						<font-awesome-icon
-							class="fa-fw custom-colour"
-							style="font-size: 20px"
-							:icon="['fal', 'qrcode']"
-						/>
-					</f7-icon> </template
-			></f7-list-item>
-		</f7-list>
-		<f7-list v-if="this.getHiddenDirectories().length > 0">
-			<f7-list-item title="Create QR code(s)">
-				<template #media>
-					<f7-icon>
-						<font-awesome-icon
-							class="fa-fw custom-colour"
-							style="font-size: 20px"
-							:icon="['fal', 'qrcode']"
-						/> </f7-icon
-				></template>
+						<f7-icon>
+							<font-awesome-icon
+								class="fa-fw custom-colour"
+								style="font-size: 20px"
+								:icon="['fal', 'qrcode']" /></f7-icon></template
+				></f7-list-item>
+				<f7-list-item
+					radio
+					radio-icon="end"
+					title="1 QR Code per day"
+					name="qr"
+					value="2"
+					:checked="this.isCheckedHideQrType(2)"
+					@change="radioHideQrType($event.target.value)"
+				>
+					<template #media>
+						<f7-icon>
+							<font-awesome-icon
+								class="fa-fw custom-colour"
+								style="font-size: 20px"
+								:icon="['fal', 'qrcode']"
+							/>
+						</f7-icon> </template
+				></f7-list-item>
+			</f7-list>
+			<f7-list v-if="this.getHiddenDirectories().length > 0">
+				<f7-list-item title="Create QR code(s)">
+					<template #media>
+						<f7-icon>
+							<font-awesome-icon
+								class="fa-fw custom-colour"
+								style="font-size: 20px"
+								:icon="['fal', 'qrcode']"
+							/> </f7-icon
+					>
+</template>
 				<f7-button fill class="color-green" @click="createQrCodes()"
 					>CREATE</f7-button
 				>
 			</f7-list-item>
 			<!-- <f7-list-item title="Import Lineup from string">
-				<template #media>
-					<f7-icon>
-						<font-awesome-icon
-							class="fa-fw custom-colour"
-							style="font-size: 20px"
-							:icon="['fal', 'text']"
-						/>
-					</f7-icon>
-				</template>
+<template #media>
+	<f7-icon>
+		<font-awesome-icon class="fa-fw custom-colour" style="font-size: 20px" :icon="['fal', 'text']" />
+	</f7-icon>
+</template>
 				<f7-button
 					fill
 					class="color-green"
@@ -124,7 +113,7 @@ export default {
 			margin: 4,
 		};
 	},
-	mixins: [misc, fetch,  newItem],
+	mixins: [misc, fetch, newItem],
 	components: {
 		QrcodeVue,
 	},
@@ -200,7 +189,7 @@ export default {
 			f7.dialog.alert("Schedule names imported");
 		},
 		getHiddenDirectories() {
-			var hiddenDirectoryIds = this.directory.filter(function (result) {
+			var hiddenDirectoryIds = this.directory.filter(function(result) {
 				return (
 					result.directory_scheduleid == 1 &&
 					result.directory_hidenames == 1
@@ -217,30 +206,30 @@ export default {
 				if (day == "ALL" && directory.directory_hidetype == 0) {
 					var hiddenDirectoryentries = directoryentries.filter(
 						(result) =>
-							result.directoryentry_directoryid ==
-							directory.directory_id
+						result.directoryentry_directoryid ==
+						directory.directory_id
 					);
 				} else if (day == "ALL" && directory.directory_hidetype == 1) {
 					var hiddenDirectoryentries = directoryentries.filter(
 						(result) =>
-							result.directoryentry_directoryid ==
-								directory.directory_id &&
-							result.directoryentry_schedulehide == 1
+						result.directoryentry_directoryid ==
+						directory.directory_id &&
+						result.directoryentry_schedulehide == 1
 					);
 				} else if (directory.directory_hidetype == 0) {
 					var hiddenDirectoryentries = directoryentries.filter(
 						(result) =>
-							result.directoryentry_directoryid ==
-								directory.directory_id &&
-							result.directoryentry_day == day
+						result.directoryentry_directoryid ==
+						directory.directory_id &&
+						result.directoryentry_day == day
 					);
 				} else if (directory.directory_hidetype == 1) {
 					var hiddenDirectoryentries = directoryentries.filter(
 						(result) =>
-							result.directoryentry_directoryid ==
-								directory.directory_id &&
-							result.directoryentry_day == day &&
-							result.directoryentry_schedulehide == 1
+						result.directoryentry_directoryid ==
+						directory.directory_id &&
+						result.directoryentry_day == day &&
+						result.directoryentry_schedulehide == 1
 					);
 				}
 
@@ -341,14 +330,14 @@ export default {
 
 				var project = this.project.filter(
 					(result) =>
-						result.project_id == directory.directory_projectid
+					result.project_id == directory.directory_projectid
 				);
 
 				projectName = project[0].project_name;
 				console.log(
 					"Directoryentry schedule names for " +
-						projectName +
-						" removed"
+					projectName +
+					" removed"
 				);
 			});
 
@@ -387,6 +376,6 @@ export default {
 };
 </script>
 
-<!-- <style scoped>
+<!--<style scoped>
 
 </style>-->

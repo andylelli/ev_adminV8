@@ -15,35 +15,15 @@
             <event-settings-qr-code></event-settings-qr-code>
             <event-settings-date-time></event-settings-date-time>
             <event-settings-dark-theme></event-settings-dark-theme>
-            <settings-auto-update></settings-auto-update>
+            <event-settings-auto-update></event-settings-auto-update>
             <event-settings-sync></event-settings-sync>
             <event-settings-full-load></event-settings-full-load>
-            <f7-block-header>BACKUP RESTORE</f7-block-header>
-            <f7-list>
-                <f7-list-item title="Backup / Restore" link @click="openBackupRestore()">
-                    <template #media>
-                        <f7-icon>
-                        <font-awesome-icon
-                            class="fa-fw custom-colour"
-                            style="font-size: 20px"
-                            :icon="['fal', 'upload']"
-                        />
-                        </f7-icon> 
-                    </template>
-                </f7-list-item>
-          </f7-list>
-          <event-settings-hidenames></event-settings-hidenames>
-          <general-button
-            class="margin-bottom"
-            @generalButtonAction="deleteItem()"
-            label="DELETE"
-            width="200"
-            colour="red"
-            type="fill"
-          ></general-button>
-          <sheet-edit table="event"></sheet-edit>
+            <event-settings-backup-restore></event-settings-backup-restore>
+            <event-settings-hidenames v-show="getHidenames"></event-settings-hidenames>
+            <general-button class="margin-bottom" @generalButtonAction="deleteItem()" label="DELETE" width="200" colour="red" type="fill"></general-button>
+            <sheet-edit table="event"></sheet-edit>
         </div>
-      </f7-page>
+    </f7-page>
 </template>
 
 <script>
@@ -72,9 +52,10 @@ import generalButton from "../misc/generalButton.vue";
 import eventSettingsDateTime from "./eventSettingsDateTime.vue";
 import eventSettingsImage from "./eventSettingsImage.vue";
 import eventSettingsDarkTheme from "./eventSettingsDarkTheme.vue";
-import settingsAutoUpdate from "./settingsAutoUpdate.vue";
+import eventSettingsAutoUpdate from "./eventSettingsAutoUpdate.vue";
 import eventSettingsSync from "./eventSettingsSync.vue";
 import eventSettingsFullLoad from "./eventSettingsFullLoad.vue";
+import eventSettingsBackupRestore from "./eventSettingsBackupRestore.vue";
 import eventSettingsHidenames from "./eventSettingsHidenames.vue";
 import eventSettingsQrCode from "./eventSettingsQrCode.vue";
 
@@ -98,9 +79,10 @@ export default {
         eventSettingsDateTime,
         eventSettingsImage,
         eventSettingsDarkTheme,
-        settingsAutoUpdate,
+        eventSettingsAutoUpdate,
         eventSettingsSync,
         eventSettingsFullLoad,
+        eventSettingsBackupRestore,
         eventSettingsHidenames,
         eventSettingsQrCode,
     },
@@ -115,6 +97,20 @@ export default {
             };
             return store.getters.getData(item);
         },
+        getHidenames() {
+            var item = {
+                table: "directory",
+                key: "hidenames",
+                id: 1,
+                type: "multiple",
+            };
+            var data = store.getters.getData(item);
+            if (data) {
+                return true;
+            } else {
+                return false;
+            }
+        },
         getGuest() {
             var item = {
                 table: "guest",
@@ -123,12 +119,9 @@ export default {
                 type: "single",
             };
             return store.getters.getData(item);
-        },        
+        },
     },
     methods: {
-        openBackupRestore() {
-            f7.views.main.router.navigate("/event-settings-backup-restore/");
-        },
         deleteItem() {
             this.deleteItemButton(
                 this.getEvent.event_id,
