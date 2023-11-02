@@ -81,25 +81,43 @@ export default {
       const startYear = start.substring(0, 4);
       const startMonth = start.substring(4, 6);
       const startDay = start.substring(6, 8);
-      const startDate = new Date(startYear, startMonth - 1, startDay);
 
       // Get existing end date
       var end = this.getEvent.event_enddate;
       const endYear = end.substring(0, 4);
       const endMonth = end.substring(4, 6);
       const endDay = end.substring(6, 8);
-      const endDate = new Date(endYear, endMonth - 1, endDay);
 
-      // Set calendar
-      this.calendarRange.setValue([startDate, endDate]);
+      if (startYear < 1900 && endYear < 1900) {
+        //Do nothing
+      } else {
+        var startDate = new Date(startYear, startMonth - 1, startDay);
+        var endDate = new Date(endYear, endMonth - 1, endDay);
+        //Set calendar
+        this.calendarRange.setValue([startDate, endDate]);
+      }
     },
     setExpiryDate() {
       // Get existing expiry date
       const expiry = this.getEvent.event_expirydate;
-      const expiryYear = expiry.substring(0, 4);
+      var expiryYear = parseInt(expiry.substring(0, 4));
       const expiryMonth = expiry.substring(4, 6);
       const expiryDay = expiry.substring(6, 8);
-      const expiryDate = new Date(expiryYear, expiryMonth - 1, expiryDay);
+
+      if (expiryYear == 2099) {
+        const y = new Date();
+        expiryYear = y.getFullYear() + 1;
+      }
+
+      console.log(expiryYear);
+      console.log(expiryMonth);
+      console.log(expiryDay);
+
+      const expiryDate = new Date(
+        expiryYear.toString(),
+        expiryMonth - 1,
+        expiryDay
+      );
 
       // Set calendar
       this.calendarExpiry.setValue([expiryDate]);
@@ -129,43 +147,43 @@ export default {
         rangePicker: true,
         on: {
           change: function (calendar, values, displayValues) {
-            var from = calendar.value[0];
-            var to = calendar.value[1];
+            console.log(values);
 
-            console.log(from);
-            console.log(to);
+            var new_to= new Date(values[0]);
+            var new_from = new Date(values[1]);
 
-            var from_conv = new Date(from);
-            var to_conv = new Date(to);
+            var from_year = new_from.getFullYear().toString();
+            var to_year = new_to.getFullYear().toString();
 
-            var from_year = from_conv.getFullYear().toString();
-            var from_month = (from_conv.getMonth() + 1).toString();
-            var from_day = from_conv.getDate().toString();
-            if (from_month.length < 2) from_month = "0" + from_month;
-            if (from_day.length < 2) from_day = "0" + from_day;
+            if (from_year > 1900 && to_year > 1900) {
+              var from_conv = new Date(new_to);
+              var to_conv = new Date(new_from);
 
-            var to_year = to_conv.getFullYear().toString();
-            var to_month = (to_conv.getMonth() + 1).toString();
-            var to_day = to_conv.getDate().toString();
-            if (to_month.length < 2) to_month = "0" + to_month;
-            if (to_day.length < 2) to_day = "0" + to_day;
+              from_year = from_conv.getFullYear().toString();
+              var from_month = (from_conv.getMonth() + 1).toString();
+              var from_day = from_conv.getDate().toString();
+              if (from_month.length < 2) from_month = "0" + from_month;
+              if (from_day.length < 2) from_day = "0" + from_day;
 
-            from = from_year + from_month + from_day;
-            if (!isNaN(to_day)) {
-              to = to_year + to_month + to_day;
-            } else {
-              to = from;
+              to_year = to_conv.getFullYear().toString();
+              var to_month = (to_conv.getMonth() + 1).toString();
+              var to_day = to_conv.getDate().toString();
+              if (to_month.length < 2) to_month = "0" + to_month;
+              if (to_day.length < 2) to_day = "0" + to_day;
+
+              var from = from_year + from_month + from_day;
+              var to = to_year + to_month + to_day;
+
+              new Date();
+              var unixtime = Date.now() / 1000;
+              var item = {};
+              item.table = "event";
+              item.json = vue.getEvent;
+              item.json.event_startdate = from;
+              item.json.event_enddate = to;
+              item.json.event_unixtime = unixtime;
+              store.dispatch("updateItemApp", item);
             }
-
-            new Date();
-            var unixtime = Date.now() / 1000;
-            var item = {};
-            item.table = "event";
-            item.json = vue.getEvent;
-            item.json.event_startdate = from;
-            item.json.event_enddate = to;
-            item.json.event_unixtime = unixtime;
-            store.dispatch("updateItemApp", item);
           },
         },
       });
@@ -199,7 +217,7 @@ export default {
           },
         },
       });
-	  this.setExpiryDate();
+      this.setExpiryDate();
     });
   },
 };
