@@ -22,7 +22,7 @@ export default {
 		return {
 			size: 200,
 			margin: 2,
-			url: "https://www.evaria.io/user/",
+			url: "https://www.evaria.io/user/index.html?id=",
 		};
 	},
 	components: {
