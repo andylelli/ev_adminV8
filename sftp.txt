@@ -1,5 +1,5 @@
 option batch abort
 option confirm off
-open sftp://master_pkswyaxpnw:sa978dhZ@138.68.168.170/
-put "C:\evaria_adminV8\www" /applications/zgwwgxjvps/public_html/admin
+open sftp://master_kcpxvusscb:f7V6TQzDFwva@161.35.36.63/
+put "C:\evaria_adminV8\www" /applications/gthewnsykf/public_html/admin
 exit

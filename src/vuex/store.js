@@ -4,13 +4,15 @@ import getters from "./getters.js";
 
 import { createStore } from 'vuex'
 
+var url = "https://www.evaria.io/";
+//var url = "https://phplaravel-1159228-4039624.cloudwaysapps.com/";
+
 export const store = createStore({
   state: {
-    version: "v8 20231102_02",
-
-    url: "https://www.evaria.io/public/",
-    urlQR: "https://www.evaria.io/admin/index.html?",
-    cache: "https://www.evaria.io/admin/",
+    version: "v8 20231103_01",
+    url: url + "public/",
+    cache: url + "admin/",
+    urlQR: url + "index.html?",
 
     uniqueId: "",
     validate: true,
