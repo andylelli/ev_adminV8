@@ -52,8 +52,6 @@ export default {
 			// Success
 			if (response[0].status == 'success') {
 
-				console.log(response[0]);
-
 				this.spinnerToTick(id, table);
 
 				var vue = this;

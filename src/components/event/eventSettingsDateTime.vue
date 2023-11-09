@@ -109,10 +109,6 @@ export default {
         expiryYear = y.getFullYear() + 1;
       }
 
-      console.log(expiryYear);
-      console.log(expiryMonth);
-      console.log(expiryDay);
-
       const expiryDate = new Date(
         expiryYear.toString(),
         expiryMonth - 1,

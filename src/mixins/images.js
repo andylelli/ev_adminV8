@@ -130,8 +130,6 @@ export default {
 
             f7.preloader.hide();
 
-            console.log(json.message);
-
             setTimeout(() => {
                 f7.views.current.router.refreshPage();
             }, 500);

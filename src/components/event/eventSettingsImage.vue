@@ -255,7 +255,6 @@ export default {
       },
       on: {
         change(cp, value) {
-          console.log(value);
           vue.colorChange(value);
         },
       },
