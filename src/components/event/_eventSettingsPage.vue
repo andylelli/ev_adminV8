@@ -1,29 +1,52 @@
 <template>
-    <f7-page stacked name="event-settings">
-        <!-- Nav bar-->
-        <f7-navbar>
-            <nav-back-link :page="'main'" :id="this.eventid"></nav-back-link>
-            <f7-nav-title>Event Settings</f7-nav-title>
-            <nav-bars></nav-bars>
-        </f7-navbar>
-        <!-- Main -->
-        <div v-if="getEvent">
-            <segment header="Name">
-                <field-edit-text type="single" :id="this.getEvent.event_id" table="event" fieldname="name"></field-edit-text>
-            </segment>
-            <event-settings-image></event-settings-image>
-            <event-settings-qr-code></event-settings-qr-code>
-            <event-settings-date-time></event-settings-date-time>
-            <event-settings-dark-theme></event-settings-dark-theme>
-            <event-settings-auto-update></event-settings-auto-update>
-            <event-settings-sync></event-settings-sync>
-            <event-settings-full-load></event-settings-full-load>
-            <event-settings-backup-restore></event-settings-backup-restore>
-            <event-settings-hidenames v-show="getHidenames"></event-settings-hidenames>
-            <general-button class="margin-bottom" @generalButtonAction="deleteItem()" label="DELETE" width="200" colour="red" type="fill"></general-button>
-            <sheet-edit table="event"></sheet-edit>
-        </div>
-    </f7-page>
+  <f7-page stacked name="event-settings">
+    <!-- Nav bar-->
+    <f7-navbar>
+      <nav-back-link :page="'main'" :id="this.eventid"></nav-back-link>
+      <f7-nav-title>Event Settings</f7-nav-title>
+      <nav-bars></nav-bars>
+    </f7-navbar>
+    <!-- Main -->
+    <div v-if="getEvent">
+      <segment header="Name">
+        <field-edit-text
+          type="single"
+          :id="this.getEvent.event_id"
+          table="event"
+          fieldname="name"
+        ></field-edit-text>
+      </segment>
+      <event-settings-image></event-settings-image>
+      <event-settings-qr-code></event-settings-qr-code>
+      <event-settings-date-time></event-settings-date-time>
+      <!---- Description ---->
+      <segment header="Expired Message">
+        <field-edit-long-text
+          type="first"
+          :id="this.getEvent.event_id"
+          table="event"
+          fieldname="expiredmessage"
+        ></field-edit-long-text>
+      </segment>
+      <event-settings-dark-theme></event-settings-dark-theme>
+      <event-settings-auto-update></event-settings-auto-update>
+      <event-settings-sync></event-settings-sync>
+      <event-settings-full-load></event-settings-full-load>
+      <event-settings-backup-restore></event-settings-backup-restore>
+      <event-settings-hidenames
+        v-show="getHidenames"
+      ></event-settings-hidenames>
+      <general-button
+        class="margin-bottom"
+        @generalButtonAction="deleteItem()"
+        label="DELETE"
+        width="200"
+        colour="red"
+        type="fill"
+      ></general-button>
+      <sheet-edit table="event"></sheet-edit>
+    </div>
+  </f7-page>
 </template>
 
 <script>
@@ -59,118 +82,121 @@ import eventSettingsBackupRestore from "./eventSettingsBackupRestore.vue";
 import eventSettingsHidenames from "./eventSettingsHidenames.vue";
 import eventSettingsQrCode from "./eventSettingsQrCode.vue";
 
+import fieldEditLongText from "../misc/fieldEditLongText.vue";
+
 import sheetEdit from "..//sheet/sheetEdit.vue";
 
 export default {
-    data() {
-        return {
-            eventid: store.state.eventid,
-            lookup: store.state.lookup,
-            desktop: device.desktop,
-        };
+  data() {
+    return {
+      eventid: store.state.eventid,
+      lookup: store.state.lookup,
+      desktop: device.desktop,
+    };
+  },
+  components: {
+    navBackLink,
+    navBars,
+    segment,
+    sheetEdit,
+    generalButton,
+    fieldEditText,
+    eventSettingsDateTime,
+    eventSettingsImage,
+    eventSettingsDarkTheme,
+    eventSettingsAutoUpdate,
+    eventSettingsSync,
+    eventSettingsFullLoad,
+    eventSettingsBackupRestore,
+    eventSettingsHidenames,
+    eventSettingsQrCode,
+    fieldEditLongText
+  },
+  mixins: [login, deleteItem, misc, fetch],
+  computed: {
+    getEvent() {
+      var item = {
+        table: "event",
+        key: "id",
+        id: store.state.eventid,
+        type: "single",
+      };
+      return store.getters.getData(item);
     },
-    components: {
-        navBackLink,
-        navBars,
-        segment,
-        sheetEdit,
-        generalButton,
-        fieldEditText,
-        eventSettingsDateTime,
-        eventSettingsImage,
-        eventSettingsDarkTheme,
-        eventSettingsAutoUpdate,
-        eventSettingsSync,
-        eventSettingsFullLoad,
-        eventSettingsBackupRestore,
-        eventSettingsHidenames,
-        eventSettingsQrCode,
+    getHidenames() {
+      var item = {
+        table: "directory",
+        key: "hidenames",
+        id: 1,
+        type: "multiple",
+      };
+      var data = store.getters.getData(item);
+      if (data) {
+        return true;
+      } else {
+        return false;
+      }
     },
-    mixins: [login, deleteItem, misc, fetch],
-    computed: {
-        getEvent() {
-            var item = {
-                table: "event",
-                key: "id",
-                id: store.state.eventid,
-                type: "single",
-            };
-            return store.getters.getData(item);
+    getGuest() {
+      var item = {
+        table: "guest",
+        key: "eventid",
+        id: store.state.eventid,
+        type: "single",
+      };
+      return store.getters.getData(item);
+    },
+  },
+  methods: {
+    deleteItem() {
+      this.deleteItemButton(
+        this.getEvent.event_id,
+        "event",
+        this.getEvent.event_name
+      );
+    },
+  },
+  mounted() {
+    f7ready((f7) => {
+      this.$watch(
+        "getEvent",
+        function (newValue, oldValue) {
+          if (this.getEvent) {
+            new Date();
+            var unixtime = Date.now() / 1000;
+
+            var item = {};
+            item.table = "event";
+            item.json = this.getEvent;
+
+            store.dispatch("updateItemDB", item);
+
+            //var guest_email = this.getEvent.event_name.replace(/\s+/g, '-').toLowerCase();
+
+            //var item = {};
+            //item.table = "guest";
+            //item.json = this.getGuest;
+            //item.json.guest_email = guest_email + "@evaria.io";;
+            //item.json.guest_lastname = "Evaria";
+            //item.json.guest_firstname = this.getEvent.event_name;
+            //item.json.guest_unixtime = unixtime;
+
+            //store.dispatch("updateItemApp", item);
+            //store.dispatch("updateItemDB", item);
+
+            localStorage.admin_update_event_time = unixtime;
+            localStorage.admin_update_guest_time = unixtime;
+          }
         },
-        getHidenames() {
-            var item = {
-                table: "directory",
-                key: "hidenames",
-                id: 1,
-                type: "multiple",
-            };
-            var data = store.getters.getData(item);
-            if (data) {
-                return true;
-            } else {
-                return false;
-            }
-        },
-        getGuest() {
-            var item = {
-                table: "guest",
-                key: "eventid",
-                id: store.state.eventid,
-                type: "single",
-            };
-            return store.getters.getData(item);
-        },
-    },
-    methods: {
-        deleteItem() {
-            this.deleteItemButton(
-                this.getEvent.event_id,
-                "event",
-                this.getEvent.event_name
-            );
-        },
-    },
-    mounted() {
-        f7ready((f7) => {
-            this.$watch(
-                "getEvent",
-                function(newValue, oldValue) {
-                    if (this.getEvent) {
-                        new Date();
-                        var unixtime = Date.now() / 1000;
-
-                        var item = {};
-                        item.table = "event";
-                        item.json = this.getEvent;
-
-                        store.dispatch("updateItemDB", item);
-
-
-                        //var guest_email = this.getEvent.event_name.replace(/\s+/g, '-').toLowerCase();
-
-                        //var item = {};
-                        //item.table = "guest";
-                        //item.json = this.getGuest;
-                        //item.json.guest_email = guest_email + "@evaria.io";;
-                        //item.json.guest_lastname = "Evaria";
-                        //item.json.guest_firstname = this.getEvent.event_name;
-                        //item.json.guest_unixtime = unixtime;
-
-                        //store.dispatch("updateItemApp", item);
-                        //store.dispatch("updateItemDB", item);
-
-                        localStorage.admin_update_event_time = unixtime;
-                        localStorage.admin_update_guest_time = unixtime;
-                    }
-                }, { deep: true }
-            );
-        });
-    },
+        { deep: true }
+      );
+    });
+  },
 };
 </script>
 
 <style scoped>
 :root {
-    --f7-list-button-text-align: center;
+  --f7-list-button-text-align: center;
 }
 </style>

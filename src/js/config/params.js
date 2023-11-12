@@ -13,14 +13,20 @@ var params = [
         table: "event",
         displayName: "event",
         newSheetEdit: "event",
-        db: ['event_id', 'event_name', 'event_pos', 'event_image', 'event_startdate', 'event_enddate', 'event_expirydate', 'event_autosync', 'event_darktheme', 'event_hideqrtype', 'event_userid', 'event_unixtime'],
+        db: ['event_id', 'event_name', 'event_pos', 'event_image', 'event_startdate', 'event_enddate', 'event_expirydate', 'event_autosync', 'event_darktheme', 'event_hideqrtype', 'event_userid', 'event_expiredmessage', 'event_unixtime'],
         decode: ['event_name'],
         fields: [
             {
                 name: "name",
                 placeholder: "Name",
                 type: "text",
-            }
+            },
+            {
+                name: "expiredmessage",
+                placeholder: "Event Expired Message",
+                type: "text",
+                optional: true,
+            }            
         ]
     },
     {

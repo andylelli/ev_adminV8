@@ -143,7 +143,6 @@ export default {
         rangePicker: true,
         on: {
           change: function (calendar, values, displayValues) {
-            console.log(values);
 
             var new_to= new Date(values[0]);
             var new_from = new Date(values[1]);
