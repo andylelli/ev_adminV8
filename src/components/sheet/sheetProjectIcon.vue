@@ -1,31 +1,15 @@
 <template>
 	<!-- Swipe to close demo sheet -->
-	<f7-sheet
-		class="c3-project-icon"
-		style="height: 90%; --f7-sheet-bg-color: #fff"
-		swipe-to-close
-		backdrop
-	>
+	<f7-sheet id="sheet-project-icon" style="height: 90%; --f7-sheet-bg-color: #fff" swipe-to-close backdrop>
 		<div class="sheet-modal-inner">
 			<div class="page-content">
 				<f7-block-title></f7-block-title>
 				<div class="list simple-list">
 					<ul>
-						<li
-							v-for="(icon, i) in this.icons"
-							:key="i"
-							class="item-link sheet-close"
-						>
-							<div
-								@click="setIcon(icon.style, icon.name)"
-								class="text-align-center"
-							>
+						<li v-for="(icon, i) in this.icons" :key="i" class="item-link sheet-close">
+							<div @click="setIcon(icon.style, icon.name)" class="text-align-center">
 								<div style="margin-top: 5px">
-									<font-awesome-icon
-										class="fa-fw custom-colour"
-										style="font-size: 32px"
-										:icon="[icon.style, icon.name]"
-									/>
+									<font-awesome-icon class="fa-fw custom-colour" style="font-size: 32px" :icon="[icon.style, icon.name]" />
 								</div>
 							</div>
 						</li>
@@ -45,8 +29,8 @@ export default {
 	name: "sheet-project-icon",
 	data() {
 		return {
-			icons: [
-				{
+			project: null,
+			icons: [{
 					style: "fal",
 					name: "music-alt",
 				},
@@ -81,7 +65,7 @@ export default {
 				{
 					style: "fal",
 					name: "poll",
-				},				
+				},
 				{
 					style: "fal",
 					name: "qrcode",
@@ -233,22 +217,9 @@ export default {
 			],
 		};
 	},
-	props: {
-		projectid: Number,
-	},
 	mixins: [],
 	inject: ["eventBus"],
-	computed: {
-		getProject() {
-			var item = {
-				table: "project",
-				key: "id",
-				id: this.projectid,
-				type: "single",
-			};
-			return store.getters.getData(item);
-		},
-	},
+	computed: {},
 	methods: {
 		setIcon(style, name) {
 			var icon = style + " " + name;
@@ -256,7 +227,7 @@ export default {
 			var unixtime = Date.now() / 1000;
 			var item = {};
 			item.table = "project";
-			item.json = this.getProject;
+			item.json = this.project;
 			item.json.project_appicon = icon;
 			item.json.project_unixtime = unixtime;
 			store.dispatch("updateItemApp", item);
@@ -270,16 +241,18 @@ export default {
 		},
 	},
 	mounted() {
-		f7.sheet.create({
-			el: ".c3-project-icon",
-			closeByBackdropClick: true,
-			swipeToClose: true,
-			backdrop: true,
-		});
-
 		// Event - Project icon
-		this.eventBus.on("project-icon", (x) => {
-			f7.sheet.open(".c3-project-icon", true);
+		var vue = this;
+		this.eventBus.on("project-icon", (projectid) => {
+			var item = {
+				table: "project",
+				key: "id",
+				id: projectid,
+				type: "single",
+			};
+			vue.project = store.getters.getData(item);
+
+			f7.sheet.open("#sheet-project-icon", true);
 		});
 		this.eventBus.eventsListeners['project-icon'].splice(1);
 	},

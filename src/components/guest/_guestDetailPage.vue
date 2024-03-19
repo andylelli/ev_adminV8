@@ -26,7 +26,6 @@
 					type="fill"
 				></general-button>
 			</segment>
-			<sheet-edit table="guest"></sheet-edit>
 	</f7-page>
 </template>
 
@@ -55,8 +54,6 @@ import generalButton from "../misc/generalButton.vue";
 import guestDetail from "./guestDetail.vue";
 import guestDetailQrCode from "./guestDetailQrCode.vue";
 
-import sheetEdit from "../sheet/sheetEdit.vue";
-
 export default {
 	data() {
 		return {
@@ -72,8 +69,7 @@ export default {
 		segment,
 		guestDetail,
 		guestDetailQrCode,
-		generalButton,
-		sheetEdit,
+		generalButton
 	},
 	props: {
 		f7route: Object,

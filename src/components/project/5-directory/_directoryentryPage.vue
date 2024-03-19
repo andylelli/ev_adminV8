@@ -68,11 +68,6 @@
         type="fill"
       ></general-button>
     </segment>
-    <!-- Sheet Modals-->
-    <sheet-edit
-      table="directoryentry"
-      :alias="this.getProject.project_name"
-    ></sheet-edit>
   </f7-page>
 </template>
 

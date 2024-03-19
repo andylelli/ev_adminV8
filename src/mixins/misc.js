@@ -493,7 +493,7 @@ export default {
 
 			localStorage.app_update_in_progress = 'true';
 
-			f7.sheet.close(".c3-update-available");
+			f7.sheet.close(".sheet-update-available");
 
 			//window.location.reload();
 			//console.log("reloaded");

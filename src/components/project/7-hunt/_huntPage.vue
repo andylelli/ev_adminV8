@@ -4,8 +4,8 @@
     <f7-navbar>
       <nav-back-link :page="'main'" :id="this.eventid"></nav-back-link>
       <f7-nav-title v-if="getProject">
-        <div v-html="getProject.project_name"></div
-      ></f7-nav-title>
+        <div v-html="getProject.project_name"></div>
+      </f7-nav-title>
       <nav-bars></nav-bars>
     </f7-navbar>
     <!-- General section-->
@@ -13,21 +13,12 @@
       <general-settings page="hunt" :projectid="projectid"></general-settings>
     </segment>
     <!-- Main section-->
-    <list
-      v-if="getProject && getHunt"
-      :title="getProject.project_name"
-      table="huntitem"
-      :icon="['fal', 'treasure-chest']"
-      :id="getHunt.hunt_id"
-      sortable="true"
-    ></list>
-    <new-item table="huntitem" :name="getProject.project_name"></new-item>
-    <!-- Sheet Modals-->
-    <sheet-new
-      table="huntitem"
-      :projectid="projectid"
-      :project-name="getProject.project_name"
-    ></sheet-new>
+    <list v-if="getProject && getHunt" :title="getProject.project_name" table="huntitem"
+      :icon="['fal', 'treasure-chest']" :id="getHunt.hunt_id" sortable="true">
+    </list>
+    <new-item table="hunt" subtable="huntitem" :project-id="getProject.project_id"
+      :project-name="getProject.project_name">
+    </new-item>
   </f7-page>
 </template>
 
@@ -49,8 +40,6 @@ import generalSettings from "../../misc/generalSettings.vue";
 import list from "../../misc/list.vue";
 import newItem from "../../misc/newItem.vue";
 
-import sheetNew from "../../sheet/sheetNew.vue";
-
 export default {
   data() {
     return {
@@ -66,7 +55,6 @@ export default {
     generalSettings,
     list,
     newItem,
-    sheetNew,
   },
   props: {
     f7route: Object,
@@ -116,8 +104,7 @@ export default {
 
             localStorage.admin_update_project_time = unixtime;
           }
-        },
-        { deep: true }
+        }, { deep: true }
       );
       this.$watch(
         "getHunt",
@@ -134,11 +121,9 @@ export default {
 
             localStorage.admin_update_hunt_time = unixtime;
           }
-        },
-        { deep: true }
+        }, { deep: true }
       );
     });
   },
 };
 </script>
-

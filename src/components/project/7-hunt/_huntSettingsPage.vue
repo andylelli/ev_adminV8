@@ -47,9 +47,6 @@
 					type="fill"
 				></general-button>
 			</segment>
-			<!-- Sheet Modals-->
-			<sheet-edit table="project"></sheet-edit>
-			<sheet-project-icon :projectid="projectid"></sheet-project-icon>
 		</div>
 	</f7-page>
 </template>
@@ -57,7 +54,6 @@
 <script>
 import store from "../../../vuex/store.js";
 
-import { f7, f7ready } from "framework7-vue";
 import { Dom7 } from "framework7";
 var $$ = Dom7;
 
@@ -76,9 +72,7 @@ import fieldEditText from "../../misc/fieldEditText.vue";
 import projectIcon from "../../misc/projectIcon.vue";
 import imageLoad from "../../misc/imageLoad.vue";
 import showImage from "../../misc/showImage.vue";
-import sheetEdit from "../../sheet/sheetEdit.vue";
 import generalButton from "../../misc/generalButton.vue";
-import sheetProjectIcon from "../../sheet/sheetProjectIcon.vue";
 
 export default {
 	data() {
@@ -99,9 +93,7 @@ export default {
 		projectIcon,
 		imageLoad,
 		showImage,
-		generalButton,
-		sheetEdit,
-		sheetProjectIcon,
+		generalButton
 	},
 	mixins: [deleteItem, misc, fetch],
 	computed: {

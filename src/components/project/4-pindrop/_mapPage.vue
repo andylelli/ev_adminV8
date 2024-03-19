@@ -22,8 +22,6 @@
 			:directoryentryid="directoryentryId"
 		></map-display>
 		<map-key :map-projectid="mapProjectId"></map-key>
-		<!-- Sheet Modals-->
-		<sheet-compass></sheet-compass>
 	</f7-page>
 </template>
 
@@ -42,7 +40,6 @@ import navBars from "../../misc/nav/navBars.vue";
 
 import segment from "../../misc/segment.vue";
 import generalSettings from "../../misc/generalSettings.vue";
-import sheetCompass from "../../sheet/sheetCompass.vue";
 
 import mapDisplay from "./mapDisplay.vue";
 import mapKey from "./mapKey.vue";
@@ -67,7 +64,6 @@ export default {
 		generalSettings,
 		mapDisplay,
 		mapKey,
-		sheetCompass,
 	},
 	mixins: [misc],
 	computed: {

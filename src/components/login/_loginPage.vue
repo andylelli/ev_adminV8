@@ -26,7 +26,6 @@
 			</div>
 		</div>
 		<actions-event></actions-event>
-		<sheet-register></sheet-register>
 	</f7-page>
 </template>
 
@@ -46,7 +45,6 @@ import misc from "../../mixins/misc";
 import sheetNew from "../sheet/sheetNew.vue";
 import actionsEvent from "../misc/actionsEvent.vue";
 import generalButton from "../misc/generalButton.vue";
-import sheetRegister from "../sheet/sheetRegister.vue";
 
 export default {
 	data() {
@@ -65,8 +63,7 @@ export default {
 	components: {
 		sheetNew,
 		actionsEvent,
-		generalButton,
-		sheetRegister,
+		generalButton
 	},
 	inject: ["eventBus"],
 	computed: {

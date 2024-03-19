@@ -44,7 +44,6 @@
         colour="red"
         type="fill"
       ></general-button>
-      <sheet-edit table="event"></sheet-edit>
     </div>
   </f7-page>
 </template>
@@ -84,8 +83,6 @@ import eventSettingsQrCode from "./eventSettingsQrCode.vue";
 
 import fieldEditLongText from "../misc/fieldEditLongText.vue";
 
-import sheetEdit from "..//sheet/sheetEdit.vue";
-
 export default {
   data() {
     return {
@@ -98,7 +95,6 @@ export default {
     navBackLink,
     navBars,
     segment,
-    sheetEdit,
     generalButton,
     fieldEditText,
     eventSettingsDateTime,

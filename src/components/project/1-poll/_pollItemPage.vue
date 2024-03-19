@@ -32,11 +32,6 @@
 				type="fill"
 			></general-button>
 		</segment>
-		<!-- Sheet Modals-->
-		<sheet-edit
-			table="pollitem"
-			:alias="this.getProject.project_name"
-		></sheet-edit>
 	</f7-page>
 </template>
 
@@ -60,7 +55,6 @@ import fieldEditText from "../../misc/fieldEditText.vue";
 import fieldEditLongText from "../../misc/fieldEditLongText.vue";
 import imageLoad from "../../misc/imageLoad.vue";
 import generalButton from "../../misc/generalButton.vue";
-import sheetEdit from "../../sheet/sheetEdit.vue";
 
 export default {
 	data() {
@@ -81,7 +75,6 @@ export default {
 		fieldEditLongText,
 		imageLoad,
 		generalButton,
-		sheetEdit,
 	},
 	mixins: [login, misc, deleteItem],
 	computed: {

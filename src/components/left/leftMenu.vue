@@ -32,7 +32,7 @@
 			<f7-list-item class="bg-color-primary" @click="logout()">Logout</f7-list-item>
 		</f7-list>
 		<!-- User details -->
-		<f7-block style="margin-top margin-bottom" class="text-color-white">
+		<f7-block class="margin-top margin-bottom text-color-white">
 			<div v-html="getUserDetails()"></div>
 		</f7-block>
 	</div>
@@ -53,7 +53,7 @@ export default {
 	name: "left-menu",
 	data() {
 		return {
-			isEventExists: false
+			eventExists: false
 		};
 	},
 	mixins: [misc, login, fetch],
@@ -65,7 +65,7 @@ export default {
 			return this.isScannerActive;
 		},
 		isEventExists() {
-			return this.isEventExists;
+			return this.eventExists;
 		},
 		getEvent() {
 			var item = {
@@ -76,11 +76,11 @@ export default {
 			};
 			var data = store.getters.getData(item);
 			if (data) {
-				this.isEventExists = true;
+				this.eventExists = true;
 				return data;
 			}
 			else {
-				this.isEventExists = false;
+				this.eventExists = false;
 			}
 		},
 		getEventName() {

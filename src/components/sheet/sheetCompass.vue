@@ -1,7 +1,7 @@
 <template>
 	<f7-sheet class="c3-compass" style="
 			height: 94%;
-			background-color: rgba(255, 255, 1);
+			background-color: rgba(255, 255, 255, 0.75);
 			backdrop-filter: blur(3px);
 		" swipe-to-close backdrop @sheet:open="sheetOpen()" @sheet:close="sheetClose()">
 		<f7-page-content>

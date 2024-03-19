@@ -220,7 +220,7 @@ export default {
 			}
 		},
 		openDirectoryColourSheet() {
-			this.eventBus.emit("directory-colour");
+			this.eventBus.emit("directory-colour", this.projectid);
 		},
 	},
 	mounted() {},

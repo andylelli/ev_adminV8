@@ -1,7 +1,7 @@
 <template>
 	<!-- Swipe to close demo sheet -->
 	<f7-sheet
-		class="c3-update-available"
+		class="sheet-update-available"
 		style="height: 14%; --f7-sheet-bg-color: #111111"
 		backdrop
 	>
@@ -68,7 +68,7 @@ export default {
 			store.dispatch("insertLookupApp", item);
 			store.dispatch("insertLookupDB", item);
 
-			f7.sheet.close(".c3-update-available");
+			f7.sheet.close(".sheet-update-available");
 		},
 		getUpdate() {
 			var vue = this;
@@ -89,9 +89,9 @@ export default {
 	mounted() {
 		f7ready((f7) => {
 			var sheetUpdateAvailable = f7.sheet.create({
-				el: ".c3-update-available",
+				el: ".sheet-update-available",
 			});
-			//f7.sheet.open(".c3-update-available");
+			//f7.sheet.open(".sheet-update-available");
 			sheetUpdateAvailable.params.closeByBackdropClick = false;
 		});
 	},

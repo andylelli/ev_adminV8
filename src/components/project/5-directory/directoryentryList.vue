@@ -17,7 +17,7 @@
     </div>
 
     <!-- SEARCH BAR MAIN-->
-    <div :style="iosSearchDiv()" id="search-div">
+    <div v-show="showSearchBar" :style="iosSearchDiv()" id="search-div">
       <form
         data-search-container=".search-list"
         data-search-in=".item-title"
@@ -141,6 +141,7 @@ export default {
       infiniteStart: 0,
       directoryentries: this.watchDirectory,
       isDelete: false,
+      showSearchBar: false,
     };
   },
   props: [
@@ -188,11 +189,13 @@ export default {
 
       var vue = this;
       if (data.length >= 20) {
+        this.showSearchBar = true;
         setTimeout(() => {
           vue.directoryentries = vue.directoryentries.concat(n);
         }, ms);
       } else {
-        vue.directoryentries = data;
+        this.showSearchBar = false;
+        this.directoryentries = data;
       }
     },
   },

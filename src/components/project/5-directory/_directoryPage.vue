@@ -4,42 +4,22 @@
     <f7-navbar>
       <nav-back-link @click="onClose()"></nav-back-link>
       <f7-nav-title v-if="getProject">
-        <div v-html="getProject.project_name"></div
-      ></f7-nav-title>
+        <div v-html="getProject.project_name"></div>
+      </f7-nav-title>
       <nav-bars></nav-bars>
     </f7-navbar>
     <!-- General section-->
     <segment header="General">
-      <general-settings
-        page="directory"
-        :projectid="projectid"
-        @click="onClose()"
-      ></general-settings>
+      <general-settings page="directory" :projectid="projectid" @click="onClose()"></general-settings>
     </segment>
     <!-- Main section-->
     <!---- List ---->
-    <directoryentry-list
-      v-if="getProject && getDirectory"
-      :title="getProject.project_name"
-      table="directoryentry"
-      :icon="['fal', 'file-alt']"
-      :id="getDirectory.directory_id"
-      :projectid="getProject.project_id"
-      sortable="true"
-      :sort-alpha="this.isSortAlpha"
-    ></directoryentry-list>
+    <directoryentry-list v-if="getProject && getDirectory" :title="getProject.project_name" table="directoryentry"
+      :icon="['fal', 'file-alt']" :id="getDirectory.directory_id" :projectid="getProject.project_id" sortable="true"
+      :sort-alpha="this.isSortAlpha"></directoryentry-list>
     <!---- New item ---->
-    <new-item
-      table="directoryentry"
-      :name="getProject.project_name"
-      sort-alpha="true"
-    ></new-item>
-    <!-- Sheet Modals-->
-    <sheet-new
-      table="directoryentry"
-      :project-name="getProject.project_name"
-      :projectid="projectid"
-    ></sheet-new>
+    <new-item table="directoryentry" :project-id="getProject.project_id"
+      :project-name="getProject.project_name"></new-item>
   </f7-page>
 </template>
 
@@ -61,15 +41,12 @@ import generalSettings from "../../misc/generalSettings.vue";
 import directoryentryList from "./directoryentryList.vue";
 import newItem from "../../misc/newItem.vue";
 
-import sheetNew from "../../sheet/sheetNew.vue";
-
 export default {
   data() {
     return {
       eventid: store.state.eventid,
       projectid: parseInt(this.f7route.params.projectId),
       lookup: store.state.lookup,
-      reloadPage: false,
     };
   },
   props: {
@@ -83,7 +60,6 @@ export default {
     generalSettings,
     directoryentryList,
     newItem,
-    sheetNew,
   },
   mixins: [misc],
   inject: ["eventBus"],
@@ -94,9 +70,6 @@ export default {
       } else {
         return "false";
       }
-    },    
-    isReloadPage() {
-      return this.reloadPage;
     },
     getProject() {
       var item = {
@@ -127,9 +100,6 @@ export default {
     onClose() {
       this.eventBus.emit("list-on-close");
     },
-    reloadPage() {
-      f7.views.current.router.refreshPage();
-    },
     closeSortable() {
       this.eventBus.emit("close-sortable");
     },
@@ -151,8 +121,7 @@ export default {
 
             localStorage.admin_update_project_time = unixtime;
           }
-        },
-        { deep: true }
+        }, { deep: true }
       );
       this.$watch(
         "getDirectory",
@@ -169,8 +138,7 @@ export default {
 
             localStorage.admin_update_directory_time = unixtime;
           }
-        },
-        { deep: true }
+        }, { deep: true }
       );
     });
   },

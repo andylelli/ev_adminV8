@@ -48,9 +48,7 @@ export default {
 				id: id,
 			};
 
-			store.dispatch("setQRScanner", obj);
-
-			f7.sheet.open("#qr-scanner");
+			this.eventBus.emit("open-qr-scanner", obj);
 		},
 	},
 	mounted() {},

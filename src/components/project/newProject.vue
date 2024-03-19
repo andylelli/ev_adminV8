@@ -80,9 +80,9 @@ export default {
       var json = {
         table: "project",
         subtable: table,
-        displayName: table,
+        projectName: table,
       };
-      this.eventBus.emit("new-project", json);
+      this.eventBus.emit("new-item", json);
     },
   },
   mounted() {

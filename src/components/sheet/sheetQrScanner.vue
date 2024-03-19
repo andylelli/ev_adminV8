@@ -1,6 +1,5 @@
 <template>
-	<f7-sheet id="qr-scanner" style="height: 94%; --f7-sheet-bg-color: #fff" swipe-to-close backdrop
-		@sheet:open="openScanner()" @sheet:closed="closeScanner()">
+	<f7-sheet id="qr-scanner" style="height: 94%; --f7-sheet-bg-color: #fff" swipe-to-close backdrop @sheet:open="openScanner()" @sheet:closed="closeScanner()">
 		<f7-page-content>
 			<f7-navbar>
 				<f7-nav-title>QR Scanner</f7-nav-title>
@@ -36,9 +35,10 @@ export default {
 			page: null,
 			id: null,
 			scannerActive: false,
-			value: 1
+			value: 1,
 		};
 	},
+	inject: ["eventBus"],
 	mixins: [login, fetch, misc],
 	components: {
 		QrcodeStream,
@@ -56,13 +56,11 @@ export default {
 	methods: {
 		openScanner() {
 			this.scannerActive = true;
-			var obj = store.getters.getQRScanner();
-			this.page = obj.page;
-			this.id = obj.id;
 		},
 		closeScanner() {
 			this.scannerActive = false;
-			store.dispatch("clearQRScanner");
+			this.page = null;
+			this.id = null;
 		},
 		onDecode(decodedString) {
 			if (decodedString) {
@@ -78,7 +76,6 @@ export default {
 			var uniqueId = encodeURIComponent(urlParams.uniqueid);
 
 			if (email) {
-
 				f7.dialog.preloader("QR code found...");
 				f7.sheet.close("#qr-scanner");
 
@@ -114,12 +111,9 @@ export default {
 			}
 
 			var vue = this;
-			setTimeout(function () {
+			setTimeout(function() {
 				f7.dialog.close();
-				f7.dialog.alert(
-					vue.value + " " + points + " added",
-					"Evara"
-				);
+				f7.dialog.alert(vue.value + " " + points + " added", "Evara");
 			}, 2000);
 
 			var tables = [];
@@ -127,23 +121,25 @@ export default {
 
 			var fullSync = false;
 			var getDeletes = true;
-			this.syncGetFromWebServer(
-				this.eventid,
-				tables,
-				fullSync,
-				getDeletes
-			);
+			this.syncGetFromWebServer(this.eventid, tables, fullSync, getDeletes);
 		},
 		failure() {
-			setTimeout(function () {
+			setTimeout(function() {
 				f7.dialog.alert(response.message, "Evaria");
 			}, 2000);
-
 		},
-
 	},
 
-	mounted() { },
+	mounted() {
+		var vue = this;
+		f7ready((f7) => {
+			vue.eventBus.on("open-qr-scanner", (obj) => {
+				vue.page = obj.page;
+				vue.id = obj.id;
+				f7.sheet.open("#qr-scanner");
+			});
+		});
+	},
 };
 </script>
 

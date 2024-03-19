@@ -12,7 +12,6 @@
 		<segment header="General">
 			<general-settings page="schedule" :projectid="projectid"></general-settings>
 		</segment>
-		<!-- Main section-->
 	</f7-page>
 </template>
 

@@ -1,7 +1,7 @@
 <template>
   <!-- Swipe to close demo sheet -->
   <f7-sheet
-    class="c3-directory-colour"
+    class="sheet-directory-colour"
     style="height: auto; --f7-sheet-bg-color: #fff"
     swipe-to-close
     backdrop
@@ -106,7 +106,7 @@
 </template>
 
 <script>
-import store from "../../../vuex/store.js";
+import store from "../../vuex/store.js";
 
 import { f7, f7ready } from "framework7-vue";
 
@@ -114,9 +114,6 @@ export default {
   name: "sheet-directory-colour",
   data() {
     return {};
-  },
-  props: {
-    projectid: Number,
   },
   mixins: [],
   inject: ["eventBus"],
@@ -166,20 +163,10 @@ export default {
     },
   },
   mounted() {
-    f7.sheet.create({
-      el: ".c3-new-directory-colour",
-      closeByBackdropClick: true,
-      swipeToClose: true,
-      backdrop: true,
-    });
-
-    // Event - Directory colour
 	var vue = this;
-    this.eventBus.on("directory-colour", (x) => {
-      f7.sheet.open(".c3-directory-colour", true);
-      if (vue.eventBus.eventsListeners["directory-colour"].length > 1) {
-        vue.eventBus.eventsListeners["directory-colour"].splice(1);
-      }
+    this.eventBus.on("directory-colour", (projectid) => {
+      vue.projectid = projectid;
+      f7.sheet.open(".sheet-directory-colour", true);
     });
   },
 };

@@ -105,7 +105,7 @@ export default {
 				fieldtype: this.getFieldtype(),
 			};
 
-			this.eventBus.emit("edit-" + this.table, json);
+			this.eventBus.emit("edit-item", json);
 		},
 	},
 	mounted() {},

@@ -11,8 +11,6 @@
         <!-- Main -->
         <event-settings-backup></event-settings-backup>
         <event-settings-restore></event-settings-restore>
-        <sheet-backup></sheet-backup>        
-        <sheet-restore></sheet-restore>
     </f7-page>
 </template>
 
@@ -24,8 +22,6 @@ import navBars from "../misc/nav/navBars.vue";
 
 import eventSettingsBackup from "./eventSettingsBackup.vue";
 import eventSettingsRestore from "./eventSettingsRestore.vue";
-import sheetBackup from "../sheet/sheetBackup.vue";
-import sheetRestore from "../sheet/sheetRestore.vue";
 
 export default {
     data() {
@@ -39,8 +35,6 @@ export default {
         navBars,
         eventSettingsBackup,
         eventSettingsRestore,
-        sheetBackup,
-        sheetRestore
     },
     computed: {},
     methods: {},

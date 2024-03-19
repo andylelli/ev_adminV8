@@ -21,17 +21,12 @@
       :id="getPoll.poll_id"
       sortable="true"
     ></list>
-    <new-item table="pollitem" :name="getProject.project_name"></new-item>
+    <new-item table="pollitem" :project-id="getProject.project_id" :project-name="getProject.project_name"></new-item>
     <poll-actions
       :projectid="projectid"
       :project-name="getProject.project_name"
     ></poll-actions>
-    <!-- Sheet Modals-->
-    <sheet-new
-      table="pollitem"
-      :projectid="projectid"
-      :project-name="getProject.project_name"
-    ></sheet-new>
+
   </f7-page>
 </template>
 

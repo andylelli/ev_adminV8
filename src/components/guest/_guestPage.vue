@@ -9,7 +9,6 @@
 		<!-- Main section-->
 		<guest-list></guest-list>
 		<new-guest></new-guest>
-		<sheet-new table="guest"></sheet-new>
 	</f7-page>
 </template>
 
@@ -20,9 +19,7 @@ import login from "../../mixins/login";
 import misc from "../../mixins/misc";
 
 import navBackLink from "../misc/nav/navBackLink.vue";
-import navBars from "../misc/nav/navBars.vue";
-
-import sheetNew from "../sheet/sheetNew.vue";
+import navBars from "../misc/nav/navBars.vue"
 
 import newGuest from "./newGuest.vue";
 import guestList from "./guestList.vue";
@@ -33,7 +30,7 @@ export default {
 			event: store.state.event,
 		};
 	},
-	components: { navBackLink, navBars, sheetNew, guestList, newGuest },
+	components: { navBackLink, navBars,  guestList, newGuest },
 	mixins: [login, misc],
 	computed: {
 		initiated() {

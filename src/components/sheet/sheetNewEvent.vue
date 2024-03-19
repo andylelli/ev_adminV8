@@ -1,7 +1,7 @@
 <template>
 	<f7-sheet
 		class="justify-content-center"
-		:id="this.sheetId"
+		id="new-event"
 		style="height: auto; --f7-sheet-bg-color: #fff"
 		swipe-to-close
 		backdrop
@@ -63,7 +63,6 @@ export default {
 	name: "sheet-new-event",
 	data() {
 		return {
-			sheetId: "new-event",
 			table: "event",
 			displayName: "Event",
 			title: "NEW EVENT",
@@ -87,7 +86,7 @@ export default {
 			this.allowChange = false;
 		},
 		isValid() {
-			var validate = f7.input.validateInputs(this.sheetId);
+			var validate = f7.input.validateInputs("new-event");
 			if (validate == true) {
 				return true;
 			} else {
@@ -95,7 +94,7 @@ export default {
 			}
 		},
 		submit() {
-			var validate = f7.input.validateInputs(this.sheetId);
+			var validate = f7.input.validateInputs("new-event");
 
 			if (validate) {
 				var json = {
@@ -110,7 +109,7 @@ export default {
 					this.preloader,
 					this.displayName
 				);
-				f7.sheet.close("#" + this.sheetId);
+				f7.sheet.close("#new-event");
 			}
 		},
 	},

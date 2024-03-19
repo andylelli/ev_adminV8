@@ -52,11 +52,6 @@
         type="fill"
       ></general-button>
     </segment>
-    <!-- Sheet Modals-->
-    <sheet-edit
-      table="huntitem"
-      :alias="this.getProject.project_name"
-    ></sheet-edit>
   </f7-page>
 </template>
 
@@ -82,8 +77,6 @@ import imageLoad from "../../misc/imageLoad.vue";
 import qrCode from "../../misc/qrCode.vue";
 import generalButton from "../../misc/generalButton.vue";
 
-import sheetEdit from "../../sheet/sheetEdit.vue";
-
 export default {
   data() {
     return {
@@ -101,7 +94,6 @@ export default {
     imageLoad,
     qrCode,
     generalButton,
-    sheetEdit,
   },
   props: {
     f7route: Object,

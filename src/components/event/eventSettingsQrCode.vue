@@ -22,7 +22,7 @@ export default {
 		return {
 			size: 200,
 			margin: 2,
-			url: "https://www.evaria.io/user/index.html?id=",
+			url: "https://www.evaria.io/user/index.html?name=",
 		};
 	},
 	components: {
@@ -53,7 +53,7 @@ export default {
 			return this.getEvent.event_name.replace(/\s+/g, '-').toLowerCase();
 		},
 		qrValue() {
-			return this.url + this.eventNameHyphen;
+			return this.url + this.eventNameHyphen + "&id=" + this.getEvent.event_id;
 		},
 	},
 	methods: {},

@@ -42,9 +42,6 @@
 					type="fill"
 				></general-button>
 			</segment>
-			<!-- Sheet Modals-->
-			<sheet-edit table="project"></sheet-edit>
-			<sheet-project-icon :projectid="projectid"></sheet-project-icon>
 		</div>
 	</f7-page>
 </template>
@@ -73,8 +70,6 @@ import showImage from "../../misc/showImage.vue";
 import sheetEdit from "../../sheet/sheetEdit.vue";
 import generalButton from "../../misc/generalButton.vue";
 
-import sheetProjectIcon from "../../sheet/sheetProjectIcon.vue";
-
 export default {
 	data() {
 		return {
@@ -97,7 +92,6 @@ export default {
 		showImage,
 		generalButton,
 		sheetEdit,
-		sheetProjectIcon,
 	},
 	mixins: [deleteItem, misc, fetch],
 	computed: {

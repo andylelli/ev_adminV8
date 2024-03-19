@@ -68,7 +68,8 @@ export default {
 			return icon;
 		},
 		openProjectIconSheet() {
-			this.eventBus.emit("project-icon");
+			var projectId = this.getItem.project_id;
+			this.eventBus.emit("project-icon", projectId);
 		},
 	},
 	mounted() {},

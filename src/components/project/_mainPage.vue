@@ -15,7 +15,6 @@
     <general v-show="isEventExists"> </general>
     <project-list v-show="isEventExists" title="CONTENT" table="project"></project-list>
     <new-project v-show="isEventExists" ></new-project>
-    <sheet-new table="project"></sheet-new>
   </f7-page>
 </template>
 
@@ -36,8 +35,6 @@ import navBars from "../misc/nav/navBars.vue";
 
 import general from "../misc/general.vue";
 
-import sheetNew from "../../components/sheet/sheetNew.vue";
-
 export default {
   data() {
     return {
@@ -51,8 +48,7 @@ export default {
     navBars,
     general,
     projectList,
-    newProject,
-    sheetNew,
+    newProject
   },
   mixins: [login, misc],
   inject: ["eventBus"],
@@ -110,7 +106,7 @@ export default {
           if (autoUpdate === true) {
             vue.deleteCache(vue.eventid);
           } else {
-            f7.sheet.open(".c3-update-available");
+            f7.sheet.open(".sheet-update-available");
           }
         }
       });

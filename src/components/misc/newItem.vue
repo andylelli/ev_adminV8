@@ -26,21 +26,25 @@ export default {
 	data() {
 		return {};
 	},
-	props: ["table", "name"],
+	props: ["table", "subtable", "projectId", "projectName"],
 	mixins: [],
 	inject: ["eventBus"],
 	computed: {
 		title() {
-			var title = "NEW " + this.name + " ITEM";
+			var title = "NEW " + this.projectName + " ITEM";
 			return title.toUpperCase();
 		},
 	},
 	methods: {
 		newItem() {
 			var json = {
-				displayName: this.name + " ITEM",
+				table: this.table,
+				subtable: this.subtable,
+				displayName: this.projectName + " ITEM",
+				projectId: this.projectId,
+				projectName: this.projectName,
 			};
-			this.eventBus.emit("new-" + this.table, json);
+			this.eventBus.emit("new-item", json);
 		},
 	},
 	mounted() {},

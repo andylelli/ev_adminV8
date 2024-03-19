@@ -1,18 +1,13 @@
 <template>
 	<!-- Swipe to close demo sheet -->
-	<f7-sheet
-		id="qr-code"
-		style="height: 94%; --f7-sheet-bg-color: #fff"
-		swipe-to-close
-		backdrop
-	>
+	<f7-sheet id="qr-code" style="height: 94%; --f7-sheet-bg-color: #fff" swipe-to-close backdrop @sheet:open="getQRCode()">
 		<f7-page-content>
 			<f7-navbar>
 				<f7-nav-title>QR</f7-nav-title>
 			</f7-navbar>
 			<f7-block>
 				<div align="center">
-					<img :src="this.qrImage" />
+					<qrcode-vue :value="qrImage" :size="size" :margin="margin"></qrcode-vue>
 				</div>
 			</f7-block>
 		</f7-page-content>
@@ -22,30 +17,56 @@
 <script>
 import store from "../../vuex/store.js";
 
+import QrcodeVue from "qrcode.vue";
+
 import { f7, f7ready } from "framework7-vue";
 
 export default {
 	name: "sheet-qrcode",
 	data() {
-		return {};
+		return {
+			size: 300,
+			margin: 2,
+		};
+	},
+	components: {
+		QrcodeVue,
 	},
 	mixins: [],
 	computed: {
+		// Set the email for generating QR code
+		setEmail() {
+			return store.getters.getEmail(); // Get the email from the store getters
+		},
+		// Set the email for generating QR code
+		setEmail() {
+			return store.getters.getEmail(); // Get the email from the store getters
+		},
 		qrImage() {
-			var eventid = store.state.eventid;
-			var item = {
-				table: "qrcode",
-				key: "eventid",
-				id: eventid,
-				type: "single",
-			};
-			var data = store.getters.getData(item);
-			if (data) {
-				return data.qrcode_image;
+			var name;
+			if (this.email) {
+				name = this.email.substring(0, this.email.indexOf("@")); // Extract name from email
 			}
+			let eventid = parseInt(localStorage.user_eventid); // Get the event ID from local storage
+			let value =
+				this.url +
+				"name=" +
+				name +
+				"&id=" +
+				eventid +
+				"&email=" +
+				encodeURIComponent(this.email);
+			return value; // Return the URL for generating the QR code image
 		},
 	},
-	methods: {},
+	methods: {
+		// Get QR code data
+		getQRCode() {
+			this.url = store.state.urlQR; // Set the URL for the QR code
+			this.email = this.setEmail; // Set the email for the QR code
+			this.qr_image = store.getters.getQRCode(this.guestid); // Get the QR code image based on the guest ID
+		},
+	},
 	mounted() {
 		f7ready((f7) => {
 			f7.sheet.create({

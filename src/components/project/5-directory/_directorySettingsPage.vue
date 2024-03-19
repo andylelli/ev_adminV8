@@ -76,10 +76,6 @@
           type="fill"
         ></general-button>
       </segment>
-      <!-- Sheet Modals-->
-      <sheet-edit table="project"></sheet-edit>
-      <sheet-directory-colour :projectid="projectid"></sheet-directory-colour>
-      <sheet-project-icon :projectid="projectid"></sheet-project-icon>
     </div>
   </f7-page>
 </template>
@@ -112,7 +108,6 @@ import directorySettingsParent from "./directorySettingsParent.vue";
 import directorySettingsSchedule from "./directorySettingsSchedule.vue";
 import directorySettingsShop from "./directorySettingsShop.vue";
 import directorySettingsBulkUpload from "./directorySettingsBulkUpload.vue";
-import sheetDirectoryColour from "./sheetDirectoryColour.vue";
 
 export default {
   data() {
@@ -135,9 +130,6 @@ export default {
     imageLoad,
     showImage,
     generalButton,
-    sheetEdit,
-    sheetProjectIcon,
-    sheetDirectoryColour,
     directorySettingsSortAlpha,
     directorySettingsLocation,
     directorySettingsParent,

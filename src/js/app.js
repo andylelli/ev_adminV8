@@ -43,14 +43,11 @@ const app = createApp(App);
 // Register Framework7 Vue components
 registerComponents(app); 
 
-// Event Bus
-const eventBus = new Framework7.Events();
-
 // Mount the app
 app.component('font-awesome-icon', FontAwesomeIcon);
 app.use(store);
 app.mount('#app');
-app.provide('eventBus', eventBus);
+//app.provide('eventBus', eventBus);
 
 import { Dom7 } from "framework7";
 

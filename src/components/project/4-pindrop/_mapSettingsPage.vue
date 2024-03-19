@@ -32,9 +32,6 @@
 					type="fill"
 				></general-button>
 			</segment>
-			<!-- Sheet Modals-->
-			<sheet-edit table="project"></sheet-edit>
-			<sheet-project-icon :projectid="projectid"></sheet-project-icon>
 		</div>
 	</f7-page>
 </template>
