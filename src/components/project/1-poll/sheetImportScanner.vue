@@ -30,7 +30,7 @@ import { f7, f7ready } from "framework7-vue";
 import { Dom7 } from "framework7";
 var $$ = Dom7;
 
-import { QrcodeStream, QrcodeDropZone, QrcodeCapture } from "vue-qrcode-reader";
+import { QrcodeStream, QrcodeDropZone, QrcodeCapture } from "vue3-qrcode-reader";
 
 import misc from "../../mixins/misc";
 

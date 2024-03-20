@@ -2,7 +2,8 @@
 	<div>
 		<!-- Logo -->
 		<div align="left">
-			<img @click="openHomePage()" src="/admin/static/images/evaria_small.png" width="100" style="margin-left: 20px" />
+			<img @click="openHomePage()" src="/admin/static/images/evaria_small.png" width="100"
+				style="margin-left: 20px" />
 		</div>
 		<!-- Event name -->
 		<f7-block-title medium class="text-color-white no-margin-top">
@@ -12,7 +13,8 @@
 		</f7-block-title>
 		<!-- Projects list -->
 		<f7-list class="margin-top margin-bottom ripple-color-primary text-color-white list-divider">
-			<f7-list-item link v-for="item in this.items" :key="item.project_id" :position="item.project_position" class="bg-color-primary no-chevron" @click="openPage(item.project_typeid, item.project_id)">
+			<f7-list-item link v-for="item in this.items" :key="item.project_id" :position="item.project_position"
+				class="bg-color-primary no-chevron" @click="openPage(item.project_typeid, item.project_id)">
 				{{ item.project_name }}
 			</f7-list-item>
 		</f7-list>
@@ -36,12 +38,25 @@
 			<div v-html="getUserDetails()"></div>
 		</f7-block>
 	</div>
+	<div>
+		<actions-event></actions-event>
+		<sheet-qr-scanner></sheet-qr-scanner>
+		<sheet-new-event></sheet-new-event>
+		<sheet-update-available></sheet-update-available>
+		<sheet-backup></sheet-backup>
+		<sheet-restore></sheet-restore>
+		<sheet-edit></sheet-edit>
+		<sheet-new></sheet-new>
+		<sheet-register></sheet-register>
+		<sheet-project-icon></sheet-project-icon>
+		<sheet-directory-colour></sheet-directory-colour>
+	</div>
 </template>
-  
+
 <script>
 import store from "../../vuex/store.js";
 
-import { f7, f7ready } from "framework7-vue";
+import { f7 } from "framework7-vue";
 
 import misc from "../../mixins/misc";
 import login from "../../mixins/login";
@@ -49,12 +64,37 @@ import fetch from "../../mixins/fetch";
 
 import params from "../../js/config/params.js";
 
+import actionsEvent from "../misc/actionsEvent.vue";
+import sheetQrScanner from "../sheet/sheetQrScanner.vue";
+import sheetNewEvent from "../sheet/sheetNewEvent.vue";
+import sheetUpdateAvailable from "../sheet/sheetUpdateAvailable.vue";
+import sheetBackup from "../sheet/sheetBackup.vue";
+import sheetRestore from "../sheet/sheetRestore.vue";
+import sheetEdit from "..//sheet/sheetEdit.vue";
+import sheetNew from "../sheet/sheetNew.vue";
+import sheetRegister from "../sheet/sheetRegister.vue";
+import sheetProjectIcon from "../sheet/sheetProjectIcon.vue";
+import sheetDirectoryColour from "../sheet/sheetDirectoryColour.vue";
+
 export default {
 	name: "left-menu",
 	data() {
 		return {
 			eventExists: false
 		};
+	},
+	components: {
+		actionsEvent,
+		sheetQrScanner,
+		sheetNewEvent,
+		sheetUpdateAvailable,
+		sheetBackup,
+		sheetRestore,
+		sheetEdit,
+		sheetNew,
+		sheetRegister,
+		sheetProjectIcon,
+		sheetDirectoryColour,
 	},
 	mixins: [misc, login, fetch],
 	computed: {
@@ -114,14 +154,14 @@ export default {
 		openHomePage() {
 			var link = "/main/" + this.getEventID + "/";
 			f7.views.main.router.navigate(link);
-			setTimeout(function() {
+			setTimeout(function () {
 				f7.views.main.router.clearPreviousHistory();
 			}, 500);
 			f7.panel.close(".panel-left");
 		},
 		openPage(typeid, projectid) {
 			var table = this.typeidToName(typeid);
-			var paramsTable = params.filter(function(result) {
+			var paramsTable = params.filter(function (result) {
 				return result.table == table;
 			});
 			var linkSuffix = paramsTable[0].linkSuffix;
@@ -182,10 +222,8 @@ export default {
 			f7.sheet.open("#actions-event", true);
 		},
 	},
-	mounted() {},
+	mounted() { },
 };
 </script>
 
-<style>
-
-</style>
+<style></style>

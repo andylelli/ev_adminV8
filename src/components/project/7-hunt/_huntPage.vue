@@ -16,7 +16,7 @@
     <list v-if="getProject && getHunt" :title="getProject.project_name" table="huntitem"
       :icon="['fal', 'treasure-chest']" :id="getHunt.hunt_id" sortable="true">
     </list>
-    <new-item table="hunt" subtable="huntitem" :project-id="getProject.project_id"
+    <new-item table="huntitem" :project-id="getProject.project_id"
       :project-name="getProject.project_name">
     </new-item>
   </f7-page>

@@ -148,12 +148,6 @@ export default {
                 backdrop: true,
             });
 
-            // Event - New
-            if (vue.eventBus.eventsListeners["new-" + vue.table]) {
-                if (vue.eventBus.eventsListeners["new-" + vue.table].length > 2) {
-                    vue.eventBus.eventsListeners["new-" + vue.table].splice(1);
-                }
-            }
             vue.eventBus.on("new-item", (json) => {
 
                 vue.projectid = json.projectId;

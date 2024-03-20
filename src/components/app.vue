@@ -2,7 +2,7 @@
   <f7-app v-bind="f7params">
     <!-- Left panel with cover effect-->
     <f7-panel left class="safe-areas" cover>
-      <f7-view init url="/left-panel/"></f7-view>
+      <f7-view v-if="this.showLeftView == false" init url="/left-view/"></f7-view>
     </f7-panel>
     <!-- Your main view, should have "view-main" class -->
     <f7-views class="display-flex">

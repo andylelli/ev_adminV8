@@ -1,6 +1,5 @@
 
 import _LoginPage from '../components/login/_loginPage.vue';
-import _LeftPanelPage from '../components/left/_leftPanelPage.vue';
 import _LeftViewPage from '../components/left/_leftViewPage.vue';
 import _EventSettingsPage from '../components/event/_eventSettingsPage.vue';
 import _EventSettingsBackupRestorePage from '../components/event/_eventSettingsBackupRestorePage.vue';
@@ -64,10 +63,6 @@ var routes = [
   {
     path: '/login/',
     component: _LoginPage,
-  },
-  {
-    path: '/left-panel/',
-    component: _LeftPanelPage,
   },
   {
     path: '/left-view/',
