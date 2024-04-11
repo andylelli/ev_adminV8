@@ -58,11 +58,15 @@ export default {
 
 
 			// Using the HSP value, determine whether the color is light or dark
-			if (hsp > 90) {
-				return 'light';
+
+			//Is Light?
+			if (hsp > 80) {
+				return "light";
 			}
-			else {
-				return 'dark';
+
+			//Is Dark
+			if (hsp < 180) {
+				return "dark"
 			}
 		},
 		toast(message) {

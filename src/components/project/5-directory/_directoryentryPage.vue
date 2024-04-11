@@ -240,7 +240,7 @@ export default {
             item.table = "directoryentry";
             item.json = this.getDirectoryentry;
             store.dispatch("updateItemDB", item);
-
+            console.log("update directoryentry");
             localStorage.admin_update_directoryentry_time = unixtime;
           }
         },

@@ -5,21 +5,12 @@
       <f7-list-item title="Dates">
         <template #media>
           <f7-icon>
-            <font-awesome-icon
-              class="fa-fw custom-colour"
-              style="font-size: 20px"
-              :icon="['fal', 'calendar']"
-            />
+            <font-awesome-icon class="fa-fw custom-colour" style="font-size: 20px" :icon="['fal', 'calendar']" />
           </f7-icon>
         </template>
         <div align="right">
-          <input
-            style="text-align: right; height: 18px; cursor: pointer"
-            type="text"
-            placeholder="Select..."
-            readonly="readonly"
-            id="range-date"
-          />
+          <input style="text-align: right; height: 18px; cursor: pointer" type="text" placeholder="Select..."
+            readonly="readonly" id="range-date" />
         </div>
       </f7-list-item>
     </f7-list>
@@ -28,21 +19,12 @@
       <f7-list-item title="Expiry date">
         <template #media>
           <f7-icon>
-            <font-awesome-icon
-              class="fa-fw custom-colour"
-              style="font-size: 20px"
-              :icon="['fal', 'calendar']"
-            />
+            <font-awesome-icon class="fa-fw custom-colour" style="font-size: 20px" :icon="['fal', 'calendar']" />
           </f7-icon>
         </template>
         <div align="right">
-          <input
-            style="text-align: right; height: 18px; cursor: pointer"
-            type="text"
-            placeholder="Select..."
-            readonly="readonly"
-            id="expiry-date"
-          />
+          <input style="text-align: right; height: 18px; cursor: pointer" type="text" placeholder="Select..."
+            readonly="readonly" id="expiry-date" />
         </div>
       </f7-list-item>
     </f7-list>
@@ -141,10 +123,11 @@ export default {
       this.calendarRange = f7.calendar.create({
         inputEl: "#range-date",
         rangePicker: true,
+        dateFormat: 'dd/mm/yyyy',
         on: {
           change: function (calendar, values, displayValues) {
 
-            var new_to= new Date(values[0]);
+            var new_to = new Date(values[0]);
             var new_from = new Date(values[1]);
 
             var from_year = new_from.getFullYear().toString();
@@ -187,6 +170,7 @@ export default {
       this.calendarExpiry = f7.calendar.create({
         inputEl: "#expiry-date",
         rangePicker: false,
+        dateFormat: 'dd/mm/yyyy',
         on: {
           change: function (calendar, values, displayValues) {
             var expiry = calendar.value[0];

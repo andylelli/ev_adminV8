@@ -1,15 +1,19 @@
 <template>
-    <f7-sheet class="justify-content-center" id="new-item" style="height: auto; --f7-sheet-bg-color: #fff" swipe-to-close backdrop @sheet:close="clearForm()">
+    <f7-sheet class="justify-content-center" id="new-item" style="height: auto; --f7-sheet-bg-color: #fff"
+        swipe-to-close backdrop @sheet:close="clearForm()">
         <f7-page-content>
             <f7-block class="padding-top">
                 <f7-block-title class="padding-bottom">
                     {{ this.title }}</f7-block-title>
                 <f7-list form>
-                    <f7-list-input class="new-field" v-for="field in this.setFields" :key="field.name" :id="fieldId(field.name)" :type="field.type" step="0.01" :placeholder="field.placeholder" @input="update(field.name, $event)" validate required></f7-list-input>
+                    <f7-list-input class="new-field" v-for="field in this.setFields" :key="field.name"
+                        :id="fieldId(field.name)" :type="field.type" step="0.01" :placeholder="field.placeholder"
+                        @input="update(field.name, $event)" validate required></f7-list-input>
                 </f7-list>
                 <div style="padding-left: 25px; padding-right: 25px; height: 50px">
                     <div v-show="this.allowChange != false">
-                        <general-button class="margin-top margin-bottom" @generalButtonAction="submit()" label="CREATE" width="200" type="fill"></general-button>
+                        <general-button class="margin-top margin-bottom" @generalButtonAction="submit()" label="CREATE"
+                            width="200" type="fill"></general-button>
                     </div>
                 </div>
             </f7-block>
@@ -137,7 +141,7 @@ export default {
             }
         },
     },
-    beforeMounted() {},
+    beforeMounted() { },
     mounted() {
         f7ready((f7) => {
             var vue = this;
@@ -155,12 +159,15 @@ export default {
                 vue.displayName = json.projectName;
                 if (json.subtable) {
                     vue.subtable = json.subtable;
+                    if (vue.subtable == "pindrop") {
+                        vue.displayName = "map";
+                    }
                 }
                 else {
                     vue.subtable = null;
                 }
 
-                var findTable = params.filter(function(result) {
+                var findTable = params.filter(function (result) {
                     return result.table === vue.table;
                 });
 

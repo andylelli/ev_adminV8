@@ -10,7 +10,7 @@
 			<div :id="'update-' + this.projectid" :style="updateMaxHeight">
 				<segment header="Update">
 					<general-button class="margin-bottom" label="UPDATE COUNTS" width="200" type="fill"
-						@generalButtonAction="getPollscores()"></general-button>
+						@generalButtonAction="getPollscores('updated')"></general-button>
 				</segment>
 			</div>
 		</div>
@@ -109,7 +109,7 @@ export default {
 		},
 	},
 	methods: {
-		async getPollscores() {
+		async getPollscores(action) {
 			var tables = ["pollscore"];
 			var fullSync = true;
 			var getDeletes = true;
@@ -125,7 +125,7 @@ export default {
 
 			f7.preloader.hide();
 
-			var text = "Counts updated";
+			var text = "Counts " + action;
 
 			var toast = f7.toast.create({
 				text: text,
@@ -194,14 +194,7 @@ export default {
 						store.dispatch("deleteItemApp", item);
 						store.dispatch("deleteItemDB", item);
 
-						f7.preloader.hide();
-						var text = "Poll counts reset.";
-						var toast = f7.toast.create({
-							text: text,
-							position: "center",
-							closeTimeout: 1500,
-						});
-						toast.open();
+						vue.getPollscores("reset");
 					}
 				}
 				// Failure

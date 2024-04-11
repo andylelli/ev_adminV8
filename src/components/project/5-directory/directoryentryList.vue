@@ -2,36 +2,23 @@
   <div>
     <!-- TITLE -->
     <div class="display-flex justify-content-space-between">
-      <f7-block-header style="text-transform: uppercase"
-        ><div v-html="title"></div
-      ></f7-block-header>
+      <f7-block-header style="text-transform: uppercase">
+        <div v-html="title"></div>
+      </f7-block-header>
       <f7-block-header>
         <f7-link v-if="isSortable === true" :sortable-toggle="'.sort-' + table + '-' + this.id">
-          <font-awesome-icon
-            class="fa-fw custom-colour"
-            style="font-size: 20px"
-            :icon="['fal', 'sort']"
-          />
+          <font-awesome-icon class="fa-fw custom-colour" style="font-size: 20px" :icon="['fal', 'sort']" />
         </f7-link>
       </f7-block-header>
     </div>
 
     <!-- SEARCH BAR MAIN-->
     <div v-show="showSearchBar" :style="iosSearchDiv()" id="search-div">
-      <form
-        data-search-container=".search-list"
-        data-search-in=".item-title"
-        class="searchbar searchbar-init background-white"
-        :style="iosSearchForm()"
-      >
+      <form data-search-container=".search-list" data-search-in=".item-title"
+        class="searchbar searchbar-init background-white" :style="iosSearchForm()">
         <div class="searchbar-inner" :style="iosSearchInner()">
           <div class="searchbar-input-wrap" :style="iosSearchWrap()">
-            <input
-              type="search"
-              placeholder="Search"
-              class="light-tint"
-              :style="iosSearchInput()"
-            />
+            <input type="search" placeholder="Search" class="light-tint" :style="iosSearchInput()" />
             <i class="searchbar-icon" :style="iosSearchIcon()"></i>
             <span class="input-clear-button"></span>
           </div>
@@ -43,72 +30,41 @@
     <!-- SEARCH BAR NOT FOUND-->
     <div class="md searchbar-not-found">
       <div class="text-align-center">
-        <f7-block
-          strong
-          style="margin-top: 25px; margin-bottom: 25px; font-size: 18px"
-        >
+        <f7-block strong style="margin-top: 25px; margin-bottom: 25px; font-size: 18px">
           Nothing found
         </f7-block>
       </div>
     </div>
 
     <!-- LIST-->
-    <div
-      :class="
-        'search-list list sortable searchbar-found ripple-color-primary no-margin-top no-padding-top sort-' +
-        this.table +
-        '-' +
-        this.id
-      "
-      style="top: 0px; margin-top: 0px; padding-top: 0px"
-      @click="onClose()"
-    >
+    <div :class="'search-list list sortable searchbar-found ripple-color-primary no-margin-top no-padding-top sort-' +
+          this.table +
+          '-' +
+          this.id
+          " style="top: 0px; margin-top: 0px; padding-top: 0px" @click="onClose()">
       <ul>
-        <li
-          v-for="item in this.watchDirectoryentries"
-          :key="item.directoryentry_id"
-          class="swipeout"
-          :id="'sort-directoryentry-' + item.directoryentry_id"
-          :position="item.directoryentry_position"
-        >
+        <li v-for="item in this.watchDirectoryentries" :key="item.directoryentry_id" class="swipeout"
+          :id="'sort-directoryentry-' + item.directoryentry_id" :position="item.directoryentry_position">
           <div class="swipeout-content">
-            <a
-              :href="link(table, item.directoryentry_id)"
-              class="item-link item-content"
-            >
+            <a :href="link(table, item.directoryentry_id)" class="item-link item-content">
               <div class="item-media">
-                <font-awesome-icon
-                  class="fa-fw custom-colour"
-                  style="font-size: 20px"
-                  :icon="icon"
-                />
+                <font-awesome-icon class="fa-fw custom-colour" style="font-size: 20px" :icon="icon" />
               </div>
               <div class="item-inner">
                 <div class="item-title" v-html="item.directoryentry_name"></div>
-                <div
-                  v-if="
-                    getDirectory.directory_hidenames == 1 &&
-                    (getDirectory.directory_hidetype == 0 ||
-                      (getDirectory.directory_hidetype == 1 &&
-                        item.directoryentry_schedulehide == 1))
-                  "
-                  class="item-after"
-                >
-                  <font-awesome-icon
-                    class="fa-fw custom-colour"
-                    style="font-size: 20px"
-                    :icon="['fal', 'eye-slash']"
-                  />
+                <div v-if="getDirectory.directory_hidenames == 1 &&
+          (getDirectory.directory_hidetype == 0 ||
+            (getDirectory.directory_hidetype == 1 &&
+              item.directoryentry_schedulehide == 1))
+          " class="item-after">
+                  <font-awesome-icon class="fa-fw custom-colour" style="font-size: 20px" :icon="['fal', 'eye-slash']" />
                 </div>
               </div>
             </a>
             <div class="sortable-handler"></div>
           </div>
-          <swipeout-actions
-            :id="item.directoryentry_id"
-            :name="item.directoryentry_name"
-            :table="table"
-          ></swipeout-actions>
+          <swipeout-actions :id="item.directoryentry_id" :name="item.directoryentry_name"
+            :table="table"></swipeout-actions>
         </li>
       </ul>
     </div>
@@ -336,9 +292,11 @@ export default {
     // On close
     this.eventBus.eventsListeners["list-on-close"] = [];
     this.eventBus.on("list-on-close", (x) => {
-      var len = this.directoryentries.length;
-      if (len > 20) {
-        this.directoryentries.splice(20, len - 20);
+      if (this.directoryentries) {
+        var len = this.directoryentries.length;
+        if (len > 20) {
+          this.directoryentries.splice(20, len - 20);
+        }
       }
     });
 
@@ -360,6 +318,7 @@ export default {
 .ripple-color-primary {
   --f7-theme-color-ripple-color: rgba(var(--f7-theme-color-rgb), 0.15);
 }
+
 .ios .badge {
   padding-left: 4px !important;
   padding-bottom: 2px !important;

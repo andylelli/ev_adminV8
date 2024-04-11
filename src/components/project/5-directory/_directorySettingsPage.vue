@@ -4,21 +4,15 @@
     <f7-navbar>
       <nav-back-link force @click="onClose()"></nav-back-link>
       <f7-nav-title v-if="getProject">
-        <div v-html="this.getProject.project_name + ' - Settings'"></div
-      ></f7-nav-title>
+        <div v-html="this.getProject.project_name + ' - Settings'"></div>
+      </f7-nav-title>
       <nav-bars></nav-bars>
     </f7-navbar>
     <!-- Main section-->
     <div v-if="getProject">
       <segment header="Name">
-        <field-edit-text
-          type="single"
-          :id="this.getProject.project_id"
-          table="project"
-          fieldname="name"
-          title="Name"
-          fieldtype="text"
-        ></field-edit-text>
+        <field-edit-text type="single" :id="this.getProject.project_id" table="project" fieldname="name" title="Name"
+          fieldtype="text"></field-edit-text>
       </segment>
       <!---- Icon ---->
       <segment header="Icon">
@@ -26,10 +20,7 @@
       </segment>
       <!---- Image ---->
       <segment :header="this.getProject.project_name + ' Image'">
-        <image-load
-          :id="this.getProject.project_id"
-          table="project"
-        ></image-load>
+        <image-load :id="this.getProject.project_id" table="project"></image-load>
       </segment>
       <!---- Item Images ---->
       <segment :header="this.setShowImageHeader()">
@@ -37,44 +28,28 @@
       </segment>
       <!---- Sort Alphabetically ---->
       <segment header="Sort Alphabetically">
-        <directory-settings-sort-alpha
-          :projectid="projectid"
-        ></directory-settings-sort-alpha>
+        <directory-settings-sort-alpha :projectid="projectid"></directory-settings-sort-alpha>
       </segment>
       <!---- Location ---->
-      <segment header="Location">
-        <directory-settings-location
-          :projectid="projectid"
-        ></directory-settings-location>
+      <segment  v-if="isMap" header="Location">
+        <directory-settings-location :projectid="projectid"></directory-settings-location>
       </segment>
       <!---- Parent / Child ---->
-      <segment header="Parent">
-        <directory-settings-parent
-          :projectid="projectid"
-        ></directory-settings-parent>
+      <segment v-if="isDirectory" header="Parent">
+        <directory-settings-parent :projectid="projectid"></directory-settings-parent>
       </segment>
       <!---- Schedule ---->
-      <segment header="Schedule">
-        <directory-settings-schedule
-          :projectid="projectid"
-        ></directory-settings-schedule>
+      <segment v-if="isSchedule" header="Schedule">
+        <directory-settings-schedule :projectid="projectid"></directory-settings-schedule>
       </segment>
       <!---- Location ---->
       <segment header="Bulk Upload">
-        <directory-settings-bulk-upload
-          :projectid="getProject.project_id"
-        ></directory-settings-bulk-upload>
+        <directory-settings-bulk-upload :projectid="getProject.project_id"></directory-settings-bulk-upload>
       </segment>
       <!-- Delete -->
       <segment v-if="this.desktop == true">
-        <general-button
-          class="margin-bottom"
-          @generalButtonAction="deleteItem()"
-          label="DELETE"
-          width="200"
-          colour="red"
-          type="fill"
-        ></general-button>
+        <general-button class="margin-bottom" @generalButtonAction="deleteItem()" label="DELETE" width="200"
+          colour="red" type="fill"></general-button>
       </segment>
     </div>
   </f7-page>
@@ -98,9 +73,7 @@ import fieldEditText from "../../misc/fieldEditText.vue";
 import projectIcon from "../../misc/projectIcon.vue";
 import imageLoad from "../../misc/imageLoad.vue";
 import showImage from "../../misc/showImage.vue";
-import sheetEdit from "../../sheet/sheetEdit.vue";
 import generalButton from "../../misc/generalButton.vue";
-import sheetProjectIcon from "../../sheet/sheetProjectIcon.vue";
 
 import directorySettingsSortAlpha from "./directorySettingsSortAlpha.vue";
 import directorySettingsLocation from "./directorySettingsLocation.vue";
@@ -112,6 +85,7 @@ import directorySettingsBulkUpload from "./directorySettingsBulkUpload.vue";
 export default {
   data() {
     return {
+      eventid: store.state.event[0].event_id,
       projectid: parseInt(this.f7route.params.projectId),
       desktop: device.desktop,
       previousPage: "main",
@@ -120,7 +94,7 @@ export default {
   props: {
     f7route: Object,
   },
-  inject: ["eventBus"],  
+  inject: ["eventBus"],
   components: {
     navBackLink,
     navBars,
@@ -139,6 +113,18 @@ export default {
   },
   mixins: [deleteItem, misc, fetch],
   computed: {
+    getProjects() {
+      var item = {
+        table: "project",
+        key: "eventid",
+        id: this.eventid,
+        type: "multiple",
+      };
+      var data = store.getters.getData(item);
+      if (data) {
+        return data;
+      }
+    },
     getProject() {
       var item = {
         table: "project",
@@ -163,6 +149,39 @@ export default {
         return data;
       }
     },
+    isMap() {
+      var map = 4;
+      var find = this.getProjects.filter(function (result) {
+        return result.project_typeid === map;
+      });
+      if (find.length > 0) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    isDirectory() {
+      var directory = 5;
+      var find = this.getProjects.filter(function (result) {
+        return result.project_typeid === directory;
+      });
+      if (find.length > 1) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    isSchedule() {
+      var schedule = 9;
+      var find = this.getProjects.filter(function (result) {
+        return result.project_typeid === schedule;
+      });
+      if (find.length > 0) {
+        return true;
+      } else {
+        return false;
+      }
+    },
   },
   methods: {
     onClose() {
@@ -181,9 +200,8 @@ export default {
       );
     },
   },
-  mounted() {},
+  mounted() { },
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

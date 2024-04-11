@@ -126,6 +126,9 @@ export default {
 		submit() {
 			new Date();
 			var unixtime = Date.now() / 1000;
+			if(this.textEditorValue == "") {
+				this.textEditorValue = " ";
+			}
 			var json = {
 				id: this.id,
 				table: this.table,
@@ -133,6 +136,7 @@ export default {
 				value: this.textEditorValue,
 				unixtime: unixtime,
 			};
+			console.log(json);
 			store.dispatch("updateEditLongTextApp", json);
 			this.changed = false;
 

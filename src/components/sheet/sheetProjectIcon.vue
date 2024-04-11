@@ -29,7 +29,7 @@ export default {
 	name: "sheet-project-icon",
 	data() {
 		return {
-			project: null,
+			projectid: "",
 			icons: [{
 					style: "fal",
 					name: "music-alt",
@@ -219,7 +219,19 @@ export default {
 	},
 	mixins: [],
 	inject: ["eventBus"],
-	computed: {},
+	computed: {
+		getProject() {
+			var item = {
+				table: "project",
+				key: "id",
+				id: this.projectid,
+				type: "single",
+			};
+			var project = store.getters.getData(item);
+
+			return project;
+		}
+	},
 	methods: {
 		setIcon(style, name) {
 			var icon = style + " " + name;
@@ -227,7 +239,7 @@ export default {
 			var unixtime = Date.now() / 1000;
 			var item = {};
 			item.table = "project";
-			item.json = this.project;
+			item.json = this.getProject;
 			item.json.project_appicon = icon;
 			item.json.project_unixtime = unixtime;
 			store.dispatch("updateItemApp", item);
@@ -239,22 +251,19 @@ export default {
 				return "height:36px; padding-top:5px; padding-bottom:2px;";
 			}
 		},
+		setProjectId(projectid) {
+			this.projectid = projectid;
+		},
 	},
 	mounted() {
 		// Event - Project icon
 		var vue = this;
-		this.eventBus.on("project-icon", (projectid) => {
-			var item = {
-				table: "project",
-				key: "id",
-				id: projectid,
-				type: "single",
-			};
-			vue.project = store.getters.getData(item);
+		vue.eventBus.on("project-icon", (projectid) => {
+
+			vue.setProjectId(projectid);
 
 			f7.sheet.open("#sheet-project-icon", true);
-		});
-		this.eventBus.eventsListeners['project-icon'].splice(1);
+		});	
 	},
 };
 </script>
