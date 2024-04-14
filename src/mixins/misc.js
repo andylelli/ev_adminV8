@@ -466,24 +466,24 @@ export default {
 			//	console.log("workbox-precache-v2 is now deleted");
 			//});
 
-			var cacheName = "evaria-user-precache";
+			var cacheName = "evaria-admin-precache";
 			caches.delete(cacheName).then(function (boolean) {
-				console.log("evaria-user-precache is now deleted");
+				console.log("evaria-admin-precache is now deleted");
 			});
 
-			var cacheName = "evaria-user-js-cache";
+			var cacheName = "evaria-admin-js-cache";
 			caches.delete(cacheName).then(function (boolean) {
-				console.log("evaria-user-js-cache is now deleted");
+				console.log("evaria-admin-js-cache is now deleted");
 			});
 
-			var cacheName = "evaria-user-css-cache";
+			var cacheName = "evaria-admin-css-cache";
 			caches.delete(cacheName).then(function (boolean) {
-				console.log("evaria-user-css-cache is now deleted");
+				console.log("evaria-admin-css-cache is now deleted");
 			});
 
-			var cacheName = "evaria-user-html-cache";
+			var cacheName = "evaria-admin-html-cache";
 			caches.delete(cacheName).then(function (boolean) {
-				console.log("evaria-user-html-cache is now deleted");
+				console.log("evaria-admin-html-cache is now deleted");
 			});
 
 			var find = store.state.lookup.filter(function (result) {
@@ -499,7 +499,7 @@ export default {
 
 			f7.sheet.close(".sheet-update-available");
 
-			//window.location.reload();
+			window.location.reload();
 			//console.log("reloaded");
 		},
 		typeidToName(typeid) {

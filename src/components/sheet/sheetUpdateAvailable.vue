@@ -74,14 +74,30 @@ export default {
 			var vue = this;
 			var confirm = false;
 			var message =
-				"This will require you to log back in again. We recommend you only install the update when you have a good signal or network connection. Tap 'OK' to go ahead or 'Cancel' to install later from the Settings page.";
-			f7.dialog.confirm(message, function () {
-				vue.deleteCache(this.eventid);
-				vue.userLogout();
-				confirm = true;
+				"This will erase all your favorites and require you to log back in again. We recommend you only install the update when you have a good signal or network connection. Tap 'Confirm' to go ahead or 'Cancel' to install later from the Settings page.";
+
+			var cache = store.state.cache; // Get cache from store state
+			var title = f7.params.name; // Get title from F7 params
+
+			f7.dialog.confirm(message, title, function () {
+				// Show confirmation dialog
+				navigator.serviceWorker
+					.getRegistrations()
+					.then(function (registrations) {
+						// Get service worker registrations
+						for (let registration of registrations) {
+							registration.unregister(); // Unregister service worker
+						}
+
+						vue.deleteCache(cache); // Delete cache
+						vue.userLogout(); // Log out user
+
+						confirm = true; // Set confirmation flag
+					});
 			});
 			if (confirm === false) {
-				this.updateLater();
+				// If confirmation is false
+				this.updateLater(); // Schedule update for later installation
 			}
 		},
 	},
