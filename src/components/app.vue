@@ -98,9 +98,9 @@ export default {
   },
   beforeMounted() {
     // Check if an event change has been detected (only applicable to desktop)
-    if (localStorage.reload_needed == "true") {
+    if (localStorage.admin_reload_needed == "true") {
       // Remove the reload flag from localStorage
-      localStorage.removeItem("reload_needed");
+      localStorage.removeItem("admin_reload_needed");
       // Reload the page to reflect the changes
       window.location.reload();
     }
