@@ -496,11 +496,11 @@ export default {
 			}
 
 			localStorage.app_update_in_progress = 'true';
+			localStorage.reload_needed ='true';
 
 			f7.sheet.close(".sheet-update-available");
 
 			window.location.reload();
-			//console.log("reloaded");
 		},
 		typeidToName(typeid) {
 			switch (typeid) {

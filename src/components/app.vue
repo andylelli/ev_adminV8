@@ -6,17 +6,8 @@
     </f7-panel>
     <!-- Your main view, should have "view-main" class -->
     <f7-views class="display-flex">
-      <f7-view
-        v-if="this.showLeftView == true"
-        style="width: 27%"
-        url="/left-view/"
-      ></f7-view>
-      <f7-view
-        main
-        style="width: 100%"
-        class="safe-areas unselectable"
-        url="/"
-      ></f7-view>
+      <f7-view v-if="this.showLeftView == true" style="width: 27%" url="/left-view/"></f7-view>
+      <f7-view main style="width: 100%" class="safe-areas unselectable" url="/"></f7-view>
     </f7-views>
   </f7-app>
 </template>
@@ -105,7 +96,15 @@ export default {
       }
     },
   },
-  beforeMounted() {},
+  beforeMounted() {
+    // Check if an event change has been detected (only applicable to desktop)
+    if (localStorage.reload_needed == "true") {
+      // Remove the reload flag from localStorage
+      localStorage.removeItem("reload_needed");
+      // Reload the page to reflect the changes
+      window.location.reload();
+    }
+  },
   mounted() {
     var vue = this;
     f7ready((f7) => {
@@ -149,5 +148,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>
