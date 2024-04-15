@@ -148,18 +148,19 @@ export default {
 			} else {
 				value = 0;
 			}
+			if (this.getPoll) {
+				var id = "reset-" + this.projectid;
+				this.accordianSlide(id, 0);
 
-			var id = "reset-" + this.projectid;
-			this.accordianSlide(id, 0);
-
-			new Date();
-			var unixtime = Date.now() / 1000;
-			var item = {};
-			item.table = "poll";
-			item.json = this.getPoll;
-			item.json.poll_live = value;
-			item.json.poll_unixtime = unixtime;
-			store.dispatch("updateItemApp", item);
+				new Date();
+				var unixtime = Date.now() / 1000;
+				var item = {};
+				item.table = "poll";
+				item.json = this.getPoll;
+				item.json.poll_live = value;
+				item.json.poll_unixtime = unixtime;
+				store.dispatch("updateItemApp", item);
+			}
 		},
 		resetPoll() {
 			var vue = this;

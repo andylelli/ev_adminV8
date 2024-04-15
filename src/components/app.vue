@@ -97,15 +97,9 @@ export default {
     },
   },
   beforeMounted() {
-    // Check if an event change has been detected (only applicable to desktop)
-    if (localStorage.admin_reload_needed == "true") {
-      // Remove the reload flag from localStorage
-      localStorage.removeItem("admin_reload_needed");
-      // Reload the page to reflect the changes
-      window.location.reload();
-    }
   },
   mounted() {
+
     var vue = this;
     f7ready((f7) => {
       if (window.navigator.standalone) {

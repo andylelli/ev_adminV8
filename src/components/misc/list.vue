@@ -2,52 +2,26 @@
   <div>
     <!-- TITLE -->
     <div class="display-flex justify-content-space-between">
-      <f7-block-header style="text-transform: uppercase"
-        ><div v-html="title"></div
-      ></f7-block-header>
+      <f7-block-header style="text-transform: uppercase">
+        <div v-html="title"></div>
+      </f7-block-header>
       <f7-block-header>
-        <f7-link v-if="isSortable === true" :sortable-toggle="'.sort-' + table">
-          <font-awesome-icon
-            class="fa-fw custom-colour"
-            style="font-size: 20px"
-            :icon="['fal', 'sort']"
-          />
+        <f7-link v-if="isSortable === true" :sortable-toggle="'.sort-' + table + '-' + id">
+          <font-awesome-icon class="fa-fw custom-colour" style="font-size: 20px" :icon="['fal', 'sort']" />
         </f7-link>
       </f7-block-header>
     </div>
 
     <!-- LIST -->
-    <f7-list
-      :class="
-        'search-list searchbar-found ripple-color-primary no-margin-top no-padding-top sort-' +
-        table + '-' + id
-      "
-      id="list"
-      :sortable="isSortable"
-      @sortable:sort="onSort()"
-    >
-      <f7-list-item
-        v-for="item in items"
-        :key="item.id"
-        swipeout
-        :id="'sort-' + table + '-' + item.id"
-        :link="link(table, item.id)"
-        :position="item.position"
-        :after="setAfter(item.text)"
-        :badge="setBadge(item)"
-        badge-color="red"
-        :title="item.title"
-        :header="item.header"
-        :footer="item.footer"
-        @swipeout="closeSortable()"
-      >
+    <f7-list :class="'search-list searchbar-found ripple-color-primary no-margin-top no-padding-top sort-' +
+          table + '-' + id
+          " id="list" :sortable="isSortable" @sortable:sort="onSort()">
+      <f7-list-item v-for="item in items" :key="item.id" swipeout :id="'sort-' + table + '-' + item.id"
+        :link="link(table, item.id)" :position="item.position" :after="setAfter(item.text)" :badge="setBadge(item)"
+        badge-color="red" :title="item.title" :header="item.header" :footer="item.footer" @swipeout="closeSortable()">
         <template #media>
           <f7-icon>
-            <font-awesome-icon
-              class="fa-fw custom-colour"
-              style="font-size: 20px"
-              :icon="icon"
-            />
+            <font-awesome-icon class="fa-fw custom-colour" style="font-size: 20px" :icon="icon" />
           </f7-icon>
         </template>
         <swipeout-actions :id="item.id" :name="item.name" :table="table"></swipeout-actions>
@@ -102,7 +76,7 @@ export default {
         key: this.key,
         id: this.id,
         sortAlpha: this.isSortAlpha,
-        sortTime: this.isSortTime,        
+        sortTime: this.isSortTime,
         type: "multiple",
       };
       return store.getters.getData(item);
@@ -120,7 +94,7 @@ export default {
       } else {
         return false;
       }
-    },    
+    },
     isSortable() {
       if (this.isSortAlpha == true || this.isSortTime == true) {
         return false;
@@ -277,7 +251,7 @@ export default {
       f7.sortable.disable(".sort-" + this.table);
     },
     onSort() {
-      var els = $$(".sort-" + this.table + " ul").children();
+      var els = $$(".sort-" + this.table + '-' + this.id + " ul").children();
       this.sortList(els, this.table);
     },
   },
@@ -313,6 +287,7 @@ export default {
 .ripple-color-primary {
   --f7-theme-color-ripple-color: rgba(var(--f7-theme-color-rgb), 0.15);
 }
+
 .ios .badge {
   padding-left: 4px !important;
   padding-bottom: 2px !important;

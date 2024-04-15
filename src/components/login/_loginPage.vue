@@ -1,7 +1,7 @@
 <template>
 	<f7-page name="login" style="margin-top: 120px">
 		<div align="center">
-			<img src="/admin/static/images/evaria_small.jpg" width="200" />
+			<img src="/admin/static/images/evaria_admin.png" width="200" />
 		</div>
 		<div style="max-width: 400px; margin: auto">
 			<f7-list class="login">
@@ -11,18 +11,18 @@
 					@input="password = $event.target.value"></f7-list-input>
 			</f7-list>
 			<div class="login-button" style="margin-top: 50px">
-				<general-button class="margin-top margin-bottom" @generalButtonAction="login()" label="ENTER" width="200"
-					colour="black" type="fill"></general-button>
+				<general-button class="margin-top margin-bottom" @generalButtonAction="login()" label="ENTER"
+					width="200" colour="black" type="fill"></general-button>
 			</div>
 			<div class="register-button" style="margin-top: 50px">
-				<general-button class="margin-top margin-bottom" @generalButtonAction="openSheetRegister()" label="REGISTER"
-					width="200" colour="black"></general-button>
+				<general-button class="margin-top margin-bottom" @generalButtonAction="openSheetRegister()"
+					label="REGISTER" width="200" colour="black"></general-button>
 			</div>
 			<div class="logged-in" style="margin-top: 150px">
 				<general-button class="margin-top margin-bottom" @generalButtonAction="openActionsEvent()"
 					label="SELECT EVENT" width="200" colour="black" type="fill"></general-button>
-				<general-button class="margin-top margin-bottom" @generalButtonAction="logout()" label="LOG OUT" width="200"
-					colour="black"></general-button>
+				<general-button class="margin-top margin-bottom" @generalButtonAction="logout()" label="LOG OUT"
+					width="200" colour="black"></general-button>
 			</div>
 		</div>
 		<actions-event></actions-event>
@@ -145,6 +145,19 @@ export default {
 	},
 	beforeMounted() { },
 	mounted() {
+
+		console.log("App mounted")
+		// Check if an event change has been detected (only applicable to desktop)
+		if (localStorage.admin_reload_needed == "true") {
+			console.log("Event change detected, reloading page");
+			setTimeout(() => {
+				// Remove the reload flag from localStorage
+				localStorage.removeItem("admin_reload_needed");
+				// Reload the page to reflect the changes
+				window.location.reload();
+			}, 500);
+		}
+
 		f7ready((f7) => {
 
 			f7.setColorTheme("#2b2b2b");
@@ -178,4 +191,3 @@ export default {
 	--f7-ios-primary: #2b2b2b !important;
 }
 </style>
-

@@ -406,8 +406,11 @@ export default {
                         window.location.reload(true);
                     });
                 }
+                else {
+                    window.location.reload(true);
+                }
             }, 1000);
-            f7.views.main.router.navigate("/login/", { reloadAll: true });
+
         },
     },
 };
