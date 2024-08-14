@@ -22,6 +22,8 @@ import _NewsPage from '../components/project/8-news/_newsPage.vue';
 import _NewsSettingsPage from '../components/project/8-news/_newsSettingsPage.vue';
 import _SchedulePage from '../components/project/9-schedule/_schedulePage.vue';
 import _ScheduleSettingsPage from '../components/project/9-schedule/_scheduleSettingsPage.vue';
+import _MyschedulePage from '../components/project/10-myschedule/_myschedulePage.vue';
+import _MyscheduleSettingsPage from '../components/project/10-myschedule/_myscheduleSettingsPage.vue';
 
 import _PollitemPage from '../components/project/1-poll/_pollitemPage.vue';
 import _DirectoryentryPage from '../components/project/5-directory/_directoryentryPage.vue';
@@ -174,6 +176,14 @@ var routes = [
   },
   {
     path: '/schedule-settings/:projectId/',
+    component: _ScheduleSettingsPage,
+  },
+  {
+    path: '/myschedule/:projectId/',
+    component: _SchedulePage,
+  },
+  {
+    path: '/myschedule-settings/:projectId/',
     component: _ScheduleSettingsPage,
   },
   {

@@ -115,6 +115,14 @@ var params = [
         linkSuffix: '/',
     },
     {
+        table: "myschedule",
+        displayName: "my schedule",
+        newSheetName: "project",
+        db: ['myschedule_id', 'myschedule_imageid', 'myschedule_eventid', 'myschedule_projectid', 'myschedule_unixtime'],
+        icon: 'calendar-star',
+        linkSuffix: '/',
+    },
+    {
         table: "pollitem",
         key: "pollid",
         displayName: "poll item",

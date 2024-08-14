@@ -226,7 +226,7 @@ export default {
             var html = `
             <div align="center" popupid='${id}'>
                 <p style=" margin:0px; padding:4px 0px 0px 0px;">${title}</p>
-                <p class="compass-click" id='${id}' lat='${lat}' lng='${lng}' title='${title}' style="margin:4px 0px 0px 0px; color:black; font-size: 10px;">COMPASS</p>
+                <!-- <p class="compass-click" id='${id}' lat='${lat}' lng='${lng}' title='${title}' style="margin:4px 0px 0px 0px; color:black; font-size: 10px;">COMPASS</p> -->
             </div>`;
 
             marker = L.marker([lat, lng], {

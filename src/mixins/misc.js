@@ -105,7 +105,7 @@ export default {
 				store.dispatch('insertItemDB', item);
 
 				console.log("1 insert made to qrcode");
-			} 
+			}
 			// Failure
 			else {
 				console.log('QR code failure - please set error action!');
@@ -496,7 +496,7 @@ export default {
 			}
 
 			localStorage.app_update_in_progress = 'true';
-			localStorage.reload_needed ='true';
+			localStorage.reload_needed = 'true';
 
 			f7.sheet.close(".sheet-update-available");
 
@@ -521,7 +521,9 @@ export default {
 				case 8:
 					return 'news';
 				case 9:
-					return 'schedule';
+					return 'myschedule';
+				case 10:
+					return 'myschedule';
 			}
 		},
 		async updatePollscores(pollid, page) {
@@ -707,66 +709,66 @@ export default {
 		backupDateFormat(str) {
 			var files = str.split("|");
 			var backups = [];
-	
+
 			for (let i = 0; i < files.length; i++) {
-			  var json = {
-				id: files[i],
-			  };
-	
-			  const file = files[i].split("_");
-			  const year = file[0].substring(0, 4);
-			  const MM = file[0].substring(4, 6);
-			  const DD = file[0].substring(6, 8);
-	
-			  const dateObj = new Date(year + "-" + MM + "-" + DD);
-	
-			  const months = [
-				"January",
-				"February",
-				"March",
-				"April",
-				"May",
-				"June",
-				"July",
-				"August",
-				"September",
-				"October",
-				"November",
-				"December",
-			  ];
-	
-			  const nth = function (d) {
-				if (d > 3 && d < 21) return "th";
-				switch (d % 10) {
-				  case 1:
-					return "st";
-				  case 2:
-					return "nd";
-				  case 3:
-					return "rd";
-				  default:
-					return "th";
-				}
-			  };
-	
-			  const monthIndex = dateObj.getMonth();
-			  const month = months[monthIndex];
-	
-			  const day = dateObj.getDate();
-	
-			  const strDate = day + nth(day) + " " + month + " " + year;
-	
-			  const hh = file[1].substring(0, 2);
-			  const mm = file[1].substring(2, 4);
-			  const ss = file[1].substring(4, 6);
-	
-			  const strTime = hh + ":" + mm + ":" + ss;
-	
-			  const name = strDate + " " + strTime;
-	
-			  json.name = name;
-	
-			  backups.push(json);
+				var json = {
+					id: files[i],
+				};
+
+				const file = files[i].split("_");
+				const year = file[0].substring(0, 4);
+				const MM = file[0].substring(4, 6);
+				const DD = file[0].substring(6, 8);
+
+				const dateObj = new Date(year + "-" + MM + "-" + DD);
+
+				const months = [
+					"January",
+					"February",
+					"March",
+					"April",
+					"May",
+					"June",
+					"July",
+					"August",
+					"September",
+					"October",
+					"November",
+					"December",
+				];
+
+				const nth = function (d) {
+					if (d > 3 && d < 21) return "th";
+					switch (d % 10) {
+						case 1:
+							return "st";
+						case 2:
+							return "nd";
+						case 3:
+							return "rd";
+						default:
+							return "th";
+					}
+				};
+
+				const monthIndex = dateObj.getMonth();
+				const month = months[monthIndex];
+
+				const day = dateObj.getDate();
+
+				const strDate = day + nth(day) + " " + month + " " + year;
+
+				const hh = file[1].substring(0, 2);
+				const mm = file[1].substring(2, 4);
+				const ss = file[1].substring(4, 6);
+
+				const strTime = hh + ":" + mm + ":" + ss;
+
+				const name = strDate + " " + strTime;
+
+				json.name = name;
+
+				backups.push(json);
 			}
 			return backups;
 		}

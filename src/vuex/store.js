@@ -51,6 +51,7 @@ export const store = createStore({
     news: [],
     newsitem: [],
     schedule: [],    
+    myschedule: [], 
     guest: [],
     qrcode: [],
     order: [],

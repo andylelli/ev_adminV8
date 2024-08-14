@@ -144,6 +144,10 @@ export default {
 				},
 				{
 					style: "fal",
+					name: "calendar-star",
+				},
+				{
+					style: "fal",
 					name: "pen",
 				},
 				{
