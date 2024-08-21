@@ -14,7 +14,7 @@ var params = [
         displayName: "event",
         newSheetEdit: "event",
         db: ['event_id', 'event_name', 'event_pos', 'event_image', 'event_startdate', 'event_enddate', 'event_expirydate', 'event_autosync', 'event_darktheme', 'event_hideqrtype',  'event_expiredmessage', 'event_userid', 'event_live', 'event_unixtime'],
-        decode: ['event_name'],
+        decode: ['event_name', 'event_expiredmessage'], 
         fields: [
             {
                 name: "name",

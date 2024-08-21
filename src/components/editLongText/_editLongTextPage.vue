@@ -3,41 +3,32 @@
 		<!-- Nav bar-->
 		<f7-navbar>
 			<nav-back-link></nav-back-link>
-			<f7-nav-title> <div v-html="this.name()"></div></f7-nav-title>
+			<f7-nav-title>
+				<div v-html="this.name()"></div>
+			</f7-nav-title>
 			<nav-bars></nav-bars>
 		</f7-navbar>
 		<!-- Main section-->
 		<div>
 			<f7-block-header>{{
-				this.placeholder().toUpperCase()
-			}}</f7-block-header>
-			<f7-text-editor
-				placeholder="Enter text..."
-				:buttons="[
-					[
-						'bold',
-						'italic',
-						'underline',
-						'h1',
-						'h2',
-						'h3',
-						'alignCenter',
-						'unorderedList',
-					],
-				]"
-				:value="value()"
-				@texteditor:change="change($event)"
-			></f7-text-editor>
+					this.placeholder().toUpperCase()
+				}}</f7-block-header>
+			<f7-text-editor placeholder="Enter text..." :buttons="[
+						[
+							'bold',
+							'italic',
+							'underline',
+							'h1',
+							'h2',
+							'h3',
+							'alignCenter',
+							'unorderedList',
+						],
+					]" :value="value()" @texteditor:change="change($event)"></f7-text-editor>
 		</div>
 		<segment v-show="getChanged == true">
-			<general-button
-				class="padding-top padding-bottom"
-				label="UPDATE"
-				width="200"
-				type="fill"
-				@generalButtonAction="submit()"
-				@click="changed = false"
-			></general-button>
+			<general-button class="padding-top padding-bottom" label="UPDATE" width="200" type="fill"
+				@generalButtonAction="submit()" @click="changed = false"></general-button>
 		</segment>
 	</f7-page>
 </template>
@@ -57,6 +48,7 @@ import generalButton from "../misc/generalButton.vue";
 
 import params from "../../js/config/params.js";
 import escape from "../../js/config/escape.js";
+import { text } from 'dom7';
 
 export default {
 	data() {
@@ -81,7 +73,7 @@ export default {
 	computed: {
 		getChanged() {
 			return this.changed;
-		},	
+		},
 		buttonClass() {
 			if (this.changed === true) {
 				return "button button-round button-fill button-large";
@@ -102,7 +94,8 @@ export default {
 	methods: {
 		value() {
 			var field = this.table + "_" + this.fieldname;
-			return escape.decodeXML(this.getItem[field]);
+			var textDecode = escape.decodeXML(this.getItem[field]);
+			return textDecode;
 		},
 		name() {
 			var name = this.table + "_name";
@@ -126,7 +119,7 @@ export default {
 		submit() {
 			new Date();
 			var unixtime = Date.now() / 1000;
-			if(this.textEditorValue == "") {
+			if (this.textEditorValue == "") {
 				this.textEditorValue = " ";
 			}
 			var json = {
@@ -156,5 +149,4 @@ export default {
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

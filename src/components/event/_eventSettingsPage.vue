@@ -117,6 +117,7 @@ export default {
         id: store.state.eventid,
         type: "single",
       };
+      console.log(store.getters.getData(item));
       return store.getters.getData(item);
     },
     getHidenames() {

@@ -4,43 +4,14 @@
     <div class="text-align-center">
       <div align="center"></div>
       <div align="center">
-        <input
-          type="file"
-          name="file"
-          id="file"
-          class="c3-input-file c3-hide"
-        />
-        <label
-          id="imageAjax"
-          for="file"
-          class="c3-show"
-          style="margin-top: 5px"
-        >
-          <img
-            id="image"
-            v-bind:class="imageEventClass"
-            width="300"
-            :src="imageEvent"
-            @load="setPalette()"
-          />
+        <input type="file" name="file" id="file" class="c3-input-file c3-hide" />
+        <label id="imageAjax" for="file" class="c3-show" style="margin-top: 5px">
+          <img id="image" v-bind:class="imageEventClass" width="300" :src="imageEvent" @load="setPalette()" />
         </label>
-        <span
-          id="progress"
-          class="progressbar c3-hide"
-          data-progress="0"
-          style="width: 70vw; margin-top: 10px"
-        ></span>
-        <div
-          v-if="this.getEvent.event_image"
-          align="center"
-          style="margin-top: 20px"
-        >
-          <font-awesome-icon
-            @click="removeImage()"
-            class="fa-fw"
-            style="font-size: 30px; color: #2b2b2b"
-            :icon="['fal', 'times']"
-          />
+        <span id="progress" class="progressbar c3-hide" data-progress="0" style="width: 70vw; margin-top: 10px"></span>
+        <div v-if="this.getEvent.event_image" align="center" style="margin-top: 20px">
+          <font-awesome-icon @click="removeImage()" class="fa-fw" style="font-size: 30px; color: #2b2b2b"
+            :icon="['fal', 'times']" />
         </div>
       </div>
     </div>
@@ -51,24 +22,35 @@
           <li>
             <div class="item-content item-input">
               <div class="item-media">
-                <div
-                  id="color-picker-palette-value"
-                  style="width: 30px; height: 30px"
-                ></div>
+                <div id="color-picker-palette-value" style="width: 30px; height: 30px"></div>
               </div>
               <div class="item-inner">
                 <div class="item-input-wrap">
-                  <input
-                    type="text"
-                    placeholder="Color"
-                    readonly="readonly"
-                    id="color-picker-palette"
-                  />
+                  <input type="text" placeholder="Color" readonly="readonly" id="color-picker-palette" />
                 </div>
               </div>
             </div>
           </li>
         </ul>
+      </div>
+      <div v-show="this.getEvent.event_image">
+        <f7-block-header>BACKGROUND COLOUR</f7-block-header>
+        <div class="list list-strong-ios list-outline-ios">
+          <ul>
+            <li>
+              <div class="item-content item-input">
+                <div class="item-media">
+                  <div id="color-picker-background-value" style="width: 30px; height: 30px"></div>
+                </div>
+                <div class="item-inner">
+                  <div class="item-input-wrap">
+                    <input type="text" placeholder="Color" readonly="readonly" id="color-picker-background" />
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
@@ -116,11 +98,11 @@ export default {
       };
       return store.getters.getData(item);
     },
-    getAppcolour() {
+    getAppColour() {
       var item = {
         table: "lookup",
         key: "id",
-        id: "appcolour",
+        id: "backgroundcolour",
         type: "single",
       };
 
@@ -177,20 +159,34 @@ export default {
       var table = "event";
       this.imageLoad(e, eventid, table, remove);
     },
-    colorChange(value) {
+    colorChange(type, value) {
       if (value) {
-        var colour = value.hex;
-        colour = colour.replace("#", "");
-        var lookup = {
-          id: "appcolour",
-          value: colour,
-          eventid: this.getEvent.event_id,
-        };
+        if (type == "theme") {
+          var colour = value.hex;
+          colour = colour.replace("#", "");
+          var lookup = {
+            id: "appcolour",
+            value: colour,
+            eventid: this.getEvent.event_id,
+          };
 
-        var preloader = true;
+          var preloader = true;
 
-        this.newItem(lookup, "lookup", preloader);
-		
+          this.newItem(lookup, "lookup", preloader);
+        }
+        if (type == "background") {
+          var colour = value.hex;
+          colour = colour.replace("#", "");
+          var lookup = {
+            id: "backgroundcolour",
+            value: colour,
+            eventid: this.getEvent.event_id,
+          };
+
+          var preloader = true;
+
+          this.newItem(lookup, "lookup", preloader);
+        }
       }
     },
     setPalette() {
@@ -255,7 +251,29 @@ export default {
       },
       on: {
         change(cp, value) {
-          vue.colorChange(value);
+          vue.colorChange("theme", value);
+        },
+      },
+    });
+
+    var vue = this;
+    this.colorPicker = f7.colorPicker.create({
+      inputEl: "#color-picker-background",
+      targetEl: "#color-picker-background-value",
+      targetElSetBackgroundColor: true,
+      modules: ["palette"],
+      openIn: "sheet",
+      openInPhone: "sheet",
+      palette: this.getPalette,
+      value: {
+        hex: this.getAppColour,
+      },
+      formatValue: function (value) {
+        return value.hex;
+      },
+      on: {
+        change(cp, value) {
+          vue.colorChange("background", value);
         },
       },
     });
