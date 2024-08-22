@@ -98,7 +98,7 @@ export default {
       };
       return store.getters.getData(item);
     },
-    getAppColour() {
+    getBackgroundColour() {
       var item = {
         table: "lookup",
         key: "id",
@@ -132,6 +132,16 @@ export default {
         hex = f7.colors.primary;
       }
       return hex;
+    },
+    getBackgroundPalette() {
+      var backgroundPalette = JSON.parse(JSON.stringify(this.getPalette));
+      if (backgroundPalette.length > 0) {
+        if (backgroundPalette != "#2b2b2b") {
+          console.log(backgroundPalette);
+          backgroundPalette.unshift("#000000");
+          return backgroundPalette;
+        }
+      }
     },
     img() {
       return document.getElementById("image");
@@ -264,9 +274,9 @@ export default {
       modules: ["palette"],
       openIn: "sheet",
       openInPhone: "sheet",
-      palette: this.getPalette,
+      palette: this.getBackgroundPalette,
       value: {
-        hex: this.getAppColour,
+        hex: this.getBackgroundColour,
       },
       formatValue: function (value) {
         return value.hex;
