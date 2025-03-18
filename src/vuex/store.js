@@ -5,6 +5,7 @@ import getters from "./getters.js";
 import { createStore } from 'vuex'
 
 var url = "https://www.evaria.io/";
+//var url = "http://localhost/";
 //var url = "https://phplaravel-1159228-4039624.cloudwaysapps.com/";
 
 export const store = createStore({

@@ -52,6 +52,25 @@
           </ul>
         </div>
       </div>
+      <div v-show="this.getEvent.event_image">
+        <f7-block-header>SPLASH COLOUR</f7-block-header>
+        <div class="list list-strong-ios list-outline-ios">
+          <ul>
+            <li>
+              <div class="item-content item-input">
+                <div class="item-media">
+                  <div id="color-picker-splash-value" style="width: 30px; height: 30px"></div>
+                </div>
+                <div class="item-inner">
+                  <div class="item-input-wrap">
+                    <input type="text" placeholder="Color" readonly="readonly" id="color-picker-splash" />
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -81,7 +100,9 @@ export default {
       c: 11,
       newImage: false,
       name: "",
-      colorPicker: null,
+      colorPicker1: null,
+      colorPicker2: null,
+      colorPicker3: null,
     };
   },
   mixins: [images, newItem, misc, fetch],
@@ -116,6 +137,24 @@ export default {
       }
       return value;
     },
+    getSplashColour() {
+      var item = {
+        table: "lookup",
+        key: "id",
+        id: "splashcolour",
+        type: "single",
+      };
+
+      var colour = store.getters.getData(item);
+
+      var value;
+      if (colour) {
+        var value = "#" + colour.lookup_value;
+      } else {
+        value = f7.colors.primary;
+      }
+      return value;
+    },
     getPalette() {
       var item = {
         table: "lookup",
@@ -137,7 +176,15 @@ export default {
       var backgroundPalette = JSON.parse(JSON.stringify(this.getPalette));
       if (backgroundPalette.length > 0) {
         if (backgroundPalette != "#2b2b2b") {
-          console.log(backgroundPalette);
+          backgroundPalette.unshift("#000000");
+          return backgroundPalette;
+        }
+      }
+    },
+    getSplashPalette() {
+      var backgroundPalette = JSON.parse(JSON.stringify(this.getPalette));
+      if (backgroundPalette.length > 0) {
+        if (backgroundPalette != "#2b2b2b") {
           backgroundPalette.unshift("#000000");
           return backgroundPalette;
         }
@@ -197,6 +244,19 @@ export default {
 
           this.newItem(lookup, "lookup", preloader);
         }
+        if (type == "splash") {
+          var colour = value.hex;
+          colour = colour.replace("#", "");
+          var lookup = {
+            id: "splashcolour",
+            value: colour,
+            eventid: this.getEvent.event_id,
+          };
+
+          var preloader = true;
+
+          this.newItem(lookup, "lookup", preloader);
+        }
       }
     },
     setPalette() {
@@ -245,7 +305,7 @@ export default {
   },
   mounted() {
     var vue = this;
-    this.colorPicker = f7.colorPicker.create({
+    this.colorPicker1 = f7.colorPicker.create({
       inputEl: "#color-picker-palette",
       targetEl: "#color-picker-palette-value",
       targetElSetBackgroundColor: true,
@@ -266,8 +326,7 @@ export default {
       },
     });
 
-    var vue = this;
-    this.colorPicker = f7.colorPicker.create({
+    this.colorPicker2 = f7.colorPicker.create({
       inputEl: "#color-picker-background",
       targetEl: "#color-picker-background-value",
       targetElSetBackgroundColor: true,
@@ -284,6 +343,27 @@ export default {
       on: {
         change(cp, value) {
           vue.colorChange("background", value);
+        },
+      },
+    });
+
+    this.colorPicker3 = f7.colorPicker.create({
+      inputEl: "#color-picker-splash",
+      targetEl: "#color-picker-splash-value",
+      targetElSetBackgroundColor: true,
+      modules: ["palette"],
+      openIn: "sheet",
+      openInPhone: "sheet",
+      palette: this.getSplashPalette,
+      value: {
+        hex: this.getSplashColour,
+      },
+      formatValue: function (value) {
+        return value.hex;
+      },
+      on: {
+        change(cp, value) {
+          vue.colorChange("splash", value);
         },
       },
     });

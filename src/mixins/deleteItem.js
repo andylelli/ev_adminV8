@@ -109,6 +109,7 @@ export default {
 					// Parameters
 					var url = store.state.url + 'api/delete/' + table + '/' + id;
 					var method = 'DELETE';
+					console.log(url);
 					var response = await vue.fetch(url, method);
 
 					// Success
@@ -127,6 +128,7 @@ export default {
 					// Parameters
 					var url = store.state.url + 'api/delete/' + table + '/' + id;
 					var method = 'DELETE';
+					console.log(url);
 					var response = await vue.fetch(url, method);
 
 					// Success

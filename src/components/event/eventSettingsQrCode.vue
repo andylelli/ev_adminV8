@@ -22,7 +22,7 @@ export default {
 		return {
 			size: 200,
 			margin: 2,
-			url: "https://www.evaria.io/user/index.html?name=",
+			url: "https://www.evaria.io/public/app/",
 		};
 	},
 	components: {
@@ -48,12 +48,21 @@ export default {
 			};
 			return store.getters.getData(item);
 		},
+		getSplashColour() {
+			var splashColour = store.getters.getLookup("splashcolour");
+			if(splashColour == false) {
+				return "000000";
+			}
+			else {
+				return splashColour;
+			}
+		},
 		eventNameHyphen() {
 
 			return this.getEvent.event_name.replace(/\s+/g, '-').toLowerCase();
 		},
 		qrValue() {
-			return this.url + this.eventNameHyphen + "&id=" + this.getEvent.event_id;
+			return this.url + this.eventNameHyphen + "/" + this.getEvent.event_id + "/" + this.getSplashColour;
 		},
 	},
 	methods: {},

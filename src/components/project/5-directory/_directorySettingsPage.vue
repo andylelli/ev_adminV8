@@ -30,9 +30,13 @@
       <segment header="Sort Alphabetically">
         <directory-settings-sort-alpha :projectid="projectid"></directory-settings-sort-alpha>
       </segment>
-      <!---- Location ---->
-      <segment  v-if="isMap" header="Location">
+      <!---- Map ---->
+      <segment header="Location">
         <directory-settings-location :projectid="projectid"></directory-settings-location>
+      </segment>
+      <!---- Location ---->
+      <segment v-if="isMap" header="Map">
+        <directory-settings-map :projectid="projectid"></directory-settings-map>
       </segment>
       <!---- Parent / Child ---->
       <segment v-if="isDirectory" header="Parent">
@@ -77,6 +81,7 @@ import generalButton from "../../misc/generalButton.vue";
 
 import directorySettingsSortAlpha from "./directorySettingsSortAlpha.vue";
 import directorySettingsLocation from "./directorySettingsLocation.vue";
+import directorySettingsMap from "./directorySettingsMap.vue";
 import directorySettingsParent from "./directorySettingsParent.vue";
 import directorySettingsSchedule from "./directorySettingsSchedule.vue";
 import directorySettingsShop from "./directorySettingsShop.vue";
@@ -106,6 +111,7 @@ export default {
     generalButton,
     directorySettingsSortAlpha,
     directorySettingsLocation,
+    directorySettingsMap,
     directorySettingsParent,
     directorySettingsSchedule,
     directorySettingsBulkUpload,

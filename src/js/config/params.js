@@ -74,7 +74,7 @@ var params = [
         table: "directory",
         displayName: "directory",
         newSheetName: "project",
-        db: ['directory_id', 'directory_parentid', 'directory_mapid', 'directory_imageid', 'directory_scheduleid', 'directory_colourid', 'directory_shopid', 'directory_hidenames', 'directory_hidetype', 'directory_sortalpha', 'directory_projectid', 'directory_eventid', 'directory_unixtime'],
+        db: ['directory_id', 'directory_parentid', 'directory_locationid', 'directory_mapid', 'directory_imageid', 'directory_scheduleid', 'directory_colourid', 'directory_shopid', 'directory_hidenames', 'directory_hidetype', 'directory_sortalpha', 'directory_projectid', 'directory_eventid', 'directory_unixtime'],
         icon: 'book',
         linkSuffix: '/',
         childTables: ['directoryentry']
