@@ -234,7 +234,7 @@ export default {
 					{
 						values: (function() {
 							var arr = [];
-							for (var i = 0; i <= 1440; i = i + 5) {
+							for (var i = 10; i <= 1440; i = i + 5) {
 								arr.push(i);
 							}
 							return arr;

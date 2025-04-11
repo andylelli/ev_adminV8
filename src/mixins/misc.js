@@ -521,7 +521,7 @@ export default {
 				case 8:
 					return 'news';
 				case 9:
-					return 'myschedule';
+					return 'schedule';
 				case 10:
 					return 'myschedule';
 			}
