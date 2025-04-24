@@ -38,11 +38,8 @@ export default {
 		setEmail() {
 			return store.getters.getEmail(); // Get the email from the store getters
 		},
-		// Set the email for generating QR code
-		setEmail() {
-			return store.getters.getEmail(); // Get the email from the store getters
-		},
 		qrImage() {
+			var splashColour = store.getters.getLookup("splashcolour");
 			var name;
 			if (this.email) {
 				name = this.email.substring(0, this.email.indexOf("@")); // Extract name from email
@@ -50,19 +47,15 @@ export default {
 			let eventid = parseInt(localStorage.user_eventid); // Get the event ID from local storage
 			let value =
 				this.url +
-				"name=" +
-				name +
-				"&id=" +
-				eventid +
-				"&email=" +
-				encodeURIComponent(this.email);
+				"app/" + name + "/" + eventid + "/" + splashColour; // Construct the URL for the QR code
+			console.log(value);
 			return value; // Return the URL for generating the QR code image
 		},
 	},
 	methods: {
 		// Get QR code data
 		getQRCode() {
-			this.url = store.state.urlQR; // Set the URL for the QR code
+			this.url = store.state.url; // Set the URL for the QR code
 			this.email = this.setEmail; // Set the email for the QR code
 			this.qr_image = store.getters.getQRCode(this.guestid); // Get the QR code image based on the guest ID
 		},

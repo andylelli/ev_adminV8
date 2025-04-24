@@ -121,12 +121,24 @@ export default {
         initialiseMapBeforeMount() {
             var vue = this;
             if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition((gps) => {
-                    this.myposition = [gps.coords.latitude, gps.coords.longitude];
-                    if (vue.center[0] != 0 && vue.center[1] != 0) {
-                        vue.map.panTo(this.myposition);
+                navigator.geolocation.watchPosition(
+                    (gps) => {
+                        this.myposition = [gps.coords.latitude, gps.coords.longitude];
+
+                        if (vue.center[0] !== 0 && vue.center[1] !== 0) {
+                            vue.map.panTo(this.myposition);
+                        }
+                    },
+                    (error) => {
+                        console.error('Geolocation error:', error.message);
+                    },
+                    {
+                        enableHighAccuracy: true,
+                        timeout: 10000,
+                        maximumAge: 0
                     }
-                });
+                );
+
             }
 
             (function (factory, window) {
@@ -251,236 +263,95 @@ export default {
             return "/admin/static/images/pindrop-" + colour + ".svg";
         },
         async myPosition() {
-            var vue = this;
-
-            var newposLat;
-            var newposLng;
-            var oldposLat;
-            var oldposLng;
-            var old2posLat;
-            var old2posLng;
-            var old3posLat;
-            var old3posLng;
-            var old4posLat;
-            var old4posLng;
-            var old5posLat;
-            var old5posLng;
-            var old6posLat;
-            var old6posLng;
-            var old7posLat;
-            var old7posLng;
-            var old8posLat;
-
-            var numDeltas = 100;
-            var delay = 10; //milliseconds
-            var i = 0;
-            var deltaLat;
-            var deltaLng;
-
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    function (position) {
-                        oldposLat = newposLat;
-                        oldposLng = newposLng;
-
-                        old2posLat = oldposLat;
-                        old2posLng = oldposLng;
-
-                        old3posLat = old2posLat;
-                        old3posLng = old2posLng;
-
-                        old4posLat = old3posLat;
-                        old4posLng = old3posLng;
-
-                        old5posLat = old4posLat;
-                        old5posLng = old4posLng;
-
-                        old6posLat = old5posLat;
-                        old6posLng = old5posLng;
-
-                        old7posLat = old6posLat;
-                        old7posLng = old6posLng;
-
-                        newposLat = position.coords.latitude;
-                        newposLng = position.coords.longitude;
-
-                        if (oldposLat == null) {
-                            newposLat = newposLat;
-                            newposLng = newposLng;
-                        } else if (old2posLat == null) {
-                            newposLat = (newposLat + oldposLat) / 2;
-                            newposLng = (newposLng + oldposng) / 2;
-                        } else if (old3posLat == null) {
-                            newposLat =
-                                (newposLat + oldposLat + old2posLat) / 3;
-                            newposLng =
-                                (newposLng + oldposLng + old2posLat) / 3;
-                        } else if (old4posLat == null) {
-                            newposLat =
-                                (newposLat +
-                                    oldposLat +
-                                    old2posLat +
-                                    old3posLat) /
-                                4;
-                            newposLng =
-                                (newposLng +
-                                    oldposLng +
-                                    old2posLng +
-                                    old3posLng) /
-                                4;
-                        } else if (old5posLat == null) {
-                            newposLat =
-                                (newposLat +
-                                    oldposLat +
-                                    old2posLat +
-                                    old3posLat +
-                                    old4posLat) /
-                                5;
-                            newposLng =
-                                (newposLng +
-                                    oldposLng +
-                                    old2posLng +
-                                    old3posLng +
-                                    old4posLng) /
-                                5;
-                        } else if (old6posLat == null) {
-                            newposLat =
-                                (newposLat +
-                                    oldposLat +
-                                    old2posLat +
-                                    old3posLat +
-                                    old4posLat +
-                                    old5posLat) /
-                                6;
-                            newposLng =
-                                (newposLng +
-                                    oldposLng +
-                                    old2posLng +
-                                    old3posLng +
-                                    old4posLng +
-                                    old5posLng) /
-                                6;
-                        } else if (old7posLat == null) {
-                            newposLat =
-                                (newposLat +
-                                    oldposLat +
-                                    old2posLat +
-                                    old3posLat +
-                                    old4posLat +
-                                    old5posLat +
-                                    old6posLat) /
-                                7;
-                            newposLng =
-                                (newposLng +
-                                    oldposLng +
-                                    old2posLng +
-                                    old3posLng +
-                                    old4posLng +
-                                    old5posLng +
-                                    old6posLng) /
-                                7;
-                        } else if (old8posLat == null) {
-                            newposLat =
-                                (newposLat +
-                                    oldposLat +
-                                    old2posLat +
-                                    old3posLat +
-                                    old4posLat +
-                                    old5posLat +
-                                    old6posLat +
-                                    old7posLat) /
-                                8;
-                            newposLng =
-                                (newposLng +
-                                    oldposLng +
-                                    old2posLng +
-                                    old3posLng +
-                                    old4posLng +
-                                    old5posLng +
-                                    old6posLng +
-                                    old7posLng) /
-                                8;
-                        }
-
-                        if (oldposLat == null) {
-                            oldposLat = newposLat;
-                            oldposLng = newposLng;
-
-                            var south, west, north, east;
-
-                            south = vue.maxBounds[0][0];
-                            west = vue.maxBounds[0][1];
-                            north = vue.maxBounds[1][0];
-                            east = vue.maxBounds[1][1];
-
-                            if (
-                                newposLat < north &&
-                                newposLat > south &&
-                                newposLng > west &&
-                                newposLng < east
-                            ) {
-                                if (!vue.directoryentryid) {
-                                    vue.map.setView(
-                                        [newposLat, newposLng],
-                                        16
-                                    );
-                                }
-
-                            }
-                            else {
-                                if (vue.directoryentryid && vue.firstLoop == true) {
-                                    if (vue.markerPosition[0] == 0 && vue.markerPosition[1] == 0) {
-                                        vue.map.setView(
-                                            [newposLat, newposLng],
-                                            16
-                                        );
-                                        vue.firstLoop = false;
-                                    }
-                                    else {
-                                        vue.map.setView(
-                                            vue.markerPosition,
-                                            16
-                                        );
-                                        vue.firstLoop = false;
-                                    }
-                                }
-                            }
-                        }
-
-                        transition();
-
-                        function transition() {
-                            i = 0;
-                            deltaLat = (newposLat - oldposLat) / numDeltas;
-                            deltaLng = (newposLng - oldposLng) / numDeltas;
-
-                            moveMarker();
-                        }
-
-                        function moveMarker() {
-                            oldposLat += deltaLat;
-                            oldposLng += deltaLng;
-
-                            var newLatLng = new L.LatLng(
-                                oldposLat,
-                                oldposLng
-                            );
-
-                            vue.here.setLatLng(newLatLng);
-                            if (i != numDeltas) {
-                                i++;
-                                setTimeout(moveMarker, delay);
-                            }
-
-                            //here.setLatLng(vue.center);
-                        }
-                    },
-                    function () {
-                        //handleLocationError(true, infoWindow, map.getCenter());
-                    }
-                );
+            const vue = this;
+          
+            let oldPositions = [];
+          
+            const numDeltas = 100;
+            const delay = 10;
+            let i = 0;
+            let deltaLat, deltaLng;
+          
+            if (!navigator.geolocation) {
+              console.error("Geolocation is not supported by this browser.");
+              return;
             }
-        },
-
+          
+            navigator.geolocation.watchPosition(
+              (position) => {
+                const newLat = position.coords.latitude;
+                const newLng = position.coords.longitude;
+          
+                // Store last 8 positions for smoothing
+                if (oldPositions.length >= 8) {
+                  oldPositions.shift(); // remove oldest
+                }
+                oldPositions.push([newLat, newLng]);
+          
+                // Compute smoothed position
+                let avgLat = 0, avgLng = 0;
+                oldPositions.forEach(([lat, lng]) => {
+                  avgLat += lat;
+                  avgLng += lng;
+                });
+                avgLat /= oldPositions.length;
+                avgLng /= oldPositions.length;
+          
+                const smoothedPos = [avgLat, avgLng];
+          
+                // Set view if first time and within bounds
+                if (oldPositions.length === 1) {
+                  const [south, west] = vue.maxBounds[0];
+                  const [north, east] = vue.maxBounds[1];
+          
+                  if (
+                    avgLat < north && avgLat > south &&
+                    avgLng > west && avgLng < east
+                  ) {
+                    if (!vue.directoryentryid) {
+                      vue.map.setView(smoothedPos, 16);
+                    }
+                  } else if (vue.directoryentryid && vue.firstLoop) {
+                    if (vue.markerPosition[0] === 0 && vue.markerPosition[1] === 0) {
+                      vue.map.setView(smoothedPos, 16);
+                    } else {
+                      vue.map.setView(vue.markerPosition, 16);
+                    }
+                    vue.firstLoop = false;
+                  }
+                }
+          
+                transition(smoothedPos);
+          
+                function transition([targetLat, targetLng]) {
+                  i = 0;
+                  const [startLat, startLng] = vue.here.getLatLng();
+                  deltaLat = (targetLat - startLat) / numDeltas;
+                  deltaLng = (targetLng - startLng) / numDeltas;
+                  moveMarker(startLat, startLng);
+                }
+          
+                function moveMarker(currentLat, currentLng) {
+                  const newLat = currentLat + deltaLat;
+                  const newLng = currentLng + deltaLng;
+                  vue.here.setLatLng([newLat, newLng]);
+          
+                  if (i < numDeltas) {
+                    i++;
+                    setTimeout(() => moveMarker(newLat, newLng), delay);
+                  }
+                }
+              },
+              (error) => {
+                console.error('Geolocation error:', error.message);
+              },
+              {
+                enableHighAccuracy: true,
+                timeout: 10000,
+                maximumAge: 0
+              }
+            );
+          },
+          
     }
 };

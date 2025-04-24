@@ -179,19 +179,27 @@ export default {
 					return;
 				}
 
+				const vue = this;
+
 				navigator.geolocation.getCurrentPosition(
 					(pos) => {
 						vue.permissionGranted = true;
-						this.position = {
+						vue.position = {
 							latitude: pos.coords.latitude,
 							longitude: pos.coords.longitude,
 						};
 					},
 					(err) => {
 						vue.permissionGranted = false;
-						this.errorStr = err.message;
+						vue.errorStr = err.message;
+					},
+					{
+						enableHighAccuracy: true,
+						timeout: 10000,      // 10 seconds max wait
+						maximumAge: 0        // always get a fresh fix
 					}
 				);
+
 			}
 		},
 		calcDirection() {
