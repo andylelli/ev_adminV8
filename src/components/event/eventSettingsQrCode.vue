@@ -50,7 +50,7 @@ export default {
 		},
 		getSplashColour() {
 			var splashColour = store.getters.getLookup("splashcolour");
-			if(splashColour == false) {
+			if (splashColour == false) {
 				return "000000";
 			}
 			else {
@@ -59,14 +59,21 @@ export default {
 		},
 		eventNameHyphen() {
 
-			return this.getEvent.event_name.replace(/\s+/g, '-').toLowerCase();
+			var raw = this.getEvent.event_name; // or your input string
+			console.log("RAW: " + raw);
+			var encoded = encodeURIComponent(raw);
+			console.log("ENCODED: " + encoded);
+			var hyphenated = encoded.replace(/'/g, '%27').replace(/%20/g, '-').toLowerCase();
+			console.log("HYPHENATED: " + hyphenated);
+
+			return hyphenated;
 		},
 		qrValue() {
-			return this.url + this.eventNameHyphen + "/" + this.getEvent.event_id + "/" + this.getSplashColour;
+			return this.url + this.eventNameHyphen + "/" + this.getEvent.event_id + "/" + this.getSplashColour + "/browser";
 		},
 	},
 	methods: {},
-	mounted() {},
+	mounted() { },
 };
 </script>
 

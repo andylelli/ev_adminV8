@@ -22,6 +22,8 @@ import "leaflet/dist/leaflet.css";
 import "leaflet-pulse-icon/src/L.Icon.Pulse.js";
 import "leaflet-pulse-icon/src/L.Icon.Pulse.css";
 
+
+
 export default {
   components: {},
   name: "map-display",
@@ -40,7 +42,6 @@ export default {
       myposition: [0, 0],
       bounds: [],
       markers: [],
-
       zoom: 15,
       minZoom: 10,
       maxZoom: 16,

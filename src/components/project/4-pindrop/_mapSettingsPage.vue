@@ -4,33 +4,25 @@
 		<f7-navbar>
 			<nav-back-link></nav-back-link>
 			<f7-nav-title v-if="getProject">
-				<div v-html="this.getProject.project_name + ' - Settings'"></div
-			></f7-nav-title>
+				<div v-html="this.getProject.project_name + ' - Settings'"></div>
+			</f7-nav-title>
 			<nav-bars></nav-bars>
 		</f7-navbar>
 		<div v-if="getProject">
 			<!-- Main section-->
 			<segment header="Name">
-				<field-edit-text
-					type="single"
-					:id="this.getProject.project_id"
-					table="project"
-					fieldname="name"
-					title="Name"
-				></field-edit-text>
+				<field-edit-text type="single" :id="this.getProject.project_id" table="project" fieldname="name"
+					title="Name"></field-edit-text>
 			</segment>
 			<segment header="Icon">
 				<project-icon :id="this.getProject.project_id"></project-icon>
 			</segment>
-			<segment v-if="this.desktop == true" >
-				<general-button
-					class="margin-bottom"
-					@generalButtonAction="deleteItem()"
-					label="DELETE"
-					width="200"
-					colour="red"
-					type="fill"
-				></general-button>
+			<segment header="Site Coordinates">
+				<map-coordinates></map-coordinates>
+			</segment>
+			<segment v-if="this.desktop == true">
+				<general-button class="margin-bottom" @generalButtonAction="deleteItem()" label="DELETE" width="200"
+					colour="red" type="fill"></general-button>
 			</segment>
 		</div>
 	</f7-page>
@@ -59,6 +51,7 @@ import imageLoad from "../../misc/imageLoad.vue";
 import sheetEdit from "../../sheet/sheetEdit.vue";
 import generalButton from "../../misc/generalButton.vue";
 import sheetProjectIcon from "../../sheet/sheetProjectIcon.vue";
+import mapCoordinates from "./mapSettingsCoordinates.vue";
 
 export default {
 	data() {
@@ -81,6 +74,7 @@ export default {
 		generalButton,
 		sheetEdit,
 		sheetProjectIcon,
+		mapCoordinates
 	},
 	mixins: [deleteItem, misc, fetch],
 	computed: {
@@ -103,9 +97,8 @@ export default {
 			);
 		},
 	},
-	mounted() {},
+	mounted() { },
 };
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

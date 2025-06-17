@@ -169,6 +169,31 @@ export default {
 			this.direction = dir;
 			return;
 		},
+		setDirection_x() {
+			let heading = this.webkitCompassHeading;
+			let bearing = this.getDirection;
+
+			if (heading == null || bearing == null) return;
+
+			// Adjust for landscape orientation if necessary
+			if (this.orientation === 90) {
+				heading += 90;
+			} else if (this.orientation === -90) {
+				heading -= 90;
+			}
+
+			// Normalize heading back into [0, 360]
+			heading = (heading + 360) % 360;
+
+			// Calculate the difference
+			let dir = bearing - heading;
+
+			// Normalize to [-180, 180] for smooth compass rotation
+			if (dir > 180) dir -= 360;
+			if (dir < -180) dir += 360;
+
+			this.direction = dir;
+		},
 		getLocation() {
 			var vue = this;
 			if (this.permissionGranted != false) {

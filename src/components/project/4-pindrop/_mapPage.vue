@@ -63,7 +63,7 @@ export default {
 		segment,
 		generalSettings,
 		mapDisplay,
-		mapKey,
+		mapKey
 	},
 	mixins: [misc],
 	computed: {
