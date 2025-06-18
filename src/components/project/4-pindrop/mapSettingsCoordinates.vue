@@ -2,7 +2,7 @@
 	<div>
 		<f7-list dividers-ios no-padding-top style="margin-top: 0px;">
 			<f7-list-input label="North" type="text" placeholder="Latitude" clear-button v-model="northValue"
-				ref="inputNorth">
+				ref="inputNorth" :value="this.northValue">
 				<template #media>
 					<f7-icon>
 						<font-awesome-icon class="fa-fw custom-colour" style="font-size: 20px" :icon="['fal', 'up']" />
@@ -11,7 +11,7 @@
 			</f7-list-input>
 
 			<f7-list-input label="West" type="text" placeholder="Longitude" clear-button v-model="westValue"
-				ref="inputWest">
+				ref="inputWest" :value="this.westValue">
 				<template #media>
 					<f7-icon>
 						<font-awesome-icon class="fa-fw custom-colour" style="font-size: 20px"
@@ -21,7 +21,7 @@
 			</f7-list-input>
 
 			<f7-list-input label="South" type="text" placeholder="Latitude" clear-button v-model="southValue"
-				ref="inputSouth">
+				ref="inputSouth" :value="this.southValue">
 				<template #media>
 					<f7-icon>
 						<font-awesome-icon class="fa-fw custom-colour" style="font-size: 20px"
@@ -31,7 +31,7 @@
 			</f7-list-input>
 
 			<f7-list-input label="East" type="text" placeholder="Longitude" clear-button v-model="eastValue"
-				ref="inputEast">
+				ref="inputEast" :value="this.eastValue">
 				<template #media>
 					<f7-icon>
 						<font-awesome-icon class="fa-fw custom-colour" style="font-size: 20px"
@@ -48,9 +48,12 @@
 </template>
 
 <script>
+
+import { f7, f7ready } from "framework7-vue";
+
 import store from "../../../vuex/store.js";
 import misc from "../../../mixins/misc.js";
-import { f7, f7ready } from "framework7-vue";
+import fetch from "../../../mixins/fetch.js";
 
 import generalButton from "../../misc/generalButton.vue";
 
@@ -58,10 +61,12 @@ export default {
 	name: "map-coordinates",
 	data() {
 		return {
-			northValue: '',
-			westValue: '',
-			southValue: '',
-			eastValue: '',
+			northValue: 52.951405,
+			westValue: -1.131356,
+			southValue: 52.941287,
+			eastValue: -1.108696,
+			bufferLat: 0.015, // Buffer to prevent rounding issues
+			bufferLon: 0.015, // Buffer to prevent rounding issues
 		};
 	},
 	components: {
@@ -72,7 +77,7 @@ export default {
 		id: Number,
 		fieldname: String
 	},
-	mixins: [misc],
+	mixins: [misc, fetch],
 	computed: {
 		getItemText() {
 			var item = {
@@ -90,19 +95,35 @@ export default {
 		},
 	},
 	methods: {
-		async submitCoordinated() {
-			let url = store.state.url + 'api/post/insert/tiles/100';
+		async submitCoordinates() {
+			let url = store.state.url + 'api/post/insert/tiles';
 			var method = 'POST';
+
+			console.log("BEFORE" + this.northValue + " " + this.westValue + " " + this.southValue + " " + this.eastValue);
+
+			var northLat = this.northValue + this.bufferLat;
+			var southLat = this.southValue - this.bufferLat;
+			var eastLon = this.eastValue + this.bufferLon;
+			var westLon = this.westValue - this.bufferLon;
+
+			if (northLat < southLat || eastLon < westLon) {
+				f7.dialog.alert("Invalid coordinates. Please check the values.");
+				return;
+			}
+
 			var data = {
 				"nw": {
-					"lat": 52.951405,
-					"lon": -1.131356
+					"lat": northLat,
+					"lon": westLon
 				},
 				"se": {
-					"lat": 52.941287,
-					"lon": -1.108696
+					"lat": southLat,
+					"lon": eastLon
 				},
+				"pindrop_id": 100
 			};
+
+			f7.preloader.show();
 
 			// Post data
 			await this.fetch(url, method, data, this.success, this.failure);
@@ -117,12 +138,17 @@ export default {
 			f7.dialog.alert(response.message);
 		},
 		attachKeyListener() {
+			var vue = this;
 			this.$nextTick(() => {
 				const refs = ['inputNorth', 'inputWest', 'inputSouth', 'inputEast'];
 				refs.forEach(ref => {
 					const inputEl = this.$refs[ref]?.$el?.querySelector('input');
 					if (inputEl) {
 						inputEl.addEventListener('keydown', this.restrictDecimalInput);
+						vue.northValue = 52.951405;
+						vue.westValue = -1.131356;
+						vue.southValue = 52.941287;
+						vue.eastValue = -1.108696;
 						console.log(`Listener attached to ${ref}`);
 					} else {
 						console.warn(`Input element not found for ${ref}`);

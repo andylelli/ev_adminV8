@@ -1,5 +1,6 @@
 import Dexie from 'dexie';
-var db = new Dexie('EvariaAdmin');
+var dbEvariaAdmin = new Dexie('EvariaAdmin');
+var dbTiles = new Dexie('tiles');
 
 import params from "../js/config/params.js";
 
@@ -377,7 +378,14 @@ export default {
             $$(".view").hide();
 
             // Delete DB            
-            db.delete().then(() => {
+            dbEvariaAdmin.delete().then(() => {
+                console.log("Database successfully deleted");
+            }).catch((err) => {
+                console.error("Could not delete database");
+            });
+
+            // Delete DB            
+            dbTiles.delete().then(() => {
                 console.log("Database successfully deleted");
             }).catch((err) => {
                 console.error("Could not delete database");

@@ -5,7 +5,7 @@ export default {
     methods: {
 
         async fetch(url, method, jsonx, success, failure, page, newEvent) {
-
+            console.log("fetch: " + url);   
             // Set working spinner
             store.dispatch("setWorking", "start");
 
@@ -25,6 +25,7 @@ export default {
 
             // See if device is online on not
             var ifConnected = window.navigator.onLine;
+            console.log("Device online: " + ifConnected);
 
             // If device is online
             if (ifConnected) {
@@ -68,12 +69,12 @@ export default {
                 // Run timeout scripts
                 asyncTimeout(store.state.timeout);
 
-                this.debugUrl = url;
-                this.debugProps = JSON.stringify(props);
+                //this.debugUrl = url;
+                //this.debugProps = JSON.stringify(props);
                 
                 // DEBUG
-                //console.log(url);
-                //console.log(props);
+                console.log(url);
+                console.log(props);
 
                 // Send request to server
                 var response = await fetch(url, props);
