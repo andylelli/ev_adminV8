@@ -2,7 +2,7 @@
 	<div>
 		<f7-list dividers-ios no-padding-top style="margin-top: 0px;">
 			<f7-list-input label="North" type="text" placeholder="Latitude" clear-button v-model="northValue"
-				ref="inputNorth" :value="this.northValue">
+				ref="inputNorth" :value="this.getPindrop.pindrop_north">
 				<template #media>
 					<f7-icon>
 						<font-awesome-icon class="fa-fw custom-colour" style="font-size: 20px" :icon="['fal', 'up']" />
@@ -11,7 +11,7 @@
 			</f7-list-input>
 
 			<f7-list-input label="West" type="text" placeholder="Longitude" clear-button v-model="westValue"
-				ref="inputWest" :value="this.westValue">
+				ref="inputWest" :value="this.getPindrop.pindrop_west">
 				<template #media>
 					<f7-icon>
 						<font-awesome-icon class="fa-fw custom-colour" style="font-size: 20px"
@@ -21,7 +21,7 @@
 			</f7-list-input>
 
 			<f7-list-input label="South" type="text" placeholder="Latitude" clear-button v-model="southValue"
-				ref="inputSouth" :value="this.southValue">
+				ref="inputSouth" :value="this.getPindrop.pindrop_south">
 				<template #media>
 					<f7-icon>
 						<font-awesome-icon class="fa-fw custom-colour" style="font-size: 20px"
@@ -31,7 +31,7 @@
 			</f7-list-input>
 
 			<f7-list-input label="East" type="text" placeholder="Longitude" clear-button v-model="eastValue"
-				ref="inputEast" :value="this.eastValue">
+				ref="inputEast" :value="this.getPindrop.pindrop_east">
 				<template #media>
 					<f7-icon>
 						<font-awesome-icon class="fa-fw custom-colour" style="font-size: 20px"
@@ -61,37 +61,27 @@ export default {
 	name: "map-coordinates",
 	data() {
 		return {
-			northValue: 52.951405,
-			westValue: -1.131356,
-			southValue: 52.941287,
-			eastValue: -1.108696,
-			bufferLat: 0.015, // Buffer to prevent rounding issues
-			bufferLon: 0.015, // Buffer to prevent rounding issues
+			bufferLat: 0.002, // Buffer to prevent rounding issues
+			bufferLon: 0.002, // Buffer to prevent rounding issues
 		};
 	},
 	components: {
 		generalButton
 	},
 	props: {
-		table: String,
-		id: Number,
-		fieldname: String
+		pindropid: Number
 	},
 	mixins: [misc, fetch],
 	computed: {
-		getItemText() {
+		getPindrop() {
 			var item = {
-				table: this.table,
+				table: "pindrop",
 				key: "id",
-				id: this.id,
+				id: this.pindropid,
 				type: "single",
 			};
 			// var item = store.getters.getData(item);
-			if (item) {
-				var text = item[this.table + "_" + this.fieldname];
-				var textDecode = escape.decodeXML(text);
-				return textDecode;
-			}
+			return store.getters.getData(item);
 		},
 	},
 	methods: {
@@ -129,9 +119,26 @@ export default {
 			await this.fetch(url, method, data, this.success, this.failure);
 		},
 		success(response) {
+
+			new Date();
+			var unixtime = Date.now() / 1000;
+
+			var item = {
+				json: {
+					lookup_id: "backup-files",
+					lookup_value: json.backupFiles,
+					lookup_eventid: this.eventid,
+					lookup_unixtime: unixtime,
+				},
+			};
+
+			store.dispatch("updateMapCoordinated", item);
+			store.dispatch("insertLookupDB", item);
+
 			f7.preloader.hide();
-			f7.dialog.alert(response.message);
-			//this.clearForm();
+
+			f7.dialog.alert("Map successfully created.");
+
 		},
 		failure(response) {
 			f7.preloader.hide();

@@ -66,7 +66,7 @@ var params = [
         table: "pindrop",
         displayName: "map",
         newSheetName: "project",
-        db: ['pindrop_id', 'pindrop_eventid', 'pindrop_projectid', 'pindrop_unixtime'],
+        db: ['pindrop_id', 'pindrop_north', 'pindrop_west', 'pindrop_south', 'pindrop_east', 'pindrop_eventid', 'pindrop_projectid', 'pindrop_unixtime'],
         icon: 'map',
         linkSuffix: '/0/0/'
     },

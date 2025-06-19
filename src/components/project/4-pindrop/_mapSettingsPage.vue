@@ -18,7 +18,7 @@
 				<project-icon :id="this.getProject.project_id"></project-icon>
 			</segment>
 			<segment header="Site Coordinates">
-				<map-coordinates></map-coordinates>
+				<map-coordinates :pindropid="getPindrop.pindrop_id"></map-coordinates>
 			</segment>
 			<segment v-if="this.desktop == true">
 				<general-button class="margin-bottom" @generalButtonAction="deleteItem()" label="DELETE" width="200"
@@ -82,6 +82,15 @@ export default {
 			var item = {
 				table: "project",
 				key: "id",
+				id: this.projectid,
+				type: "single",
+			};
+			return store.getters.getData(item);
+		},
+		getPindrop() {
+			var item = {
+				table: "pindrop",
+				key: "projectid",
 				id: this.projectid,
 				type: "single",
 			};
