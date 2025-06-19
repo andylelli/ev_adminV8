@@ -183,6 +183,8 @@ export default {
                             item.table = tableArr[i];
                             item.json = response[0].data[j];
 
+                            console.log(item.json);
+
                             // Remove server timestamp
                             delete item.json[tableArr[i] + '_uxtime'];
 
