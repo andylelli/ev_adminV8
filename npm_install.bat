@@ -28,4 +28,8 @@ call npm i leaflet-pulse-icon
 
 REM COLOR THEIF
 npm i --save colorthief
+
+REM JSZIP
+call npm install jszip
+
 )

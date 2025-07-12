@@ -3,6 +3,7 @@ var dbEvariaAdmin = new Dexie('EvariaAdmin');
 var dbTiles = new Dexie('tiles');
 
 import params from "../js/config/params.js";
+import { downloadAndStoreTileZip } from "../js/tile.js";
 
 import store from "../vuex/store.js";
 
@@ -183,7 +184,8 @@ export default {
                             item.table = tableArr[i];
                             item.json = response[0].data[j];
 
-                            console.log(item.json);
+                            //DEBUG
+                            //console.log(item.json);
 
                             // Remove server timestamp
                             delete item.json[tableArr[i] + '_uxtime'];
@@ -237,6 +239,16 @@ export default {
                                     store.dispatch('insertLookupApp', item);
                                     store.dispatch('insertLookupDB', item);
                                     update++;
+                                }
+
+                                // ✅ Preload offline tiles
+                                const pindropId = 100;
+                                const zipUrl = `${store.state.url}api/get/tiles/pindrop/${pindropId}`;
+                                try {
+                                    const tileCount = await downloadAndStoreTileZip(zipUrl);
+                                    console.log(`✅ Tiles downloaded and stored: ${tileCount}`);
+                                } catch (e) {
+                                    console.warn("⚠️ Failed to preload tiles", e);
                                 }
 
                                 // Set custom colours

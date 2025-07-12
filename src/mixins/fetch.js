@@ -73,8 +73,8 @@ export default {
                 //this.debugProps = JSON.stringify(props);
                 
                 // DEBUG
-                console.log(url);
-                console.log(props);
+                //console.log(url);
+                //console.log(props);
 
                 // Send request to server
                 var response = await fetch(url, props);

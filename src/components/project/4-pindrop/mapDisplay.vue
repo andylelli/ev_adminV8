@@ -22,6 +22,7 @@ import "leaflet/dist/leaflet.css";
 import "leaflet-pulse-icon/src/L.Icon.Pulse.js";
 import "leaflet-pulse-icon/src/L.Icon.Pulse.css";
 
+import { createOfflineTileLayer } from "../../../js/offlineTileLayer.js"; // 💾 Offline tiles
 
 
 export default {
@@ -152,6 +153,10 @@ export default {
     f7ready((f7) => {
       // Initialise
       this.initialiseMapMounted();
+
+      const OfflineLayer = new (createOfflineTileLayer())();
+			vue.tileLayer = OfflineLayer;
+			OfflineLayer.addTo(vue.map);
 
       // Set pulse icon
       window.setInterval(function () {
