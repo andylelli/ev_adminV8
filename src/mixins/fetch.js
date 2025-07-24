@@ -5,7 +5,10 @@ export default {
     methods: {
 
         async fetch(url, method, jsonx, success, failure, page, newEvent) {
-            console.log("fetch: " + url);   
+
+            //DEBUH
+            //console.log("fetch: " + url);   
+            
             // Set working spinner
             store.dispatch("setWorking", "start");
 
@@ -25,7 +28,7 @@ export default {
 
             // See if device is online on not
             var ifConnected = window.navigator.onLine;
-            console.log("Device online: " + ifConnected);
+            //console.log("Device online: " + ifConnected);
 
             // If device is online
             if (ifConnected) {

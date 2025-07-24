@@ -170,14 +170,7 @@ export default {
 			f7.panel.close(".panel-left");
 		},
 		changeEvent() {
-			//If online then get latest events list
-			if (localStorage.network == "online") {
-				this.getEvents();
-			}
-			//Else open existing events list
-			else {
-				f7.sheet.open("#actions-event", true);
-			}
+			f7.sheet.open("#actions-event", true);
 		},
 		newEvent() {
 			f7.sheet.open("#new-event");
@@ -203,22 +196,7 @@ export default {
 			);
 		},
 		async getEvents() {
-			f7.preloader.show();
-			//Get events data
-			var urlEvent = store.state.url + "api/get/events";
-			var method = "GET";
-			var response = await this.fetch(urlEvent, method);
-
-			//Process response
-			if (response[0].status == "success") {
-				var eventsList = response[0]["data"];
-				await store.dispatch("setEventsList", eventsList);
-			} else {
-				console.log("Error getting events.");
-			}
-
 			// Open events list sheet
-			f7.preloader.hide();
 			f7.sheet.open("#actions-event", true);
 		},
 	},

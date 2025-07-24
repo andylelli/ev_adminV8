@@ -1,49 +1,85 @@
 <template>
-	<div style="
-			padding-top: 12px;
-			position: absolute;
-			bottom: 10px;
-			width: 100%;
-			z-index: 99999 !important;
-		">
-		<div v-if="getKey" class="card card-outline padding" style="
-				background-color: rgba(30, 30, 30, 0.8);
-				backdrop-filter: blur(3px);
-			">
-			<table >
-				<tr>
-					<td width="33%" @click="toggleMarkers(this.keyProjects[0])" v-if="getKey[0]" v-html="getKey[0]">
-					</td>
-					<td width="33%" @click="toggleMarkers(this.keyProjects[1])" v-if="getKey[1]" v-html="getKey[1]">
-					</td>
-					<td width="33%" @click="toggleMarkers(this.keyProjects[2])" v-if="getKey[2]" v-html="getKey[2]">
-					</td>
-				</tr>
-				<tr>
-					<td width="33%" @click="toggleMarkers(this.keyProjects[3])" v-if="getKey[3]" v-html="getKey[3]">
-					</td>
-					<td width="33%" @click="toggleMarkers(this.keyProjects[4])" v-if="getKey[4]" v-html="getKey[4]">
-					</td>
-					<td width="33%" @click="toggleMarkers(this.keyProjects[5])" v-if="getKey[5]" v-html="getKey[5]">
-					</td>
-				</tr>
-				<tr>
-					<td width="33%" @click="toggleMarkers(this.keyProjects[6])" v-if="getKey[6]" v-html="getKey[6]">
-					</td>
-					<td width="33%" @click="toggleMarkers(this.keyProjects[7])" v-if="getKey[7]" v-html="getKey[7]">
-					</td>
-					<td width="33%" @click="toggleMarkers(this.keyProjects[8])" v-if="getKey[8]" v-html="getKey[8]">
-					</td>
-				</tr>
-				<tr>
-					<td width="33%" @click="toggleMarkers(this.keyProjects[9])" v-if="getKey[9]" v-html="getKey[9]">
-					</td>
-					<td width="33%" @click="toggleMarkers(this.keyProjects[10])" v-if="getKey[10]" v-html="getKey[10]">
-					</td>
-					<td width="33%" @click="toggleMarkers(this.keyProjects[11])" v-if="getKey[11]" v-html="getKey[11]">
-					</td>
-				</tr>
-			</table>
+	<div>
+		<f7-block-header>KEY</f7-block-header>
+		<div v-if="getKey" class="card card-outline padding">
+			<div class="row">
+				<div
+					@click="toggleMarkers(this.keyProjects[0])"
+					class="col-50 medium-25"
+					v-if="getKey[0]"
+					v-html="getKey[0]"
+				></div>
+				<div
+					@click="toggleMarkers(this.keyProjects[1])"
+					class="col-50 medium-25"
+					v-if="getKey[1]"
+					v-html="getKey[1]"
+				></div>
+				<div
+					@click="toggleMarkers(this.keyProjects[2])"
+					class="col-50 medium-25"
+					v-if="getKey[2]"
+					v-html="getKey[2]"
+				></div>
+				<div
+					@click="toggleMarkers(this.keyProjects[3])"
+					class="col-50 medium-25"
+					v-if="getKey[3]"
+					v-html="getKey[3]"
+				></div>
+			</div>
+			<div class="row">
+				<div
+					@click="toggleMarkers(this.keyProjects[4])"
+					class="col-50 medium-25"
+					v-if="getKey[4]"
+					v-html="getKey[4]"
+				></div>
+				<div
+					@click="toggleMarkers(this.keyProjects[5])"
+					class="col-50 medium-25"
+					v-if="getKey[5]"
+					v-html="getKey[5]"
+				></div>
+				<div
+					@click="toggleMarkers(this.keyProjects[6])"
+					class="col-50 medium-25"
+					v-if="getKey[6]"
+					v-html="getKey[6]"
+				></div>
+				<div
+					@click="toggleMarkers(this.keyProjects[7])"
+					class="col-50 medium-25"
+					v-if="getKey[7]"
+					v-html="getKey[7]"
+				></div>
+			</div>
+			<div class="row">
+				<div
+					@click="toggleMarkers(this.keyProjects[8])"
+					class="col-50 medium-25"
+					v-if="getKey[8]"
+					v-html="getKey[8]"
+				></div>
+				<div
+					@click="toggleMarkers(this.keyProjects[9])"
+					class="col-50 medium-25"
+					v-if="getKey[9]"
+					v-html="getKey[9]"
+				></div>
+				<div
+					@click="toggleMarkers(this.keyProjects[10])"
+					class="col-50 medium-25"
+					v-if="getKey[10]"
+					v-html="getKey[10]"
+				></div>
+				<div
+					@click="toggleMarkers(this.keyProjects[11])"
+					class="col-50 medium-25"
+					v-if="getKey[11]"
+					v-html="getKey[11]"
+				></div>
+			</div>
 		</div>
 	</div>
 </template>
@@ -59,7 +95,7 @@ export default {
 	props: {
 		mapProjectid: Number,
 	},
-	inject: ["eventBus"],
+	inject: ["eventBus"],	
 	computed: {
 		getMarkers() {
 			var obj = {
@@ -101,7 +137,7 @@ export default {
 						"<img height='28' src='/admin/static/images/pindrop-" +
 						colour +
 						".svg'>" +
-						"<div class='padding-left-half' style='color:white;'>" +
+						"<div class='padding-left-half'>" +
 						name +
 						"</div>";
 					key_list.push(item);
@@ -150,23 +186,10 @@ export default {
 			return;
 		},
 	},
-	mounted() { },
+	mounted() {},
 };
 </script>
 
-<style scoped>
-table {
-	border: 0px;
-	font-family: arial, sans-serif;
-	border-collapse: collapse;
-	width: 100%;
-}
+<!-- <style scoped>
 
-td,
-tr {
-	border: 0px;
-	text-align: left;
-	padding-top: 4px;
-	padding-bottom: 4px;
-}
-</style>
+</style>-->

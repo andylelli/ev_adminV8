@@ -1,5 +1,5 @@
 <template>
-  <div style="height: 450px">
+  <div style="height: 80%">
     <div id="map" style="height: 100%; width: 100%"></div>
     <!-- <f7-button @click="setGPS()">Button</f7-button> -->
   </div>
@@ -44,7 +44,7 @@ export default {
       bounds: [],
       markers: [],
       zoom: 15,
-      minZoom: 10,
+      minZoom: 16,
       maxZoom: 16,
       center: [],
       bounceAtZoomLimits: false,
@@ -152,7 +152,7 @@ export default {
     var vue = this;
     f7ready((f7) => {
       // Initialise
-      this.initialiseMapMounted();
+      vue.initialiseMapMounted();
 
       const OfflineLayer = new (createOfflineTileLayer())();
 			vue.tileLayer = OfflineLayer;

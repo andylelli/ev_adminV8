@@ -42,6 +42,7 @@ export default {
 	mixins: [login, misc, fetch],
 	computed: {
 		getEventslist() {
+			console.log(store.getters.getEventslist());
 			return store.getters.getEventslist();
 		},
 		actionsOpenState() {
