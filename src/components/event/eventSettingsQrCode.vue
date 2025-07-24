@@ -69,7 +69,7 @@ export default {
 			return hyphenated;
 		},
 		qrValue() {
-			return this.url + this.eventNameHyphen + "/" + this.getEvent.event_token + "/" + this.getEvent.event_id + "/" + this.getSplashColour + "/browser";
+			return this.url + this.eventNameHyphen + "/" + this.getEvent.event_token + "/" + this.getSplashColour + "/browser";
 		},
 	},
 	methods: {},
