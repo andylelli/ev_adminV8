@@ -56,7 +56,6 @@ export default {
 	data() {
 		return {
 			eventid: store.state.eventid,
-			guest: store.state.guest,
 		};
 	},
 	props: {
@@ -116,23 +115,6 @@ export default {
 					}
 				}
 
-				//Add Guest Name
-				for (var i = 0; i < len; i++) {
-					var guestid = scores[i].scoreboardscore_guestid;
-
-					var guest = this.guest.filter(function (result) {
-						return result.guest_id === guestid;
-					});
-					if (guest.length == 1) {
-						scores[i].scoreboardscore_firstname =
-							guest[0].guest_firstname;
-						scores[i].scoreboardscore_lastname =
-							guest[0].guest_lastname;
-					} else {
-						scores[i].scoreboardscore_firstname = "Guest";
-						scores[i].scoreboardscore_lastname = "Deleted";
-					}
-				}
 				return scores;
 			}
 		},

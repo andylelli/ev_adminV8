@@ -3,8 +3,6 @@ import _LoginPage from '../components/login/_loginPage.vue';
 import _LeftViewPage from '../components/left/_leftViewPage.vue';
 import _EventSettingsPage from '../components/event/_eventSettingsPage.vue';
 import _EventSettingsBackupRestorePage from '../components/event/_eventSettingsBackupRestorePage.vue';
-import _GuestPage from '../components/guest/_guestPage.vue';
-import _GuestDetailPage from '../components/guest/_guestDetailPage.vue';
 import _MainPage from '../components/project/_mainPage.vue';
 import _PollPage from '../components/project/1-poll/_pollPage.vue';
 import _PollSettingsPage from '../components/project/1-poll/_pollSettingsPage.vue';
@@ -81,14 +79,6 @@ var routes = [
   {
     path: '/main/:eventId/',
     component: _MainPage,
-  },
-  {
-    path: '/guest/',
-    component: _GuestPage,
-  },
-  {
-    path: '/guest-detail/:guestId/',
-    component: _GuestDetailPage,
   },
   {
     path: '/poll/:projectId/',

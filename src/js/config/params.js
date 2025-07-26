@@ -272,34 +272,6 @@ var params = [
         link: false
     },
     {
-        table: "guest",
-        displayName: "guest",
-        newSheetName: "guest",
-        db: ['guest_id', 'guest_firstname', 'guest_lastname', 'guest_email', 'guest_role', 'guest_token', 'guest_eventid', 'guest_unixtime'],
-        decode: ['guest_firstname', 'guest_lastname'],
-        fields: [
-            {
-                name: "firstname",
-                placeholder: "First Name",
-                type: "text",
-            },
-            {
-                name: "lastname",
-                placeholder: "Last Name",
-                type: "text",
-            },
-            {
-                name: "email",
-                placeholder: "Email",
-                type: "email",
-            },
-        ]
-    },
-    {
-        table: "qrcode",
-        db: ["qrcode_id", "qrcode_value", "qrcode_image", "qrcode_eventid", "qrcode_guestid", "qrcode_unixtime"],
-    },
-    {
         table: "order",
         db: ["order_id", "order_clientid", "order_shopid", "order_eventid", "order_datetime", "order_unixtime"],
     },

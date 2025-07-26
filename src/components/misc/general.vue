@@ -13,19 +13,6 @@
 					</f7-icon>
 				</template>
 			</f7-list-item>
-			<!-- 
-			<f7-list-item link="/guest/" title="Guests">
-				<template #media>
-					<f7-icon>
-						<font-awesome-icon
-							class="fa-fw custom-colour"
-							style="font-size: 20px"
-							:icon="['fal', 'users']"
-						/>
-					</f7-icon>
-				</template>
-			</f7-list-item>
-			-->
 		</f7-list>
 	</div>
 </template>

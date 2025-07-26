@@ -317,7 +317,7 @@ export default {
                 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                 // This needs to be parameterised
                 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                if (tableArr[i] != 'user' && tableArr[i] != 'event' && tableArr[i] != 'lookup' && tableArr[i] != 'qrcode' && tableArr[i] != 'guest' && tableArr[i] != 'shop' && tableArr[i] != 'shopitem' && tableArr[i] != 'order' && tableArr[i] != 'orderdetail') {
+                if (tableArr[i] != 'user' && tableArr[i] != 'event' && tableArr[i] != 'lookup' && tableArr[i] != 'shop' && tableArr[i] != 'shopitem' && tableArr[i] != 'order' && tableArr[i] != 'orderdetail') {
 
                     // Create an array of item ids from local App memory
                     var find = state[tableArr[i]].filter(function (result) {

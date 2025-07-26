@@ -53,12 +53,6 @@ export default {
 		},
 	},
 	methods: {
-		// Get QR code data
-		getQRCode() {
-			this.url = store.state.url; // Set the URL for the QR code
-			this.email = this.setEmail; // Set the email for the QR code
-			this.qr_image = store.getters.getQRCode(this.guestid); // Get the QR code image based on the guest ID
-		},
 	},
 	mounted() {
 		f7ready((f7) => {

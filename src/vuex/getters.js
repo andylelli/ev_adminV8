@@ -182,14 +182,6 @@ var getters = {
         });
         return locations;
     },
-    getQRCode: (state) => (id) => {
-        var find = state.qrcode.filter(function (result) {
-            return result.qrcode_guestid == id;
-        });
-        if (find.length > 0) {
-            return find[0].qrcode_image;
-        }
-    },
     getQRScanner: (state) => (x) => {
         return state.qrscanner;
     },

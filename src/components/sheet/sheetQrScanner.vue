@@ -92,9 +92,7 @@ export default {
 					"/" +
 					email +
 					"/" +
-					uniqueId +
-					"/" +
-					store.state.token;
+					uniqueId;
 				var method = "GET";
 				var data = null;
 

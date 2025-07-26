@@ -134,15 +134,6 @@ export default {
         return false;
       }
     },
-    getGuest() {
-      var item = {
-        table: "guest",
-        key: "eventid",
-        id: store.state.eventid,
-        type: "single",
-      };
-      return store.getters.getData(item);
-    },
   },
   methods: {
     deleteItem() {
@@ -168,21 +159,7 @@ export default {
 
             store.dispatch("updateItemDB", item);
 
-            //var guest_email = this.getEvent.event_name.replace(/\s+/g, '-').toLowerCase();
-
-            //var item = {};
-            //item.table = "guest";
-            //item.json = this.getGuest;
-            //item.json.guest_email = guest_email + "@evaria.io";;
-            //item.json.guest_lastname = "Evaria";
-            //item.json.guest_firstname = this.getEvent.event_name;
-            //item.json.guest_unixtime = unixtime;
-
-            //store.dispatch("updateItemApp", item);
-            //store.dispatch("updateItemDB", item);
-
             localStorage.admin_update_event_time = unixtime;
-            localStorage.admin_update_guest_time = unixtime;
           }
         },
         { deep: true }

@@ -54,14 +54,6 @@ var localLoad = {
                 store.dispatch("reorder", table);
             });
 
-
-            // Local QR code data into app from local DB
-            var qrcodes_query = await db.table('qrcode').toArray();
-            state.qrcode.length = 0;
-            qrcodes_query.forEach(qrcode => {
-                state.qrcode.push(qrcode);
-            });
-
             // Local events list into app from localStorage
             var eventsListString = localStorage.eventsList;
             if (eventsListString) {

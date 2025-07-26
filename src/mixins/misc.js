@@ -77,40 +77,6 @@ export default {
 			});
 			toastTop.open();
 		},
-		async getQRCode(id, table) {
-
-			// Parameters
-			var url = store.state.url + 'api/get/qrcode/guest/' + id;
-			var method = 'GET'
-			var response = await this.fetch(url, method);
-
-			// Success
-			if (response[0].data.length > 0) {
-
-				new Date();
-				var unixtime = Date.now() / 1000;
-
-				// Prepare App and DB Insert / Update
-				var item = {};
-				item.table = 'qrcode';
-				item.json = response[0].data[0];
-
-				// Remove server timestamp
-				delete item.json['qrcode_uxtime'];
-
-				// Set local timestamp
-				item.json['qrcode_unixtime'] = unixtime;
-
-				store.dispatch('insertItemApp', item);
-				store.dispatch('insertItemDB', item);
-
-				console.log("1 insert made to qrcode");
-			}
-			// Failure
-			else {
-				console.log('QR code failure - please set error action!');
-			}
-		},
 		async changeEvent(eventid) {
 
 			await db.open();
@@ -531,7 +497,7 @@ export default {
 			// Prepare submit URL
 			var url = store.state.url;
 			var eventid = store.state.eventid;
-			var guestid = localStorage.uniqueId;
+			var uniqueId = localStorage.uniqueId;
 			var token = store.state.token;
 
 			// Parameters
@@ -544,7 +510,7 @@ export default {
 				"/" +
 				token +
 				"/" +
-				guestid;
+				uniqueId;
 			var method = "GET";
 			var data = null;
 			var success = null;
