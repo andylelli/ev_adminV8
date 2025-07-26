@@ -90,8 +90,6 @@ export default {
 					"/" +
 					this.value +
 					"/" +
-					email +
-					"/" +
 					uniqueId;
 				var method = "GET";
 				var data = null;
