@@ -91,7 +91,9 @@ export default {
 					this.value +
 					"/" +
 					uniqueId;
+
 				var method = "GET";
+				
 				var data = null;
 
 				//Get data
