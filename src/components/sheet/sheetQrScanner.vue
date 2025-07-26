@@ -71,6 +71,7 @@ export default {
 			}
 		},
 		async scoreboardScanned(qrcode) {
+			console.log(qrcode);
 			var urlParams = this.getParams(qrcode);
 			var email = encodeURIComponent(urlParams.email);
 			var uniqueId = encodeURIComponent(urlParams.uniqueid);
@@ -93,7 +94,7 @@ export default {
 					uniqueId;
 
 				var method = "GET";
-				
+
 				var data = null;
 
 				//Get data

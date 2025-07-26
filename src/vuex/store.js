@@ -10,7 +10,7 @@ var url = "https://www.evaria.io/";
 
 export const store = createStore({
   state: {
-    version: "v8.3.2 20250726_01",
+    version: "v8.3.2 20250726_02",
     url: url + "public/",
     cache: url + "admin/",
     urlQR: url + "admin/index.html?",
